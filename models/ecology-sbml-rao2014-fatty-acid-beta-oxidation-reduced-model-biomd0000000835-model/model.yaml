@@ -1,0 +1,40 @@
+schema_version: '2.0'
+title: 'Ecology: Rao2014FattyAcidBetaOxidationReducedModelBiomd0000000835Model'
+description: 'This represents the reduced version of the ''time course model'' of
+  Van Eunen et al (2013): Biochemical competition makes fatty-acid beta-oxidation
+  vulnerable to substrate overload. The SBML was created'
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- Shodhan Rao
+- Arjan van der Schaft
+- Karen van Eunen
+- Barbara M Bakker
+- Bayu Jayawardhana
+upstream:
+  id: biomodels_ebi:BIOMD0000000835
+  source_db: biomodels_ebi
+  source_id: BIOMD0000000835
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000835
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000835?filename=Rao2014.xml
+  license: CC0
+bsim:
+  entrypoint: src.rao2014_fatty_acid_beta_oxidation_reduced_model_biomd0000000835_model:Rao2014FattyAcidBetaOxidationReducedModelBiomd0000000835Model
+  init_kwargs:
+    model_path: data/BIOMD0000000835.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

@@ -1,0 +1,37 @@
+schema_version: '2.0'
+title: 'Ecology: Makin2013BloodCoagulationCascadeModelModel1807230001Model'
+description: Mathematical model of the blood coagulation system including lipid binding
+  sites, meizothrombin, thrombomodulin, cleaved and light peptide chain Va species
+  and Heparin.
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- Joseph G Makin
+- Srini Narayanan
+upstream:
+  id: biomodels_ebi:MODEL1807230001
+  source_db: biomodels_ebi
+  source_id: MODEL1807230001
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/MODEL1807230001
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/MODEL1807230001?filename=Makin2013.xml
+  license: CC0
+bsim:
+  entrypoint: src.makin2013_blood_coagulation_cascade_model_model1807230001_model:Makin2013BloodCoagulationCascadeModelModel1807230001Model
+  init_kwargs:
+    model_path: data/MODEL1807230001.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

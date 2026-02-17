@@ -1,0 +1,9 @@
+schema_version: "2.0"
+title: "Ecology: PopulationMetrics"
+description: "Computes summary metrics from population state streams."
+standard: other
+tags: [ecology, metrics]
+authors: ["Biosimulant Team"]
+bsim:
+  entrypoint: "src.ecology_metrics:EcologyMetrics"
+

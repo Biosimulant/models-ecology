@@ -1,0 +1,38 @@
+schema_version: '2.0'
+title: 'Ecology: Singh2006Il6SignalTransductionBiomd0000000151Model'
+description: The model reproduces Fig 2 , Fig3A and Fig 3B of the paper. The ODE for
+  x1(gp180) and x3 (gp 130) is wrong and the authors have communicated to the curator
+  that the species ought to have a constant va
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- Abhay Singh
+- Arul Jayaraman
+- Juergen Hahn
+upstream:
+  id: biomodels_ebi:BIOMD0000000151
+  source_db: biomodels_ebi
+  source_id: BIOMD0000000151
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000151
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000151?filename=BIOMD0000000151_url.xml
+  license: CC0
+bsim:
+  entrypoint: src.singh2006_il6_signal_transduction_biomd0000000151_model:Singh2006Il6SignalTransductionBiomd0000000151Model
+  init_kwargs:
+    model_path: data/BIOMD0000000151.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

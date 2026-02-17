@@ -1,0 +1,36 @@
+schema_version: '2.0'
+title: 'Ecology: Hansen2019NineSpeciesReducedModelOfBloodCBiomd0000000755Model'
+description: its a nine species reduced model of Hockin 2002. Model uses different
+  level of reduction (5,7,9,11) and testing the best alignment with Hockin model results
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- Kirk B Hansen
+- Shawn C Shadden
+upstream:
+  id: biomodels_ebi:BIOMD0000000755
+  source_db: biomodels_ebi
+  source_id: BIOMD0000000755
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000755
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000755?filename=Hansen2019.xml
+  license: CC0
+bsim:
+  entrypoint: src.hansen2019_nine_species_reduced_model_of_blood_c_biomd0000000755_model:Hansen2019NineSpeciesReducedModelOfBloodCBiomd0000000755Model
+  init_kwargs:
+    model_path: data/BIOMD0000000755.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

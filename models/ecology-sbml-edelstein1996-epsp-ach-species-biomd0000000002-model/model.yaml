@@ -1,0 +1,40 @@
+schema_version: '2.0'
+title: 'Ecology: Edelstein1996EpspAchSpeciesBiomd0000000002Model'
+description: Edelstein1996 - EPSP ACh species Model of a nicotinic Excitatory Post-Synaptic
+  Potential in a Torpedo electric organ. Acetylcholine is represented explicitely
+  as a molecular species. This model has in
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- S J Edelstein
+- O Schaad
+- E Henry
+- D Bertrand
+- J P Changeux
+upstream:
+  id: biomodels_ebi:BIOMD0000000002
+  source_db: biomodels_ebi
+  source_id: BIOMD0000000002
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000002
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000002?filename=BIOMD0000000002_url.xml
+  license: CC0
+bsim:
+  entrypoint: src.edelstein1996_epsp_ach_species_biomd0000000002_model:Edelstein1996EpspAchSpeciesBiomd0000000002Model
+  init_kwargs:
+    model_path: data/BIOMD0000000002.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

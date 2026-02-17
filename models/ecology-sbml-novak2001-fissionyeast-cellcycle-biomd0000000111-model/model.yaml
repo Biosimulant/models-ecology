@@ -1,0 +1,39 @@
+schema_version: '2.0'
+title: 'Ecology: Novak2001FissionyeastCellcycleBiomd0000000111Model'
+description: The model reproduces the time evolution of several species as depicted
+  in Fig 4 of the paper. Events have been used to reset cell mass when the value of
+  M-phase promoting factor (MPF) decreases throug
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- "B\xE9la Nov\xE1k"
+- Zsuzsa Pataki
+- Andrea Ciliberto
+- John J. Tyson
+upstream:
+  id: biomodels_ebi:BIOMD0000000111
+  source_db: biomodels_ebi
+  source_id: BIOMD0000000111
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000111
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000111?filename=BIOMD0000000111_url.xml
+  license: CC0
+bsim:
+  entrypoint: src.novak2001_fissionyeast_cellcycle_biomd0000000111_model:Novak2001FissionyeastCellcycleBiomd0000000111Model
+  init_kwargs:
+    model_path: data/BIOMD0000000111.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

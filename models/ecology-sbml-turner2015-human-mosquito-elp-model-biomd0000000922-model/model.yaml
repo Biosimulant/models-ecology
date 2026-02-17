@@ -1,0 +1,40 @@
+schema_version: '2.0'
+title: 'Ecology: Turner2015HumanMosquitoElpModelBiomd0000000922Model'
+description: the growth of the mosquito population is directly related to the spread
+  of malaria, the Four Stage Life Cycle is incorporated to model the effects of climate
+  change and interspecies competition within
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- Amy Turner
+- Chanok Jung
+- Pan Tan
+- Srinivas Gotika
+- Vijay Mago
+upstream:
+  id: biomodels_ebi:BIOMD0000000922
+  source_db: biomodels_ebi
+  source_id: BIOMD0000000922
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000922
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000922?filename=Turner2015_ELP.xml
+  license: CC0
+bsim:
+  entrypoint: src.turner2015_human_mosquito_elp_model_biomd0000000922_model:Turner2015HumanMosquitoElpModelBiomd0000000922Model
+  init_kwargs:
+    model_path: data/BIOMD0000000922.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

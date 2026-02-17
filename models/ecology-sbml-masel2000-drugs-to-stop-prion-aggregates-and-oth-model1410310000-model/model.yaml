@@ -1,0 +1,37 @@
+schema_version: '2.0'
+title: 'Ecology: Masel2000DrugsToStopPrionAggregatesAndOthModel1410310000Model'
+description: 'Masel2000 - Drugs to stop prion aggregatesand other amyloids Encoded
+  non-curated model.Issues: - Missing initial concentration for species y, yb and
+  z - Not reproducible figures This model is describe'
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- J Masel
+- V A Jansen
+upstream:
+  id: biomodels_ebi:MODEL1410310000
+  source_db: biomodels_ebi
+  source_id: MODEL1410310000
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/MODEL1410310000
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/MODEL1410310000?filename=MODEL1410310000_url.xml
+  license: CC0
+bsim:
+  entrypoint: src.masel2000_drugs_to_stop_prion_aggregates_and_oth_model1410310000_model:Masel2000DrugsToStopPrionAggregatesAndOthModel1410310000Model
+  init_kwargs:
+    model_path: data/MODEL1410310000.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

@@ -1,0 +1,39 @@
+schema_version: '2.0'
+title: 'Ecology: MouseIronDistributionAdequateIronDietTraceBiomd0000000735Model'
+description: Mouse Iron Distribution Dynamics Dynamic model of iron distribution in
+  mice. This model includes normal iron and radioactive labelled tracer iron species
+  and was used for parameter estimation given th
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- Jignesh H Parmar
+- Grey Davis
+- Hope Shevchuk
+- Pedro Mendes
+upstream:
+  id: biomodels_ebi:BIOMD0000000735
+  source_db: biomodels_ebi
+  source_id: BIOMD0000000735
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000735
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000735?filename=Parmar2017_Adequate_tracer.xml
+  license: CC0
+bsim:
+  entrypoint: src.mouse_iron_distribution_adequate_iron_diet_trace_biomd0000000735_model:MouseIronDistributionAdequateIronDietTraceBiomd0000000735Model
+  init_kwargs:
+    model_path: data/BIOMD0000000735.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

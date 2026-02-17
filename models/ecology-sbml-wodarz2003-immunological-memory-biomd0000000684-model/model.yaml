@@ -1,0 +1,36 @@
+schema_version: '2.0'
+title: 'Ecology: Wodarz2003ImmunologicalMemoryBiomd0000000684Model'
+description: 'This a model from the article: Evolution of immunological memory and
+  the regulation of competition betweenpathogens. Wodarz D. Curr Biol 2003 Sep 16;13(18):1648-52
+  13678598 , Abstract: Memory is a cen'
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- Dominik Wodarz
+upstream:
+  id: biomodels_ebi:BIOMD0000000684
+  source_db: biomodels_ebi
+  source_id: BIOMD0000000684
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000684
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000684?filename=BIOMD0000000684_url.xml
+  license: CC0
+bsim:
+  entrypoint: src.wodarz2003_immunological_memory_biomd0000000684_model:Wodarz2003ImmunologicalMemoryBiomd0000000684Model
+  init_kwargs:
+    model_path: data/BIOMD0000000684.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

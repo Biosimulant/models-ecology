@@ -1,0 +1,40 @@
+schema_version: '2.0'
+title: 'Ecology: Coggins2014Cxcl12DependentRecruitmentOfBetaBiomd0000000599Model'
+description: "Nathaniel L. Coggins, Danielle Trakimas, S. Laura Chang, Anna Ehrlich,\
+  \ Paramita Ray, Kathryn E. Luker, Jennifer J. Linderman & Gary D. Luker. CXCR7 controls\
+  \ competition for recruitment of \u03B2-arrestin 2"
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- Nathaniel L Coggins
+- Danielle Trakimas
+- S Laura Chang
+- Anna Ehrlich
+- Paramita Ray
+upstream:
+  id: biomodels_ebi:BIOMD0000000599
+  source_db: biomodels_ebi
+  source_id: BIOMD0000000599
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000599
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000599?filename=BIOMD0000000599_url.xml
+  license: CC0
+bsim:
+  entrypoint: src.coggins2014_cxcl12_dependent_recruitment_of_beta_biomd0000000599_model:Coggins2014Cxcl12DependentRecruitmentOfBetaBiomd0000000599Model
+  init_kwargs:
+    model_path: data/BIOMD0000000599.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

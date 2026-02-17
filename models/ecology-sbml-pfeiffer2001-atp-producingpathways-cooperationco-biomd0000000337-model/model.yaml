@@ -1,0 +1,38 @@
+schema_version: '2.0'
+title: 'Ecology: Pfeiffer2001AtpProducingpathwaysCooperationcoBiomd0000000337Model'
+description: 'This model is from the article: Cooperation and Competition in the Evolution
+  of ATP-Producing Pathways Thomas Pfeiffer, Stefan Schuster, Sebastian Bonhoeffer
+  Science 2001 Apr; Volume:292 (Issue:5516);'
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- T Pfeiffer
+- S Schuster
+- S Bonhoeffer
+upstream:
+  id: biomodels_ebi:BIOMD0000000337
+  source_db: biomodels_ebi
+  source_id: BIOMD0000000337
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000337
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000337?filename=BIOMD0000000337_url.xml
+  license: CC0
+bsim:
+  entrypoint: src.pfeiffer2001_atp_producingpathways_cooperationco_biomd0000000337_model:Pfeiffer2001AtpProducingpathwaysCooperationcoBiomd0000000337Model
+  init_kwargs:
+    model_path: data/BIOMD0000000337.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

@@ -1,0 +1,38 @@
+schema_version: '2.0'
+title: 'Ecology: Mitrophanov2014ExtendedHockinBloodCoagulatioModel1806260001Model'
+description: Mathematical model of the blood coagulation cascade. Extended Hockin
+  model with contributions from Kim2007, Naski1991, Schneider2004, Horrevoets1996,
+  Brummel-Ziedins2012, Mitrophanov2012, Danforth2009
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- Alexander Y Mitrophanov
+- Alisa S Wolberg
+- Jaques Reifman
+upstream:
+  id: biomodels_ebi:MODEL1806260001
+  source_db: biomodels_ebi
+  source_id: MODEL1806260001
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/MODEL1806260001
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/MODEL1806260001?filename=Mitrophanov2014.xml
+  license: CC0
+bsim:
+  entrypoint: src.mitrophanov2014_extended_hockin_blood_coagulatio_model1806260001_model:Mitrophanov2014ExtendedHockinBloodCoagulatioModel1806260001Model
+  init_kwargs:
+    model_path: data/MODEL1806260001.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

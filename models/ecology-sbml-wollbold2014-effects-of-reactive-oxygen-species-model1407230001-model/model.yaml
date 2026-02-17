@@ -1,0 +1,40 @@
+schema_version: '2.0'
+title: 'Ecology: Wollbold2014EffectsOfReactiveOxygenSpeciesModel1407230001Model'
+description: "Wollbold2014 - Effects of reactive oxygenspecies This model is described\
+  \ in the article: Anti-inflammatory effects of reactive oxygen species \xBF a multi-valued\
+  \ logical model validated by formal concept"
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- Johannes Wollbold
+- Robert Jaster
+- "Sarah M\xFCller"
+- Katja Rateitschak
+- Olaf Wolkenhauer
+upstream:
+  id: biomodels_ebi:MODEL1407230001
+  source_db: biomodels_ebi
+  source_id: MODEL1407230001
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/MODEL1407230001
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/MODEL1407230001?filename=MODEL1407230001_url.xml
+  license: CC0
+bsim:
+  entrypoint: src.wollbold2014_effects_of_reactive_oxygen_species_model1407230001_model:Wollbold2014EffectsOfReactiveOxygenSpeciesModel1407230001Model
+  init_kwargs:
+    model_path: data/MODEL1407230001.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

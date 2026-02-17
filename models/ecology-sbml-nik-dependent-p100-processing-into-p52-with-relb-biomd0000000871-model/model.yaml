@@ -1,0 +1,37 @@
+schema_version: '2.0'
+title: 'Ecology: NikDependentP100ProcessingIntoP52WithRelbBiomd0000000871Model'
+description: This model represents NIK-dependent p100 processing into p52 followed
+  by binding to RelB and NIK-dependent IkBd degradation. This model assesses the impact
+  of substrate complex competition on RelB-p52
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- Simon Mitchell
+- Alexander Hoffmann
+upstream:
+  id: biomodels_ebi:BIOMD0000000871
+  source_db: biomodels_ebi
+  source_id: BIOMD0000000871
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000871
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000871?filename=Simon2019_Figure3b.xml
+  license: CC0
+bsim:
+  entrypoint: src.nik_dependent_p100_processing_into_p52_with_relb_biomd0000000871_model:NikDependentP100ProcessingIntoP52WithRelbBiomd0000000871Model
+  init_kwargs:
+    model_path: data/BIOMD0000000871.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

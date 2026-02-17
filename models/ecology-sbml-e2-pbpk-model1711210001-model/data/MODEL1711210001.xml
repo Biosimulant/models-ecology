@@ -1,0 +1,4522 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created by COPASI version 4.16 (Build 104) on 2017-06-27 15:02 with libSBML version 5.11.5. -->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model metaid="COPASI0" id="E2_PBPK_v7_1" name="E2_PBPK_v7.1">
+    <notes>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+        <pre>Using scaling from PhysB model
+Blood flow in L/hr
+Compartments in Kg
+Baseline as ~0.013nM free E2 in plasma_venous
+   E2 biosynthesis rate constant = 2
+   E2 biosynthesis species = 1nM
+CLeh = 5
+CLint = 1scaled by liver weight
+B:P = 0.286
+IV bolus = 250/h (delivers in 2-3mins)
+Added ER{gonads}</pre>
+      </body>
+    </notes>
+    <annotation>
+      <COPASI xmlns="http://www.copasi.org/static/sbml">
+        <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+          <rdf:Description rdf:about="#COPASI0">
+            <dcterms:created>
+              <rdf:Description>
+                <dcterms:W3CDTF>2015-11-23T20:19:41Z</dcterms:W3CDTF>
+              </rdf:Description>
+            </dcterms:created>
+          </rdf:Description>
+        </rdf:RDF>
+      </COPASI>
+    </annotation>
+    <listOfFunctionDefinitions>
+      <functionDefinition id="Constant_flux__irreversible" name="Constant flux (irreversible)">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> v </ci>
+            </bvar>
+            <ci> v </ci>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition metaid="COPASI144" id="PBPK__blood____tissue" name="PBPK: blood -&gt; tissue">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI144">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-12-04T10:01:44Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> Qt </ci>
+            </bvar>
+            <bvar>
+              <ci> Ca </ci>
+            </bvar>
+            <bvar>
+              <ci> Vt </ci>
+            </bvar>
+            <apply>
+              <times/>
+              <apply>
+                <divide/>
+                <ci> Qt </ci>
+                <ci> Vt </ci>
+              </apply>
+              <ci> Ca </ci>
+            </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition metaid="COPASI145" id="PBPK__tissue____blood" name="PBPK: tissue -&gt; blood">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI145">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-12-04T10:39:46Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> Qt </ci>
+            </bvar>
+            <bvar>
+              <ci> Ct </ci>
+            </bvar>
+            <bvar>
+              <ci> Kp </ci>
+            </bvar>
+            <bvar>
+              <ci> BP </ci>
+            </bvar>
+            <bvar>
+              <ci> Vt </ci>
+            </bvar>
+            <apply>
+              <times/>
+              <apply>
+                <divide/>
+                <ci> Qt </ci>
+                <ci> Vt </ci>
+              </apply>
+              <apply>
+                <divide/>
+                <ci> Ct </ci>
+                <apply>
+                  <divide/>
+                  <ci> Kp </ci>
+                  <ci> BP </ci>
+                </apply>
+              </apply>
+            </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition metaid="COPASI146" id="PBPK__Heterodimerisation" name="PBPK: Heterodimerisation">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI146">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T21:01:52Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> s1 </ci>
+            </bvar>
+            <bvar>
+              <ci> s2 </ci>
+            </bvar>
+            <bvar>
+              <ci> Kon </ci>
+            </bvar>
+            <bvar>
+              <ci> s3 </ci>
+            </bvar>
+            <bvar>
+              <ci> koff </ci>
+            </bvar>
+            <apply>
+              <minus/>
+              <apply>
+                <times/>
+                <ci> s1 </ci>
+                <ci> s2 </ci>
+                <ci> Kon </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> s3 </ci>
+                <ci> koff </ci>
+              </apply>
+            </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+    </listOfFunctionDefinitions>
+    <listOfUnitDefinitions>
+      <unitDefinition id="time" name="time">
+        <listOfUnits>
+          <unit kind="second" exponent="1" scale="0" multiplier="3600"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="substance" name="substance">
+        <listOfUnits>
+          <unit kind="mole" exponent="1" scale="-9" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment metaid="COPASI1" id="default" name="default" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI1">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-12-31T20:43:09Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI2" id="c1" name="Plasma_venous" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI2">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:21:13Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI3" id="c2" name="Plasma_arterial" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI3">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:22:15Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI4" id="c3" name="Lung" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI4">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:25:25Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI5" id="c5" name="Bone" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI5">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:22:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI6" id="c7" name="Heart" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI6">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:24:01Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI7" id="c10" name="Liver_blood" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI7">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:24:46Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI8" id="c11" name="Kidney" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI8">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:24:25Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI9" id="c12" name="Intestine" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI9">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:23:39Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI10" id="c13" name="Spleen" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI10">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:27:47Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI11" id="c14" name="Thymus" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI11">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:26:10Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI12" id="c15" name="Stomach" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI12">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:26:59Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI13" id="Rest_of_body" name="Rest-of-body" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI13">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:48:57Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI14" id="Liver_cells" name="Liver_cells" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI14">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-26T14:10:41Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI15" id="Brain" name="Brain" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI15">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-27T10:26:41Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI16" id="Gonads_blood" name="Gonads_blood" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI16">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-27T10:41:56Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI17" id="Skin" name="Skin" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI17">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-27T10:48:45Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI18" id="Muscle" name="Muscle" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI18">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-27T10:53:01Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI19" id="Adipose" name="Adipose" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI19">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-27T10:58:31Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI20" id="Dose_IV" name="Dose_IV" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI20">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-27T20:58:02Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI21" id="Pancreas" name="Pancreas" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI21">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-12-30T20:01:30Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI22" id="Dose_oral" name="Dose_oral" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI22">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-11-24T10:49:26Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+      <compartment metaid="COPASI23" id="Gonads_cells" name="Gonads_cells" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI23">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2017-06-26T08:20:33Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </compartment>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species metaid="COPASI24" id="s38" name="CLInt" compartment="default" initialConcentration="0" boundaryCondition="true" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI24">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T21:23:14Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI25" id="s39" name="CLEH" compartment="default" initialConcentration="0" boundaryCondition="true" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI25">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T21:23:02Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI26" id="Faeces" name="Faeces" compartment="default" initialConcentration="1" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI26">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2017-06-26T08:22:04Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species id="Source" name="Source" compartment="default" initialConcentration="1" boundaryCondition="true" constant="true"/>
+      <species metaid="COPASI27" id="Counter" name="Counter" compartment="default" initialConcentration="3000.00000000001" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI27">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-12-02T10:49:30Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI28" id="s16" name="E2" compartment="c1" initialConcentration="0.012880324439466" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI28">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-26T14:19:19Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI29" id="s18" name="SHBG" compartment="c1" initialConcentration="39.6594489535921" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI29">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T21:22:25Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI30" id="s19" name="Albumin" compartment="c1" initialConcentration="499999.621167217" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI30">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T21:22:53Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species id="s32" name="E2-SHBG" compartment="c1" initialConcentration="0.340551046408471" boundaryCondition="false" constant="false"/>
+      <species id="s33" name="E2-Albumin" compartment="c1" initialConcentration="0.378832784791379" boundaryCondition="false" constant="false"/>
+      <species metaid="COPASI31" id="s15" name="E2" compartment="c2" initialConcentration="0.0227598152748276" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI31">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-26T14:19:34Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI32" id="s17" name="SHBG" compartment="c2" initialConcentration="39.4021429955318" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI32">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T21:22:19Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI33" id="s20" name="Albumin" compartment="c2" initialConcentration="499999.330594566" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI33">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T21:22:32Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species id="s21" name="E2-SHBG" compartment="c2" initialConcentration="0.597856997340431" boundaryCondition="false" constant="false"/>
+      <species metaid="COPASI34" id="s29" name="E2-Albumin" compartment="c2" initialConcentration="0.669405435577776" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI34">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:56:36Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI35" id="s1" name="E2" compartment="c3" initialConcentration="0.012880324439466" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI35">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-26T14:16:55Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species id="s3" name="E2" compartment="c5" initialConcentration="0.0227598152748459" boundaryCondition="false" constant="false"/>
+      <species id="s5" name="E2" compartment="c7" initialConcentration="0.0227598152748284" boundaryCondition="false" constant="false"/>
+      <species metaid="COPASI36" id="s8" name="E2" compartment="c10" initialConcentration="0.023199174381171" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI36">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-26T14:10:27Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species id="s9" name="E2" compartment="c11" initialConcentration="0.0218787617463336" boundaryCondition="false" constant="false"/>
+      <species id="s10" name="E2" compartment="c12" initialConcentration="0.0227598152748286" boundaryCondition="false" constant="false"/>
+      <species id="s11" name="E2" compartment="c13" initialConcentration="0.0227598152748283" boundaryCondition="false" constant="false"/>
+      <species metaid="COPASI37" id="s12" name="E2" compartment="c14" initialConcentration="0.022759815274831" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI37">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-11-25T20:47:57Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI38" id="s13" name="E2" compartment="c15" initialConcentration="0.02275981527483" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI38">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-27T10:47:15Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species id="E2_Rest_of_body" name="E2" compartment="Rest_of_body" initialConcentration="0.02275981527" boundaryCondition="false" constant="false"/>
+      <species metaid="COPASI39" id="E2_Liver_cells" name="E2" compartment="Liver_cells" initialConcentration="0.0767047091066076" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI39">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-26T14:17:00Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species id="ER_Liver_cells" name="ER" compartment="Liver_cells" initialConcentration="9.56521259992091" boundaryCondition="false" constant="false"/>
+      <species metaid="COPASI40" id="ER_E2_Liver_cells" name="ER-E2" compartment="Liver_cells" initialConcentration="2.93478740007918" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI40">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2017-06-26T08:19:31Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI41" id="E2_Brain" name="E2" compartment="Brain" initialConcentration="0.0227598152748295" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI41">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-27T10:47:10Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species id="E2_Gonads_blood" name="E2" compartment="Gonads_blood" initialConcentration="4.43582248094885" boundaryCondition="false" constant="false"/>
+      <species id="E2_Skin" name="E2" compartment="Skin" initialConcentration="0.0227598152748332" boundaryCondition="false" constant="false"/>
+      <species metaid="COPASI42" id="E2_Muscle" name="E2" compartment="Muscle" initialConcentration="0.022759815274854" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI42">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-12-31T20:55:20Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species id="E2_Adipose" name="E2" compartment="Adipose" initialConcentration="0.0227598152748804" boundaryCondition="false" constant="false"/>
+      <species metaid="COPASI43" id="E2_Dose_IV" name="E2" compartment="Dose_IV" initialConcentration="1101" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI43">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-27T20:58:21Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI44" id="E2_Pancreas" name="E2" compartment="Pancreas" initialConcentration="0.0227598152748297" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI44">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-12-31T20:55:06Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI45" id="E2_Dose_oral" name="E2" compartment="Dose_oral" initialConcentration="0" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI45">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-11-25T20:47:53Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI46" id="E2_Gonads_cells" name="E2" compartment="Gonads_cells" initialConcentration="44.3782248094892" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI46">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-27T10:46:59Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI47" id="ER_E2_Gonads_cells" name="ER-E2" compartment="Gonads_cells" initialConcentration="139.315182" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI47">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2017-06-26T08:20:03Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI48" id="ER_Gonads_cells" name="ER" compartment="Gonads_cells" initialConcentration="0.78481723" boundaryCondition="false" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI48">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2017-06-05T13:18:44Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI49" id="Biosynthesis" name="Biosynthesis" compartment="Gonads_cells" initialConcentration="1" boundaryCondition="true" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI49">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-27T12:14:59Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter metaid="COPASI50" id="Body_weight__kg" name="Body weight (kg)" value="60" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI50">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-27T09:58:35Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI51" id="Cardiac_flow" name="Cardiac flow" value="195.162614763833" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI51">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:43:23Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI52" id="Blood_flow_adipose" name="Blood flow_adipose" value="13.7441539651474" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI52">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T09:02:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI53" id="Blood_flow_bone" name="Blood flow_bone" value="3.90874324978529" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI53">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T09:02:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI54" id="Blood_flow_brain" name="Blood flow_brain" value="23.3547381137759" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI54">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T09:02:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI55" id="Blood_flow_intestine" name="Blood flow_intestine" value="28.0926515590994" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI55">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T09:02:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI56" id="Blood_flow_heart" name="Blood flow_heart" value="9.03267851865619" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI56">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T09:02:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI57" id="Blood_flow_kidney" name="Blood flow_kidney" value="30.2622718087777" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI57">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T09:02:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI58" id="Blood_flow_liver__venous" name="Blood flow_liver (venous)" value="49.2822440802905" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI58">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T09:02:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI59" id="Blood_flow_lung" name="Blood flow_lung" value="195.162614763833" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI59">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T09:02:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI60" id="Blood_flow_muscle" name="Blood flow_muscle" value="31.4856030548652" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI60">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T09:02:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI61" id="Blood_flow_skin" name="Blood flow_skin" value="8.943318640461" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI61">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T09:02:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI62" id="Blood_flow_spleen" name="Blood flow_spleen" value="5.67070379456711" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI62">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T09:02:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI63" id="Blood_flow_thymus" name="Blood flow_thymus" value="0.163156101796" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI63">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T09:02:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI64" id="Blood_flow_stomach" name="Blood flow_stomach" value="1.75804597686546" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI64">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T09:02:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI65" id="Blood_flow_gonads" name="Blood flow_gonads" value="0.041052" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI65">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T09:02:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI66" id="Blood_flow_liver__artery" name="Blood flow_liver (artery)" value="12.0396193098518" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI66">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T09:02:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI67" id="Blood_tissue_ratio" name="Blood:tissue ratio" value="1" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI67">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T11:43:49Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI68" id="Height__m" name="Height (m)" value="1.63" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI68">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-12-22T20:33:52Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI69" id="Body_Surface_Area__m_2" name="Body Surface Area (m^2)" value="1.64405604477236" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI69">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-12-22T21:12:49Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI70" id="Body_Mass_Index__Kg_m_2" name="Body Mass Index (Kg/m^2)" value="22.5827091723437" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI70">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-12-22T21:15:08Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI71" id="Age__Years" name="Age (Years)" value="35" constant="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI71">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-11-16T14:14:33Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI72" id="Blood_flow_pancreas" name="Blood flow_pancreas" value="1.72122343990675" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI72">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-12-30T19:58:59Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI73" id="Blood_flow_Rest_of_body" name="Blood flow_Rest-of-body" value="24.9446552302778" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI73">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-01-03T12:16:39Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI74" id="Volume_adipose" name="Volume_adipose" value="19.4864089564274" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI74">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T08:56:35Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI75" id="Volume_plasma_arterial" name="Volume_plasma_arterial" value="0.692920797907949" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI75">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T08:58:41Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI76" id="Volume_plasma_venous" name="Volume_plasma_venous" value="1.4068391957525" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI76">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T08:59:41Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI77" id="Volume_bone" name="Volume_bone" value="1.98403291700182" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI77">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:00:42Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI78" id="Volume_brain" name="Volume_brain" value="1.25465467673818" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI78">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:02:31Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI79" id="Volume_gonads" name="Volume_gonads" value="0.0905825242718447" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI79">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:04:44Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI80" id="Volume_heart" name="Volume_heart" value="0.225207775932507" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI80">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:05:40Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI81" id="Volume_Intestine" name="Volume_Intestine" value="0.830826446684531" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI81">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:06:28Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI82" id="Volume_kidney" name="Volume_kidney" value="0.243731173331543" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI82">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:08:39Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI83" id="Volume_liver_blood" name="Volume_liver_blood" value="0.0971919411274713" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI83">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:09:27Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI84" id="Volume_liver_cells" name="Volume_liver_cells" value="1.29589254836628" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI84">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:11:05Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI85" id="Volume_lung" name="Volume_lung" value="0.328026261751746" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI85">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:14:00Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI86" id="Volume_pancreas" name="Volume_pancreas" value="0.101516411109134" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI86">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:26:46Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI87" id="Volume_rest_of_body" name="Volume_rest-of-body" value="2.34217716383522" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI87">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:27:33Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI88" id="Volume_skin" name="Volume_skin" value="1.40784236764439" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI88">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:29:22Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI89" id="Volume_spleen" name="Volume_spleen" value="0.120026199177851" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI89">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:30:01Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI90" id="Volume_stomach" name="Volume_stomach" value="0.12101703809703" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI90">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:30:55Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI91" id="Volume_thymus" name="Volume_thymus" value="0.0155679589509792" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI91">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:31:41Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI92" id="Volume_muscle" name="Volume_muscle" value="22.9132849058781" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI92">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T09:32:41Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI93" id="Weight_Liver" name="Weight_Liver" value="1334.76932481727" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI93">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-07T20:17:15Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI94" id="CLINT_liver_weight" name="CLINT_liver weight" value="24.6478503520757" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI94">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-11-20T11:11:04Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter metaid="COPASI95" id="E2_venous_total" name="E2{venous}total" value="0.732264155639316" constant="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI95">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-11-20T11:45:04Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_21" name="Initial for Age (Years)" value="35">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Age__Years"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_23" name="Initial for Blood flow_Rest-of-body" value="24.9446552302778">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Blood_flow_Rest_of_body"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_2" name="Initial for Blood flow_adipose" value="13.7441539651474">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Blood_flow_adipose"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_3" name="Initial for Blood flow_bone" value="3.90874324978529">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Blood_flow_bone"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_4" name="Initial for Blood flow_brain" value="23.3547381137759">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Blood_flow_brain"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_15" name="Initial for Blood flow_gonads" value="0.041052">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Blood_flow_gonads"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_6" name="Initial for Blood flow_heart" value="9.03267851865619">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Blood_flow_heart"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_5" name="Initial for Blood flow_intestine" value="28.0926515590994">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Blood_flow_intestine"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_7" name="Initial for Blood flow_kidney" value="30.2622718087777">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Blood_flow_kidney"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_16" name="Initial for Blood flow_liver (artery)" value="12.0396193098518">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Blood_flow_liver__artery"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_10" name="Initial for Blood flow_muscle" value="31.4856030548652">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Blood_flow_muscle"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_22" name="Initial for Blood flow_pancreas" value="1.72122343990675">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Blood_flow_pancreas"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_11" name="Initial for Blood flow_skin" value="8.943318640461">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Blood_flow_skin"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_12" name="Initial for Blood flow_spleen" value="5.67070379456711">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Blood_flow_spleen"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_14" name="Initial for Blood flow_stomach" value="1.75804597686546">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Blood_flow_stomach"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_13" name="Initial for Blood flow_thymus" value="0.163156101796">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Blood_flow_thymus"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_20" name="Initial for Body Mass Index (Kg/m^2)" value="22.5827091723437">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Body_Mass_Index__Kg_m_2"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_19" name="Initial for Body Surface Area (m^2)" value="1.64405604477236">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Body_Surface_Area__m_2"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_0" name="Initial for Body weight (kg)" value="60">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Body_weight__kg"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_1" name="Initial for Cardiac flow" value="195.162614763833">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Cardiac_flow"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_18" name="Initial for Height (m)" value="1.63">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Height__m"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_31" name="Initial for Volume_Intestine" value="0.830826446684531">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_Intestine"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_24" name="Initial for Volume_adipose" value="19.4864089564274">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_adipose"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_27" name="Initial for Volume_bone" value="1.98403291700182">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_bone"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_28" name="Initial for Volume_brain" value="1.25465467673818">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_brain"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_29" name="Initial for Volume_gonads" value="0.0905825242718447">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_gonads"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_30" name="Initial for Volume_heart" value="0.225207775932507">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_heart"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_32" name="Initial for Volume_kidney" value="0.243731173331543">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_kidney"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_34" name="Initial for Volume_liver_cells" value="1.29589254836628">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_liver_cells"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_35" name="Initial for Volume_lung" value="0.328026261751746">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_lung"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_42" name="Initial for Volume_muscle" value="22.9132849058781">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_muscle"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_36" name="Initial for Volume_pancreas" value="0.101516411109134">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_pancreas"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_25" name="Initial for Volume_plasma_arterial" value="0.692920797907949">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_plasma_arterial"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_26" name="Initial for Volume_plasma_venous" value="1.4068391957525">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_plasma_venous"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_37" name="Initial for Volume_rest-of-body" value="2.34217716383522">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_rest_of_body"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_38" name="Initial for Volume_skin" value="1.40784236764439">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_skin"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_39" name="Initial for Volume_spleen" value="0.120026199177851">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_spleen"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_40" name="Initial for Volume_stomach" value="0.12101703809703">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_stomach"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_41" name="Initial for Volume_thymus" value="0.0155679589509792">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Volume_thymus"/>
+        </annotation>
+      </parameter>
+      <parameter id="ModelValue_43" name="Initial for Weight_Liver" value="1334.76932481727">
+        <annotation>
+          <initialValue xmlns="http://copasi.org/initialValue" parent="Weight_Liver"/>
+        </annotation>
+      </parameter>
+    </listOfParameters>
+    <listOfInitialAssignments>
+      <initialAssignment symbol="Body_Mass_Index__Kg_m_2">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <ci> Body_weight__kg </ci>
+            <apply>
+              <power/>
+              <ci> Height__m </ci>
+              <cn> 2 </cn>
+            </apply>
+          </apply>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_21">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Age__Years </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_23">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Blood_flow_Rest_of_body </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_2">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Blood_flow_adipose </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_3">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Blood_flow_bone </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_4">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Blood_flow_brain </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_15">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Blood_flow_gonads </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_6">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Blood_flow_heart </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_5">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Blood_flow_intestine </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_7">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Blood_flow_kidney </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_16">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Blood_flow_liver__artery </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_10">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Blood_flow_muscle </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_22">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Blood_flow_pancreas </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_11">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Blood_flow_skin </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_12">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Blood_flow_spleen </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_14">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Blood_flow_stomach </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_13">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Blood_flow_thymus </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_20">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Body_Mass_Index__Kg_m_2 </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_19">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Body_Surface_Area__m_2 </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_0">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Body_weight__kg </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Cardiac_flow </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_18">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Height__m </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_31">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_Intestine </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_24">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_adipose </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_27">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_bone </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_28">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_brain </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_29">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_gonads </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_30">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_heart </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_32">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_kidney </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_34">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_liver_cells </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_35">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_lung </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_42">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_muscle </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_36">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_pancreas </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_25">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_plasma_arterial </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_26">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_plasma_venous </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_37">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_rest_of_body </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_38">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_skin </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_39">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_spleen </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_40">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_stomach </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_41">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Volume_thymus </ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="ModelValue_43">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> Weight_Liver </ci>
+        </math>
+      </initialAssignment>
+    </listOfInitialAssignments>
+    <listOfRules>
+      <assignmentRule variable="Volume_spleen">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <power/>
+              <cn> 2.718 </cn>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <cn> 2.16 </cn>
+                  <apply>
+                    <ln/>
+                    <ci> ModelValue_18 </ci>
+                  </apply>
+                </apply>
+                <cn> 3.123 </cn>
+              </apply>
+            </apply>
+            <cn> 1.054 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_liver_cells">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <power/>
+              <cn> 2.718 </cn>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <cn> 1.98 </cn>
+                  <apply>
+                    <ln/>
+                    <ci> ModelValue_18 </ci>
+                  </apply>
+                </apply>
+                <cn> 0.6786 </cn>
+              </apply>
+            </apply>
+            <cn> 1.03 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_liver__artery">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_34 </ci>
+            <cn> 16.4 </cn>
+            <cn> 1.03 </cn>
+            <cn> 0.55 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_lung">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <power/>
+              <cn> 2.718 </cn>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <cn> 2.1 </cn>
+                  <apply>
+                    <ln/>
+                    <ci> ModelValue_18 </ci>
+                  </apply>
+                </apply>
+                <cn> 2.092 </cn>
+              </apply>
+            </apply>
+            <cn> 1.05 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_pancreas">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <power/>
+              <cn> 2.718 </cn>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <cn> 2.43 </cn>
+                  <apply>
+                    <ln/>
+                    <ci> ModelValue_18 </ci>
+                  </apply>
+                </apply>
+                <cn> 3.431 </cn>
+              </apply>
+            </apply>
+            <cn> 1.045 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_rest_of_body">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <power/>
+              <cn> 2.718 </cn>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <cn> 1.95 </cn>
+                  <apply>
+                    <ln/>
+                    <ci> ModelValue_18 </ci>
+                  </apply>
+                </apply>
+                <cn> 0.072 </cn>
+              </apply>
+            </apply>
+            <cn> 1.03 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_stomach">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <power/>
+              <cn> 2.718 </cn>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <cn> 2.45 </cn>
+                  <apply>
+                    <ln/>
+                    <ci> ModelValue_18 </ci>
+                  </apply>
+                </apply>
+                <cn> 3.266 </cn>
+              </apply>
+            </apply>
+            <cn> 1.044 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_thymus">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <cn> 14 </cn>
+                <apply>
+                  <minus/>
+                  <cn> 7.1 </cn>
+                  <apply>
+                    <times/>
+                    <cn> 6.1 </cn>
+                    <apply>
+                      <power/>
+                      <cn> 2.71 </cn>
+                      <apply>
+                        <divide/>
+                        <apply>
+                          <minus/>
+                          <ci> ModelValue_21 </ci>
+                        </apply>
+                        <cn> 11.9 </cn>
+                      </apply>
+                    </apply>
+                  </apply>
+                </apply>
+                <apply>
+                  <plus/>
+                  <cn> 0.14 </cn>
+                  <apply>
+                    <times/>
+                    <cn> 0.86 </cn>
+                    <apply>
+                      <power/>
+                      <cn> 2.71 </cn>
+                      <apply>
+                        <divide/>
+                        <apply>
+                          <minus/>
+                          <ci> ModelValue_21 </ci>
+                        </apply>
+                        <cn> 10.3 </cn>
+                      </apply>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+              <cn> 1000 </cn>
+            </apply>
+            <cn> 1.03 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_spleen">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_39 </ci>
+            <cn> 81.5 </cn>
+            <cn> 1.054 </cn>
+            <cn> 0.55 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Body_Surface_Area__m_2">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <cn> 0.007184 </cn>
+            <apply>
+              <power/>
+              <ci> ModelValue_0 </ci>
+              <cn> 0.425 </cn>
+            </apply>
+            <apply>
+              <power/>
+              <apply>
+                <times/>
+                <ci> ModelValue_18 </ci>
+                <cn> 100 </cn>
+              </apply>
+              <cn> 0.725 </cn>
+            </apply>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_plasma_arterial">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <times/>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <cn> 2.66 </cn>
+                  <ci> ModelValue_19 </ci>
+                </apply>
+                <cn> 0.46 </cn>
+              </apply>
+              <cn> 0.33 </cn>
+              <cn> 0.55 </cn>
+            </apply>
+            <cn> 1.025 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_skin">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <power/>
+              <cn> 2.71 </cn>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <cn> 1.63 </cn>
+                  <ci> ModelValue_19 </ci>
+                </apply>
+                <cn> 1.93 </cn>
+              </apply>
+            </apply>
+            <cn> 1.5 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_pancreas">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_36 </ci>
+            <cn> 29.5 </cn>
+            <cn> 1.045 </cn>
+            <cn> 0.55 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_Rest_of_body">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_37 </ci>
+            <cn> 18.8 </cn>
+            <cn> 1.03 </cn>
+            <cn> 0.55 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_adipose">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <times/>
+              <ci> ModelValue_0 </ci>
+              <apply>
+                <divide/>
+                <apply>
+                  <minus/>
+                  <apply>
+                    <minus/>
+                    <apply>
+                      <plus/>
+                      <apply>
+                        <times/>
+                        <cn> 1.2 </cn>
+                        <ci> ModelValue_20 </ci>
+                      </apply>
+                      <apply>
+                        <times/>
+                        <cn> 0.23 </cn>
+                        <ci> ModelValue_21 </ci>
+                      </apply>
+                    </apply>
+                    <apply>
+                      <times/>
+                      <cn> 10.8 </cn>
+                      <cn> 0 </cn>
+                    </apply>
+                  </apply>
+                  <cn> 5.4 </cn>
+                </apply>
+                <cn> 100 </cn>
+              </apply>
+            </apply>
+            <cn> 0.916 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_adipose">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_24 </ci>
+            <cn> 1.4 </cn>
+            <cn> 0.916 </cn>
+            <cn> 0.55 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_plasma_venous">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <times/>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <cn> 2.66 </cn>
+                  <ci> ModelValue_19 </ci>
+                </apply>
+                <cn> 0.46 </cn>
+              </apply>
+              <cn> 0.67 </cn>
+              <cn> 0.55 </cn>
+            </apply>
+            <cn> 1.025 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_brain">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <times/>
+              <cn> 0.373 </cn>
+              <apply>
+                <minus/>
+                <cn> 3.68 </cn>
+                <apply>
+                  <times/>
+                  <cn> 2.68 </cn>
+                  <apply>
+                    <power/>
+                    <cn> 2.71 </cn>
+                    <apply>
+                      <divide/>
+                      <apply>
+                        <minus/>
+                        <ci> ModelValue_21 </ci>
+                      </apply>
+                      <cn> 0.89 </cn>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+              <apply>
+                <power/>
+                <cn> 2.71 </cn>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <minus/>
+                    <ci> ModelValue_21 </ci>
+                  </apply>
+                  <cn> 629 </cn>
+                </apply>
+              </apply>
+            </apply>
+            <cn> 1.035 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_brain">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_28 </ci>
+            <cn> 32.7 </cn>
+            <cn> 1.035 </cn>
+            <cn> 0.55 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_bone">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <power/>
+              <cn> 2.718 </cn>
+              <apply>
+                <plus/>
+                <apply>
+                  <times/>
+                  <cn> 2.67 </cn>
+                  <apply>
+                    <ln/>
+                    <ci> ModelValue_18 </ci>
+                  </apply>
+                </apply>
+                <cn> 0.0689 </cn>
+              </apply>
+            </apply>
+            <cn> 1.99 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_bone">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_27 </ci>
+            <cn> 1.8 </cn>
+            <cn> 1.99 </cn>
+            <cn> 0.55 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_gonads">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <divide/>
+              <apply>
+                <plus/>
+                <cn> 3.3 </cn>
+                <apply>
+                  <times/>
+                  <cn> 90 </cn>
+                  <apply>
+                    <minus/>
+                    <cn> 1 </cn>
+                    <apply>
+                      <power/>
+                      <cn> 2.71 </cn>
+                      <apply>
+                        <minus/>
+                        <apply>
+                          <power/>
+                          <apply>
+                            <divide/>
+                            <ci> ModelValue_21 </ci>
+                            <cn> 16.8 </cn>
+                          </apply>
+                          <cn> 6.7 </cn>
+                        </apply>
+                      </apply>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+              <cn> 1000 </cn>
+            </apply>
+            <cn> 1.03 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_gonads">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_29 </ci>
+            <cn> 0.8 </cn>
+            <cn> 1.03 </cn>
+            <cn> 0.55 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_heart">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <power/>
+              <cn> 2.718 </cn>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <cn> 2.13 </cn>
+                  <apply>
+                    <ln/>
+                    <ci> ModelValue_18 </ci>
+                  </apply>
+                </apply>
+                <cn> 2.502 </cn>
+              </apply>
+            </apply>
+            <cn> 1.03 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_heart">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_30 </ci>
+            <cn> 70.8 </cn>
+            <cn> 1.03 </cn>
+            <cn> 0.55 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_Intestine">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <power/>
+              <cn> 2.718 </cn>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <cn> 2.47 </cn>
+                  <apply>
+                    <ln/>
+                    <ci> ModelValue_18 </ci>
+                  </apply>
+                </apply>
+                <cn> 1.351 </cn>
+              </apply>
+            </apply>
+            <cn> 1.042 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_kidney">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <power/>
+              <cn> 2.718 </cn>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <cn> 1.93 </cn>
+                  <apply>
+                    <ln/>
+                    <ci> ModelValue_18 </ci>
+                  </apply>
+                </apply>
+                <cn> 2.306 </cn>
+              </apply>
+            </apply>
+            <cn> 1.05 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_kidney">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_32 </ci>
+            <cn> 215 </cn>
+            <cn> 1.05 </cn>
+            <cn> 0.55 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_liver_blood">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_34 </ci>
+            <cn> 0.075 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Volume_muscle">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <apply>
+              <minus/>
+              <apply>
+                <times/>
+                <ci> ModelValue_0 </ci>
+                <cn> 0.93 </cn>
+              </apply>
+              <apply>
+                <plus/>
+                <ci> ModelValue_24 </ci>
+                <ci> ModelValue_25 </ci>
+                <ci> ModelValue_26 </ci>
+                <ci> ModelValue_27 </ci>
+                <ci> ModelValue_28 </ci>
+                <ci> ModelValue_29 </ci>
+                <ci> ModelValue_30 </ci>
+                <ci> ModelValue_31 </ci>
+                <ci> ModelValue_32 </ci>
+                <ci> ModelValue_34 </ci>
+                <ci> ModelValue_35 </ci>
+                <ci> ModelValue_36 </ci>
+                <ci> ModelValue_37 </ci>
+                <ci> ModelValue_38 </ci>
+                <ci> ModelValue_39 </ci>
+                <ci> ModelValue_40 </ci>
+                <ci> ModelValue_41 </ci>
+              </apply>
+            </apply>
+            <cn> 1.041 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_muscle">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_42 </ci>
+            <cn> 2.4 </cn>
+            <cn> 1.041 </cn>
+            <cn> 0.55 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Weight_Liver">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_34 </ci>
+            <cn> 1000 </cn>
+            <cn> 1.03 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="CLINT_liver_weight">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <cn> 0.018466 </cn>
+            <ci> ModelValue_43 </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="E2_venous_total">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <plus/>
+            <ci> s33 </ci>
+            <ci> s32 </ci>
+            <ci> s16 </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_intestine">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_31 </ci>
+            <cn> 59 </cn>
+            <cn> 1.042 </cn>
+            <cn> 0.55 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_skin">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_38 </ci>
+            <cn> 7.7 </cn>
+            <cn> 1.5 </cn>
+            <cn> 0.55 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_thymus">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_41 </ci>
+            <cn> 18.5 </cn>
+            <cn> 1.03 </cn>
+            <cn> 0.55 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_stomach">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> ModelValue_40 </ci>
+            <cn> 25.3 </cn>
+            <cn> 1.044 </cn>
+            <cn> 0.55 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Cardiac_flow">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <plus/>
+            <ci> ModelValue_2 </ci>
+            <ci> ModelValue_3 </ci>
+            <ci> ModelValue_4 </ci>
+            <ci> ModelValue_15 </ci>
+            <ci> ModelValue_6 </ci>
+            <ci> ModelValue_5 </ci>
+            <ci> ModelValue_7 </ci>
+            <ci> ModelValue_16 </ci>
+            <ci> ModelValue_10 </ci>
+            <ci> ModelValue_22 </ci>
+            <ci> ModelValue_23 </ci>
+            <ci> ModelValue_11 </ci>
+            <ci> ModelValue_12 </ci>
+            <ci> ModelValue_14 </ci>
+            <ci> ModelValue_13 </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_lung">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> ModelValue_1 </ci>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Blood_flow_liver__venous">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <plus/>
+            <ci> ModelValue_16 </ci>
+            <ci> ModelValue_5 </ci>
+            <ci> ModelValue_14 </ci>
+            <ci> ModelValue_12 </ci>
+            <ci> ModelValue_22 </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+    <listOfReactions>
+      <reaction metaid="COPASI96" id="re2" name="Artery: SHBG binding" reversible="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI96">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:18:22Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+          <speciesReference species="s17" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s21" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> c2 </ci>
+              <apply>
+                <ci> PBPK__Heterodimerisation </ci>
+                <ci> s15 </ci>
+                <ci> s17 </ci>
+                <ci> Kon </ci>
+                <ci> s21 </ci>
+                <ci> koff </ci>
+              </apply>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kon" name="Kon" value="3600"/>
+            <parameter id="koff" name="koff" value="5400"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI97" id="re3" name="Artery: Albumin binding" reversible="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI97">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:35:37Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+          <speciesReference species="s20" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s29" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> c2 </ci>
+              <apply>
+                <ci> PBPK__Heterodimerisation </ci>
+                <ci> s15 </ci>
+                <ci> s20 </ci>
+                <ci> Kon </ci>
+                <ci> s29 </ci>
+                <ci> koff </ci>
+              </apply>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kon" name="Kon" value="3600"/>
+            <parameter id="koff" name="koff" value="61200000"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI98" id="re4" name="Venous: SHBG binding" reversible="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI98">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T11:14:12Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s16" stoichiometry="1"/>
+          <speciesReference species="s18" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s32" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> c1 </ci>
+              <apply>
+                <ci> PBPK__Heterodimerisation </ci>
+                <ci> s16 </ci>
+                <ci> s18 </ci>
+                <ci> Kon </ci>
+                <ci> s32 </ci>
+                <ci> koff </ci>
+              </apply>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kon" name="Kon" value="3600"/>
+            <parameter id="koff" name="koff" value="5400"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI99" id="re5" name="Venous: Albumin binding" reversible="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI99">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T11:14:14Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s16" stoichiometry="1"/>
+          <speciesReference species="s19" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s33" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> c1 </ci>
+              <apply>
+                <ci> PBPK__Heterodimerisation </ci>
+                <ci> s16 </ci>
+                <ci> s19 </ci>
+                <ci> Kon </ci>
+                <ci> s33 </ci>
+                <ci> koff </ci>
+              </apply>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kon" name="Kon" value="3600"/>
+            <parameter id="koff" name="koff" value="61200000"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI100" id="re6" name="Lung: Input from venous" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI100">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T11:14:15Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s16" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s1" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_lung </ci>
+              <ci> s16 </ci>
+              <ci> Volume_lung </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI101" id="re7" name="Lung: Exit to artery" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI101">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T11:14:15Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s1" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_lung </ci>
+              <ci> s1 </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_lung </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI102" id="re8" name="Adipose: Input from artery" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI102">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T11:14:17Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="E2_Adipose" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_adipose </ci>
+              <ci> s15 </ci>
+              <ci> Volume_adipose </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI103" id="re9" name="Adipose: Exit to venous" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI103">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-24T11:14:16Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="E2_Adipose" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s16" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_adipose </ci>
+              <ci> E2_Adipose </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_adipose </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI104" id="re10" name="Bone: Input from artery" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI104">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:46:13Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s3" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_bone </ci>
+              <ci> s15 </ci>
+              <ci> Volume_bone </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI105" id="re11" name="Bone: Exit to venous " reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI105">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:13:43Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s3" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s16" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_bone </ci>
+              <ci> s3 </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_bone </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI106" id="re12" name="Brain: Input from artery" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI106">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:13:50Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="E2_Brain" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_brain </ci>
+              <ci> s15 </ci>
+              <ci> Volume_brain </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI107" id="re13" name="Brain: Exit to venous" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI107">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:17:07Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="E2_Brain" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s16" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_brain </ci>
+              <ci> E2_Brain </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_brain </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI108" id="re14" name="Heart: Input from artery" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI108">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:33:41Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s5" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_heart </ci>
+              <ci> s15 </ci>
+              <ci> Volume_heart </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI109" id="re15" name="Heart: Exit to venous" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI109">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:17:08Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s5" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s16" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_heart </ci>
+              <ci> s5 </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_heart </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI110" id="re16" name="Muscle: Input from artery" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI110">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:33:51Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="E2_Muscle" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_muscle </ci>
+              <ci> s15 </ci>
+              <ci> Volume_muscle </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI111" id="re17" name="Muscle: Exit to venous" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI111">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:18:21Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="E2_Muscle" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s16" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_muscle </ci>
+              <ci> E2_Muscle </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_muscle </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI112" id="re18" name="Skin: Input from artery" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI112">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:33:59Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="E2_Skin" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_skin </ci>
+              <ci> s15 </ci>
+              <ci> Volume_skin </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI113" id="re19" name="Skin: Exit to venous" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI113">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:34:08Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="E2_Skin" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s16" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_skin </ci>
+              <ci> E2_Skin </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_skin </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI114" id="re20" name="Intestine: Input fron artery" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI114">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:34:13Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s10" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_intestine </ci>
+              <ci> s15 </ci>
+              <ci> Volume_Intestine </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI115" id="re21" name="Liver: Input from Intestine" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI115">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:58:25Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s10" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s8" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_intestine </ci>
+              <ci> s10 </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_Intestine </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI116" id="re22" name="Liver: Exit to venous" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI116">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:58:24Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s8" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s16" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_liver__venous </ci>
+              <ci> s8 </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_liver_cells </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI117" id="re23" name="Liver: Input from artery" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI117">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:58:24Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s8" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_liver__artery </ci>
+              <ci> s15 </ci>
+              <ci> Volume_liver_cells </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI118" id="re24" name="Spleen: Input from artery" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI118">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:58:22Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s11" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_spleen </ci>
+              <ci> s15 </ci>
+              <ci> Volume_spleen </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI119" id="re25" name="Liver: Input from spleen" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI119">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:34:48Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s11" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s8" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_spleen </ci>
+              <ci> s11 </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_spleen </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI120" id="re26" name="Kidney: Input from artery" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI120">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:34:51Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s9" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_kidney </ci>
+              <ci> s15 </ci>
+              <ci> Volume_kidney </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI121" id="re27" name="Kidney: Exit to venous" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI121">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:58:25Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s9" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s16" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_kidney </ci>
+              <ci> s9 </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_kidney </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI122" id="re28" name="Thymus: Input from artery" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI122">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:35:23Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s12" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_thymus </ci>
+              <ci> s15 </ci>
+              <ci> Volume_thymus </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI123" id="re30" name="Gonads: Input from artery" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI123">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T20:58:26Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="E2_Gonads_blood" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_gonads </ci>
+              <ci> s15 </ci>
+              <ci> Volume_gonads </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI124" id="re31" name="Gonads: Exit to venous" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI124">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:35:56Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="E2_Gonads_blood" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s16" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_gonads </ci>
+              <ci> E2_Gonads_blood </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_gonads </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI125" id="re33" name="Thymus: Exit to venous" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI125">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:35:59Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s12" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s16" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_thymus </ci>
+              <ci> s12 </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_thymus </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI126" id="re34" name="CLint" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI126">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:36:00Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="E2_Liver_cells" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s38" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> CLINT_liver_weight </ci>
+              <ci> E2_Liver_cells </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI127" id="re35" name="CLeh" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI127">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-23T21:36:01Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s9" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s39" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> s9 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="5"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI128" id="Liver__Permeability_limited_access" name="Liver: Permeability-limited access" reversible="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI128">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-26T14:15:51Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s8" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="E2_Liver_cells" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <minus/>
+              <apply>
+                <times/>
+                <ci> k1 </ci>
+                <ci> s8 </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> k2 </ci>
+                <ci> E2_Liver_cells </ci>
+              </apply>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="1000"/>
+            <parameter id="k2" name="k2" value="277.8"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI129" id="Liver__ER_binding" name="Liver: ER binding" reversible="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI129">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-26T14:35:13Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="ER_Liver_cells" stoichiometry="1"/>
+          <speciesReference species="E2_Liver_cells" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="ER_E2_Liver_cells" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> Liver_cells </ci>
+              <apply>
+                <ci> PBPK__Heterodimerisation </ci>
+                <ci> ER_Liver_cells </ci>
+                <ci> E2_Liver_cells </ci>
+                <ci> Kon </ci>
+                <ci> ER_E2_Liver_cells </ci>
+                <ci> koff </ci>
+              </apply>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kon" name="Kon" value="3600"/>
+            <parameter id="koff" name="koff" value="900"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI130" id="Stomach__Input_from_artery" name="Stomach: Input from artery" reversible="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI130">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-27T10:38:25Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s13" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_stomach </ci>
+              <ci> s15 </ci>
+              <ci> Volume_stomach </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI131" id="Gonads__E2_Biosynthesis" name="Gonads: E2 Biosynthesis" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI131">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-27T12:13:54Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="Biosynthesis" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="E2_Gonads_cells" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> Gonads_cells </ci>
+              <ci> k1 </ci>
+              <ci> Biosynthesis </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="2"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI132" id="Dose_IV_bolus" name="Dose_IV bolus" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI132">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-11-27T21:00:52Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="E2_Dose_IV" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s16" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> E2_Dose_IV </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="1000"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI133" id="Liver__Input_from_Stomach" name="Liver: Input from Stomach" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI133">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-12-22T21:01:35Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s13" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s8" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_stomach </ci>
+              <ci> s13 </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_stomach </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI134" id="Liver_Input_from_pancreas" name="Liver_Input from pancreas" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI134">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-12-30T19:59:44Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="E2_Pancreas" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s8" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_pancreas </ci>
+              <ci> E2_Pancreas </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_pancreas </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI135" id="Pancreas__Input_from_artery" name="Pancreas: Input from artery" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI135">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2015-12-31T20:21:43Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="E2_Pancreas" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_pancreas </ci>
+              <ci> s15 </ci>
+              <ci> Volume_pancreas </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI136" id="Rest_of_Body__Input_from_artery" name="Rest of Body: Input from artery" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI136">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-01-03T12:15:20Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="s15" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="E2_Rest_of_body" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__blood____tissue </ci>
+              <ci> Blood_flow_Rest_of_body </ci>
+              <ci> s15 </ci>
+              <ci> Volume_rest_of_body </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI137" id="Rest_of_body__Exit_to_venous" name="Rest-of-body: Exit to venous" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI137">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-01-03T12:16:54Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="E2_Rest_of_body" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s16" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> PBPK__tissue____blood </ci>
+              <ci> Blood_flow_Rest_of_body </ci>
+              <ci> E2_Rest_of_body </ci>
+              <ci> Kp </ci>
+              <ci> Blood_tissue_ratio </ci>
+              <ci> Volume_rest_of_body </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="Kp" name="Kp" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI138" id="Dose_IV_infusion" name="Dose_IV infusion" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI138">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-10-13T16:11:07Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="E2_Dose_IV" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s16" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> Constant_flux__irreversible </ci>
+              <ci> v </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="v" name="v" value="0"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI139" id="Dose_oral_0" name="Dose_oral" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI139">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-11-24T10:44:59Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="E2_Dose_oral" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s10" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> E2_Dose_oral </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="0.025"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI140" id="Oral_elimination" name="Oral elimination" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI140">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-11-24T10:47:40Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="E2_Dose_oral" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Faeces" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> E2_Dose_oral </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="0.01"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI141" id="Counter_0" name="Counter" reversible="false">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI141">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2016-12-02T10:47:42Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="Source" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Counter" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> default </ci>
+              <apply>
+                <ci> Constant_flux__irreversible </ci>
+                <ci> v </ci>
+              </apply>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="v" name="v" value="1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI142" id="Gonads__ER_binding" name="Gonads: ER binding" reversible="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI142">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2017-06-05T13:16:55Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="ER_Gonads_cells" stoichiometry="1"/>
+          <speciesReference species="E2_Gonads_cells" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="ER_E2_Gonads_cells" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> Gonads_cells </ci>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <ci> k1 </ci>
+                  <ci> ER_Gonads_cells </ci>
+                  <ci> E2_Gonads_cells </ci>
+                </apply>
+                <apply>
+                  <times/>
+                  <ci> k2 </ci>
+                  <ci> ER_E2_Gonads_cells </ci>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="3600"/>
+            <parameter id="k2" name="k2" value="900"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI143" id="Gonads__Permeability_limited_access" name="Gonads: Permeability-limited access" reversible="true">
+        <annotation>
+          <COPASI xmlns="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI143">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2017-06-26T08:23:30Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="E2_Gonads_blood" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="E2_Gonads_cells" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <minus/>
+              <apply>
+                <times/>
+                <ci> k1 </ci>
+                <ci> E2_Gonads_blood </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> k2 </ci>
+                <ci> E2_Gonads_cells </ci>
+              </apply>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="1000"/>
+            <parameter id="k2" name="k2" value="100"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

@@ -1,0 +1,39 @@
+schema_version: '2.0'
+title: 'Ecology: Obeyesekere1999CellcycleBiomd0000000168Model'
+description: The model reproduces the time profiles of the different species depicted
+  in Fig 3a of the paper. Model successfully reproduced using MathSBML. To the extent
+  possible under law, all copyright and relat
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- M N Obeyesekere
+- S O Zimmerman
+- E S Tecarro
+- G Auchmuty
+upstream:
+  id: biomodels_ebi:BIOMD0000000168
+  source_db: biomodels_ebi
+  source_id: BIOMD0000000168
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000168
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000168?filename=BIOMD0000000168_url.xml
+  license: CC0
+bsim:
+  entrypoint: src.obeyesekere1999_cellcycle_biomd0000000168_model:Obeyesekere1999CellcycleBiomd0000000168Model
+  init_kwargs:
+    model_path: data/BIOMD0000000168.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

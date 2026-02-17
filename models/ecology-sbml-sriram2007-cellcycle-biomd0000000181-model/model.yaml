@@ -1,0 +1,38 @@
+schema_version: '2.0'
+title: 'Ecology: Sriram2007CellcycleBiomd0000000181Model'
+description: The model reproduces the time profile of species depicted in Figure 12a
+  and 12 b. The authors communicated to the curator that there is a typo in the paper,
+  the values of kd1 and kd2 are reversed. Mod
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- K Sriram
+- G Bernot
+- "F K\xE9p\xE8s"
+upstream:
+  id: biomodels_ebi:BIOMD0000000181
+  source_db: biomodels_ebi
+  source_id: BIOMD0000000181
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000181
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000181?filename=BIOMD0000000181_url.xml
+  license: CC0
+bsim:
+  entrypoint: src.sriram2007_cellcycle_biomd0000000181_model:Sriram2007CellcycleBiomd0000000181Model
+  init_kwargs:
+    model_path: data/BIOMD0000000181.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

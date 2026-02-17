@@ -1,0 +1,36 @@
+schema_version: '2.0'
+title: 'Ecology: Hansen2019SevenSpeciesReducedModelOfBloodModel1907180003Model'
+description: its a seven species reduced model of Hockin 2002. Model uses different
+  level of reduction (5,7,9,11) and testing the best alignment with Hockin model results).
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- Kirk B Hansen
+- Shawn C Shadden
+upstream:
+  id: biomodels_ebi:MODEL1907180003
+  source_db: biomodels_ebi
+  source_id: MODEL1907180003
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/MODEL1907180003
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/MODEL1907180003?filename=reduced_seven_species.xml
+  license: CC0
+bsim:
+  entrypoint: src.hansen2019_seven_species_reduced_model_of_blood_model1907180003_model:Hansen2019SevenSpeciesReducedModelOfBloodModel1907180003Model
+  init_kwargs:
+    model_path: data/MODEL1907180003.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state

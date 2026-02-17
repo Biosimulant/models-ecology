@@ -1,0 +1,39 @@
+schema_version: '2.0'
+title: 'Ecology: Geci2022Model2301120001Model'
+description: The population genetics and population dynamics model describes how a
+  gene drive would increase in frequency through its molecular activities and then
+  suppress a population
+standard: other
+tags:
+- ecology
+- sbml
+- biomodels_ebi
+- faithful
+authors:
+- Biosimulant Team
+- "Ren\xE9 Geci"
+- Willis K
+- Burt A
+upstream:
+  id: biomodels_ebi:MODEL2301120001
+  source_db: biomodels_ebi
+  source_id: MODEL2301120001
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/MODEL2301120001
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/MODEL2301120001?filename=new
+    model v9.jl
+  license: CC0
+bsim:
+  entrypoint: src.geci2022_model2301120001_model:Geci2022Model2301120001Model
+  init_kwargs:
+    model_path: data/MODEL2301120001.xml
+  min_dt: 0.01
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.3.1
+    - numpy==1.26.4
+io:
+  outputs:
+  - state
