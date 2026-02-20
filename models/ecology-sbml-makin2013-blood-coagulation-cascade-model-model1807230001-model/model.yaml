@@ -21,7 +21,7 @@ upstream:
   original_url: https://www.ebi.ac.uk/biomodels/MODEL1807230001
   download_url: https://www.ebi.ac.uk/biomodels/model/download/MODEL1807230001?filename=Makin2013.xml
   license: CC0
-bsim:
+biosim:
   entrypoint: src.makin2013_blood_coagulation_cascade_model_model1807230001_model:Makin2013BloodCoagulationCascadeModelModel1807230001Model
   init_kwargs:
     model_path: data/MODEL1807230001.xml

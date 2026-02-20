@@ -22,7 +22,7 @@ upstream:
   original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000151
   download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000151?filename=BIOMD0000000151_url.xml
   license: CC0
-bsim:
+biosim:
   entrypoint: src.singh2006_il6_signal_transduction_biomd0000000151_model:Singh2006Il6SignalTransductionBiomd0000000151Model
   init_kwargs:
     model_path: data/BIOMD0000000151.xml

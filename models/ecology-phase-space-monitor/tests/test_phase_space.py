@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 
-def test_emits_phase_point(bsim):
-    from bsim.signals import BioSignal, SignalMetadata
+def test_emits_phase_point(biosim):
+    from biosim.signals import BioSignal, SignalMetadata
     from src.phase_space import PhaseSpaceMonitor
 
     mon = PhaseSpaceMonitor(x_species="Rabbits", y_species="Foxes", max_points=10, min_dt=1.0)

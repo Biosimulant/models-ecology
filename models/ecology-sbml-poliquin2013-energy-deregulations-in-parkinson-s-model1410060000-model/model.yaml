@@ -24,7 +24,7 @@ upstream:
   original_url: https://www.ebi.ac.uk/biomodels/MODEL1410060000
   download_url: https://www.ebi.ac.uk/biomodels/model/download/MODEL1410060000?filename=MODEL1410060000_url.xml
   license: CC0
-bsim:
+biosim:
   entrypoint: src.poliquin2013_energy_deregulations_in_parkinson_s_model1410060000_model:Poliquin2013EnergyDeregulationsInParkinsonSModel1410060000Model
   init_kwargs:
     model_path: data/MODEL1410060000.xml

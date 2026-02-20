@@ -24,7 +24,7 @@ upstream:
   original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000922
   download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000922?filename=Turner2015_ELP.xml
   license: CC0
-bsim:
+biosim:
   entrypoint: src.turner2015_human_mosquito_elp_model_biomd0000000922_model:Turner2015HumanMosquitoElpModelBiomd0000000922Model
   init_kwargs:
     model_path: data/BIOMD0000000922.xml

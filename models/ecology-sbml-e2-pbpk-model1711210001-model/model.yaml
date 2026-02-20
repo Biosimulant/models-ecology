@@ -22,7 +22,7 @@ upstream:
   original_url: https://www.ebi.ac.uk/biomodels/MODEL1711210001
   download_url: https://www.ebi.ac.uk/biomodels/model/download/MODEL1711210001?filename=E2_PBPK_v7.3.xml
   license: CC0
-bsim:
+biosim:
   entrypoint: src.e2_pbpk_model1711210001_model:E2PbpkModel1711210001Model
   init_kwargs:
     model_path: data/MODEL1711210001.xml

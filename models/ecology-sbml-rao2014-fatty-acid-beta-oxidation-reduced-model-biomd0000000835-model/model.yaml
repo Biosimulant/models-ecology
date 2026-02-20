@@ -24,7 +24,7 @@ upstream:
   original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000835
   download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000835?filename=Rao2014.xml
   license: CC0
-bsim:
+biosim:
   entrypoint: src.rao2014_fatty_acid_beta_oxidation_reduced_model_biomd0000000835_model:Rao2014FattyAcidBetaOxidationReducedModelBiomd0000000835Model
   init_kwargs:
     model_path: data/BIOMD0000000835.xml

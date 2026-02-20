@@ -24,7 +24,7 @@ upstream:
   original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000630
   download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000630?filename=BIOMD0000000630_url.xml
   license: CC0
-bsim:
+biosim:
   entrypoint: src.venkatraman2011_pls_upa_behaviour_in_the_presenc_biomd0000000630_model:Venkatraman2011PlsUpaBehaviourInThePresencBiomd0000000630Model
   init_kwargs:
     model_path: data/BIOMD0000000630.xml

@@ -23,7 +23,7 @@ upstream:
   original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000735
   download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000735?filename=Parmar2017_Adequate_tracer.xml
   license: CC0
-bsim:
+biosim:
   entrypoint: src.mouse_iron_distribution_adequate_iron_diet_trace_biomd0000000735_model:MouseIronDistributionAdequateIronDietTraceBiomd0000000735Model
   init_kwargs:
     model_path: data/BIOMD0000000735.xml

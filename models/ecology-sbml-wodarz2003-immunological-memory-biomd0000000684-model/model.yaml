@@ -20,7 +20,7 @@ upstream:
   original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000684
   download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000684?filename=BIOMD0000000684_url.xml
   license: CC0
-bsim:
+biosim:
   entrypoint: src.wodarz2003_immunological_memory_biomd0000000684_model:Wodarz2003ImmunologicalMemoryBiomd0000000684Model
   init_kwargs:
     model_path: data/BIOMD0000000684.xml

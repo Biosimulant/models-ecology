@@ -4,6 +4,6 @@ description: "Phase-space plot visual for two-species population trajectories."
 standard: other
 tags: [ecology, monitor, visualization]
 authors: ["Biosimulant Team"]
-bsim:
+biosim:
   entrypoint: "src.phase_space:PhaseSpaceMonitor"
 

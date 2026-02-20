@@ -20,7 +20,7 @@ upstream:
   original_url: https://www.ebi.ac.uk/biomodels/MODEL1907180003
   download_url: https://www.ebi.ac.uk/biomodels/model/download/MODEL1907180003?filename=reduced_seven_species.xml
   license: CC0
-bsim:
+biosim:
   entrypoint: src.hansen2019_seven_species_reduced_model_of_blood_model1907180003_model:Hansen2019SevenSpeciesReducedModelOfBloodModel1907180003Model
   init_kwargs:
     model_path: data/MODEL1907180003.xml

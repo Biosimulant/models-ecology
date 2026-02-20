@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 
-def test_emits_population_summary(bsim):
-    from bsim.signals import BioSignal, SignalMetadata
+def test_emits_population_summary(biosim):
+    from biosim.signals import BioSignal, SignalMetadata
     from src.population_monitor import PopulationMonitor
 
     mon = PopulationMonitor(max_points=10, min_dt=1.0)

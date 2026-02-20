@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 
-def test_predation_emits_events(bsim):
-    from bsim.signals import BioSignal, SignalMetadata
+def test_predation_emits_events(biosim):
+    from biosim.signals import BioSignal, SignalMetadata
     from src.predator_prey import PredatorPreyInteraction
 
     mod = PredatorPreyInteraction(predation_rate=1.0, conversion_efficiency=0.5, seed=1, min_dt=1.0)

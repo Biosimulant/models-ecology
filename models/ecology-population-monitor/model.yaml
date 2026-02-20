@@ -4,6 +4,6 @@ description: "Tracks population time series and renders visuals."
 standard: other
 tags: [ecology, monitor, visualization]
 authors: ["Biosimulant Team"]
-bsim:
+biosim:
   entrypoint: "src.population_monitor:PopulationMonitor"
 

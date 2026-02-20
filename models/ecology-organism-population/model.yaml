@@ -4,6 +4,6 @@ description: "Population dynamics model for a single species."
 standard: other
 tags: [ecology, population]
 authors: ["Biosimulant Team"]
-bsim:
+biosim:
   entrypoint: "src.organism_population:OrganismPopulation"
 

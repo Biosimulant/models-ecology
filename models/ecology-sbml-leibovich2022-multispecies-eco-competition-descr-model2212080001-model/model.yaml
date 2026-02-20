@@ -23,7 +23,7 @@ upstream:
   original_url: https://www.ebi.ac.uk/biomodels/MODEL2212080001
   download_url: https://www.ebi.ac.uk/biomodels/model/download/MODEL2212080001?filename=gillespie.py
   license: CC0
-bsim:
+biosim:
   entrypoint: src.leibovich2022_multispecies_eco_competition_descr_model2212080001_model:Leibovich2022MultispeciesEcoCompetitionDescrModel2212080001Model
   init_kwargs:
     model_path: data/MODEL2212080001.xml

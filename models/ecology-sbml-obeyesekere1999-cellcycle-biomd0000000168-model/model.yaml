@@ -23,7 +23,7 @@ upstream:
   original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000168
   download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000168?filename=BIOMD0000000168_url.xml
   license: CC0
-bsim:
+biosim:
   entrypoint: src.obeyesekere1999_cellcycle_biomd0000000168_model:Obeyesekere1999CellcycleBiomd0000000168Model
   init_kwargs:
     model_path: data/BIOMD0000000168.xml

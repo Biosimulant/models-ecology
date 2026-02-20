@@ -22,7 +22,7 @@ upstream:
   original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000181
   download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000181?filename=BIOMD0000000181_url.xml
   license: CC0
-bsim:
+biosim:
   entrypoint: src.sriram2007_cellcycle_biomd0000000181_model:Sriram2007CellcycleBiomd0000000181Model
   init_kwargs:
     model_path: data/BIOMD0000000181.xml

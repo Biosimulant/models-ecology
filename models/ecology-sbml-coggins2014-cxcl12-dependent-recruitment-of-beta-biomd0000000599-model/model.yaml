@@ -24,7 +24,7 @@ upstream:
   original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000599
   download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000599?filename=BIOMD0000000599_url.xml
   license: CC0
-bsim:
+biosim:
   entrypoint: src.coggins2014_cxcl12_dependent_recruitment_of_beta_biomd0000000599_model:Coggins2014Cxcl12DependentRecruitmentOfBetaBiomd0000000599Model
   init_kwargs:
     model_path: data/BIOMD0000000599.xml

@@ -4,6 +4,6 @@ description: "Predator-prey interaction dynamics."
 standard: other
 tags: [ecology, interaction]
 authors: ["Biosimulant Team"]
-bsim:
+biosim:
   entrypoint: "src.predator_prey:PredatorPreyInteraction"
 

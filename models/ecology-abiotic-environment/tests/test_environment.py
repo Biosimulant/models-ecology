@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-def test_emits_conditions(bsim):
+def test_emits_conditions(biosim):
     from src.environment import Environment
 
     env = Environment(temperature=22.0, water=80.0, food_availability=1.2, min_dt=1.0)

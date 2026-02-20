@@ -24,7 +24,7 @@ upstream:
   original_url: https://www.ebi.ac.uk/biomodels/MODEL1407230001
   download_url: https://www.ebi.ac.uk/biomodels/model/download/MODEL1407230001?filename=MODEL1407230001_url.xml
   license: CC0
-bsim:
+biosim:
   entrypoint: src.wollbold2014_effects_of_reactive_oxygen_species_model1407230001_model:Wollbold2014EffectsOfReactiveOxygenSpeciesModel1407230001Model
   init_kwargs:
     model_path: data/MODEL1407230001.xml

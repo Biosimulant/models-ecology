@@ -4,6 +4,6 @@ description: "Broadcasts environmental conditions to populations."
 standard: other
 tags: [ecology, environment]
 authors: ["Biosimulant Team"]
-bsim:
+biosim:
   entrypoint: "src.environment:Environment"
 

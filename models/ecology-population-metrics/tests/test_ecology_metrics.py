@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 
-def test_emits_metrics_signal(bsim):
-    from bsim.signals import BioSignal, SignalMetadata
+def test_emits_metrics_signal(biosim):
+    from biosim.signals import BioSignal, SignalMetadata
     from src.ecology_metrics import EcologyMetrics
 
     mod = EcologyMetrics(min_dt=1.0)
