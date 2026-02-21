@@ -1,67 +1,54 @@
-# models
+# models-ecology
 
-Public curated monorepo of biological simulation model packs and composed spaces for the **biosim** platform. Models are modular, composable components that can be wired together into full simulation scenarios without writing code — just YAML.
+Curated collection of **ecology** and **population dynamics** simulation models for the **biosim** platform. This repository contains computational models of ecosystem interactions, predator-prey dynamics, population regulation, and environmental coupling, plus related biochemical and cellular models.
 
 ## What's Inside
 
-### Models (20 packages)
+### Models (30 packages)
 
 Each model is a self-contained simulation component with a `model.yaml` manifest.
 
-**Neuroscience** — spiking neural networks, synaptic dynamics, and neural monitoring:
+**Ecology & Population Dynamics** — ecosystem modeling, species interactions, and environmental regulation:
 
-| Model | Description |
-|-------|-------------|
-| `neuro-izhikevich-population` | Spiking neuron population (Regular Spiking, Fast Spiking presets) |
-| `neuro-hodgkin-huxley-population` | Conductance-based Hodgkin-Huxley neuron population |
-| `neuro-hodgkin-huxley-state-monitor` | Detailed HH state monitor (V, gates, ionic currents) |
-| `neuro-exp-synapse-current` | Exponential-decay synapses with configurable connectivity |
-| `neuro-step-current` | Constant/step current injection into neurons |
-| `neuro-poisson-input` | Poisson-distributed spike train generator |
-| `neuro-spike-monitor` | Spike raster visualization |
-| `neuro-rate-monitor` | Firing rate computation and display |
-| `neuro-state-monitor` | Neuron state variable tracking (membrane potential, etc.) |
-| `neuro-spike-metrics` | Summary statistics from spike streams |
+#### Core Ecology Models (Custom-Built)
+- `ecology-abiotic-environment` — Broadcasts environmental conditions (temperature, water, food, sunlight)
+- `ecology-organism-population` — Population dynamics with birth, death, and predation
+- `ecology-predator-prey-interaction` — Predation rates and functional response
+- `ecology-population-monitor` — Population size tracking over time
+- `ecology-phase-space-monitor` — Predator vs prey phase-space visualization
+- `ecology-population-metrics` — Ecosystem summary statistics
 
-**Ecology** — population dynamics, environments, and ecosystem interactions:
+#### Ecological & Biological Systems Models (SBML)
+- `ecology-sbml-leibovich2022-multispecies-eco-competition-descr` — Multi-species ecological competition
+- `ecology-sbml-edelstein1996-epsp-ach-species` — Acetylcholine species dynamics
 
-| Model | Description |
-|-------|-------------|
-| `ecology-abiotic-environment` | Broadcasts environmental conditions (temperature, water, food, sunlight) |
-| `ecology-organism-population` | Population dynamics with birth, death, and predation |
-| `ecology-predator-prey-interaction` | Predation rates and functional response |
-| `ecology-population-monitor` | Population size tracking over time |
-| `ecology-phase-space-monitor` | Predator vs prey phase-space visualization |
-| `ecology-population-metrics` | Ecosystem summary statistics |
+#### Blood Coagulation & Hemodynamics
+- `ecology-sbml-hansen2019-nine-species-reduced-model-of-blood-c` — Nine-species blood coagulation model
+- `ecology-sbml-hansen2019-seven-species-reduced-model-of-blood` — Seven-species reduced coagulation model
+- `ecology-sbml-makin2013-blood-coagulation-cascade-model` — Blood coagulation cascade
+- `ecology-sbml-mitrophanov2014-extended-hockin-blood-coagulatio` — Extended Hockin coagulation model
 
-**Virtual Cell** — gene regulatory networks, perturbations, and expression monitoring:
+#### Cellular & Molecular Systems
+- `ecology-sbml-novak2001-fissionyeast-cellcycle` — Fission yeast cell cycle
+- `ecology-sbml-obeyesekere1999-cellcycle` — Cell cycle dynamics
+- `ecology-sbml-coggins2014-cxcl12-dependent-recruitment-of-beta` — CXCL12-dependent cell recruitment
 
-| Model | Description |
-|-------|-------------|
-| `virtualcell-perturbation-source` | Defines gene perturbations (knockout/overexpression) over time |
-| `virtualcell-grn-predictor` | Classical GRN-based virtual cell producing expression profiles |
-| `virtualcell-arc-state-predictor` | Arc Institute State Transition ML model for expression prediction |
-| `virtualcell-expression-translator` | Translates expression profiles into neural input currents |
-| `virtualcell-expression-monitor` | Visualizes gene expression fold-changes and timeseries |
+#### Pharmacokinetics & Distribution
+- `ecology-sbml-e2-pbpk` — PBPK model for E2 distribution
+- `ecology-sbml-mouse-iron-distribution-adequate-iron-diet-trace` — Mouse iron distribution modeling
 
-### Spaces (6 composed simulations)
+#### Protein Aggregation & Signaling
+- `ecology-sbml-masel2000-drugs-to-stop-prion-aggregates-and-oth` — Prion aggregation and drug intervention
+- `ecology-sbml-nik-dependent-p100-processing-into-p52-with-relb` — NIK-dependent NF-κB processing
+- `ecology-sbml-geci2022` — Genetically encoded calcium indicators
 
-Spaces wire multiple models into runnable simulation scenarios.
-
-| Space | Models | Description |
-|-------|--------|-------------|
-| `neuro-single-neuron` | 5 | Single Izhikevich neuron with step current, monitors, and metrics |
-| `neuro-microcircuit` | 13 | Balanced E/I microcircuit: 40 excitatory + 10 inhibitory neurons, Poisson input, recurrent synaptic connectivity |
-| `ecology-predator-prey` | 7 | Classic predator-prey dynamics with environment broadcast and monitors |
-| `ecology-temperature-control` | 7 | Predator-prey ecosystem where environment temperature is an exposed parameter |
-| `virtualcell-drug-neural-effect` | 8 | Virtual cell perturbation translated into a neural spiking response |
+**Note:** This repository contains 30 models total, including 6 custom-built ecology models and 24 SBML models from various biological domains. For a complete list, see the `models/` directory.
 
 ## Layout
 
 ```
-models/
+models-ecology/
 ├── models/<model-slug>/     # One model package per folder, each with model.yaml
-├── spaces/<space-slug>/     # Composed spaces with space.yaml
 ├── libs/                    # Shared helper code for curated models
 ├── templates/model-pack/    # Starter template for new model packs
 ├── scripts/                 # Manifest and entrypoint validation scripts
@@ -79,25 +66,21 @@ Every model implements the `biosim.BioModule` interface:
 - **`outputs()`** — declares named output signals the module produces
 - **`advance_to(t)`** — advances the model's internal state to time `t`
 
-Most curated models include Python source under `src/` and are wired together via `space.yaml` without additional code.
+Custom ecology models include Python source under `src/` and can be wired together via `space.yaml` without additional code.
 
-### Wiring
+### Model Standards
 
-Spaces connect models by routing outputs to inputs in `space.yaml`:
+Models in this repository include:
+- **Custom ecology models**: Native Python implementations with composable interfaces
+- **SBML models**: Use SBML format with tellurium runtime for execution
+- All provide `state` or domain-specific outputs for monitoring
+- Support configurable timesteps via `min_dt` parameter
 
-```yaml
-wiring:
-  - from: current_source.current
-    to: [neuron.input_current]
-  - from: neuron.spikes
-    to: [spike_monitor.spikes, rate_monitor.spikes]
-```
+### Running Models
 
-No code changes needed to recombine models into new configurations.
+Models are loaded and executed by the `biosim-platform`. The platform reads `model.yaml`, instantiates the model from its entrypoint, and runs the simulation loop at the configured timestep for the specified duration.
 
-### Running a Space
-
-Spaces are loaded and executed by the `biosim-platform`. The platform reads `space.yaml`, instantiates models from their manifests, wires signals, and runs the simulation loop at the configured `tick_dt` timestep for the specified `duration`.
+Models can be wired together into composed simulations (spaces) for multi-scale ecological or biological modeling.
 
 ## Getting Started
 
@@ -116,26 +99,35 @@ pip install "biosim @ git+https://github.com/BioSimulant/biosim.git@main"
 
 1. Copy `templates/model-pack/` to `models/<your-model-slug>/`
 2. Edit `model.yaml` with metadata, entrypoint, and pinned dependencies
-3. Implement your module (subclass `biosim.BioModule` or use a built-in pack)
-4. Validate: `python scripts/validate_manifests.py && python scripts/check_entrypoints.py`
+3. Implement your module (subclass `biosim.BioModule`)
+4. Add ecology-specific tags and categorization
+5. Validate: `python scripts/validate_manifests.py && python scripts/check_entrypoints.py`
 
-### Create a New Space
+### Creating Ecology Spaces
 
-1. Create `spaces/<your-space-slug>/space.yaml`
-2. Reference models by `manifest_path` (e.g., `models/neuro-step-current/model.yaml`)
-3. Define wiring between model outputs and inputs
-4. Set `runtime.duration` and `runtime.tick_dt`
+Example predator-prey space configuration:
+
+```yaml
+wiring:
+  - from: environment.temperature
+    to: [prey_pop.temperature, predator_pop.temperature]
+  - from: prey_pop.population
+    to: [predator_prey_interaction.prey_count]
+  - from: predator_pop.population
+    to: [predator_prey_interaction.predator_count]
+  - from: predator_prey_interaction.predation_rate
+    to: [prey_pop.mortality, predator_pop.food_intake]
+```
 
 ## Linking in biosim-platform
 
-- Root manifests can be linked with `manifest_path=model.yaml` or `space.yaml`
-- Subdirectory manifests require explicit paths:
-  - `models/neuro-izhikevich-population/model.yaml`
-  - `spaces/neuro-microcircuit/space.yaml`
+- Models can be linked with explicit paths:
+  - `models/ecology-predator-prey-interaction/model.yaml`
+- Ecology models can be composed with other domain models in multi-scale simulations
 
 ## External Repos
 
-External authors can keep models in independent repositories and link them directly in `biosim-platform`. This monorepo is curated, not exclusive.
+External authors can keep models in independent repositories and link them directly in `biosim-platform`. This repository is curated, not exclusive.
 
 ## Validation & CI
 
@@ -143,7 +135,7 @@ Three scripts enforce repository integrity on every push:
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/validate_manifests.py` | Schema validation for all model.yaml and space.yaml files |
+| `scripts/validate_manifests.py` | Schema validation for all model.yaml files |
 | `scripts/check_entrypoints.py` | Verifies Python entrypoints are importable and callable |
 | `scripts/check_public_boundary.sh` | Prevents business-sensitive content in this public repo |
 
@@ -152,10 +144,25 @@ The CI pipeline (`.github/workflows/ci.yml`) runs: **secret scan** → **manifes
 ## Contributing
 
 - All dependencies must use exact version pinning (`==`)
-- Model slugs use kebab-case with domain prefix (`neuro-`, `ecology-`, `virtualcell-`)
+- Model slugs use kebab-case with domain prefix (`ecology-` or `ecology-sbml-`)
 - Custom modules must follow the `biosim.BioModule` interface
+- SBML models use tellurium runtime for execution
 - Pre-commit hooks enforce trailing whitespace, EOF newlines, YAML syntax, and secret detection
 - See [docs/PUBLIC_INTERNAL_BOUNDARY.md](docs/PUBLIC_INTERNAL_BOUNDARY.md) for content policy
+
+## Domain-Specific Notes
+
+**Ecology & Population Dynamics Focus Areas:**
+- **Predator-Prey Interactions**: Classic Lotka-Volterra dynamics, functional responses
+- **Environmental Coupling**: Abiotic factors affecting population dynamics
+- **Population Monitoring**: Time series, phase space, and summary metrics
+- **Multi-Species Competition**: Species coexistence and competitive exclusion
+
+**Other Biological Systems** (included in this repository):
+- Blood coagulation cascades
+- Cell cycle regulation
+- Pharmacokinetic distribution
+- Protein aggregation dynamics
 
 ## License
 
