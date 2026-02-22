@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: Leibovich2022MultispeciesEcoCompetitionDescrModel2212080001Model'
-description: We are using a minimal model of interacting multispecies ecological communities
-  that incorporates competition, immigration, and demographic noise. Importantly,
-  the dynamics of the system are described
+description: "We are using a minimal model of interacting multispecies ecological communities that incorporates competition, immigration, and demographic noise. Importantly, the dynamics of the system are described."
 standard: other
 tags:
 - ecology

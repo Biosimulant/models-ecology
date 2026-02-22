@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: Masel2000DrugsToStopPrionAggregatesAndOthModel1410310000Model'
-description: 'Masel2000 - Drugs to stop prion aggregatesand other amyloids Encoded
-  non-curated model.Issues: - Missing initial concentration for species y, yb and
-  z - Not reproducible figures This model is describe'
+description: "Masel2000 - Drugs to stop prion aggregatesand other amyloids Encoded non-curated model.Issues: - Missing initial concentration for species y, yb and z - Not reproducible figures This model is describe. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags:
 - ecology

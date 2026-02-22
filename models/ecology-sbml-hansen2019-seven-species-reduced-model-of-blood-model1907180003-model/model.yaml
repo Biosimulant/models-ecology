@@ -1,7 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: Hansen2019SevenSpeciesReducedModelOfBloodModel1907180003Model'
-description: its a seven species reduced model of Hockin 2002. Model uses different
-  level of reduction (5,7,9,11) and testing the best alignment with Hockin model results).
+description: "its a seven species reduced model of Hockin 2002. Model uses different level of reduction (5,7,9,11) and testing the best alignment with Hockin model results)."
 standard: other
 tags:
 - ecology

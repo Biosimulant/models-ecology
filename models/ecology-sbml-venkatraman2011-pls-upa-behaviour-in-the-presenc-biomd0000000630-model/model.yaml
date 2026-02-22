@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: Venkatraman2011PlsUpaBehaviourInThePresencBiomd0000000630Model'
-description: Venkatraman2011 - PLS-UPA behaviour in thepresence of substrate competition
-  The posibility of ultrasensitivity and bistable activation of PLS (Plasmin) and
-  UPA (Urokinase-type plasminogen activator) i
+description: "Venkatraman2011 - PLS-UPA behaviour in thepresence of substrate competition The posibility of ultrasensitivity and bistable activation of PLS (Plasmin) and UPA (Urokinase-type plasminogen activator) i. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags:
 - ecology

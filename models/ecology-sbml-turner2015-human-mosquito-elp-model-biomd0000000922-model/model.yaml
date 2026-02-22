@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: Turner2015HumanMosquitoElpModelBiomd0000000922Model'
-description: the growth of the mosquito population is directly related to the spread
-  of malaria, the Four Stage Life Cycle is incorporated to model the effects of climate
-  change and interspecies competition within
+description: "the growth of the mosquito population is directly related to the spread of malaria, the Four Stage Life Cycle is incorporated to model the effects of climate change and interspecies competition within. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags:
 - ecology

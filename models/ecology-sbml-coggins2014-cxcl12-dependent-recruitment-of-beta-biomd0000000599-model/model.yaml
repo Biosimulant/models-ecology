@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: Coggins2014Cxcl12DependentRecruitmentOfBetaBiomd0000000599Model'
-description: "Nathaniel L. Coggins, Danielle Trakimas, S. Laura Chang, Anna Ehrlich,\
-  \ Paramita Ray, Kathryn E. Luker, Jennifer J. Linderman & Gary D. Luker. CXCR7 controls\
-  \ competition for recruitment of \u03B2-arrestin 2"
+description: "Nathaniel L. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags:
 - ecology

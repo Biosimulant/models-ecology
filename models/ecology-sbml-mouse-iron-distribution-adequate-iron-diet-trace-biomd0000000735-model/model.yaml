@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: MouseIronDistributionAdequateIronDietTraceBiomd0000000735Model'
-description: Mouse Iron Distribution Dynamics Dynamic model of iron distribution in
-  mice. This model includes normal iron and radioactive labelled tracer iron species
-  and was used for parameter estimation given th
+description: "Mouse Iron Distribution Dynamics Dynamic model of iron distribution in mice. This model includes normal iron and radioactive labelled tracer iron species and was used for parameter estimation given th."
 standard: other
 tags:
 - ecology

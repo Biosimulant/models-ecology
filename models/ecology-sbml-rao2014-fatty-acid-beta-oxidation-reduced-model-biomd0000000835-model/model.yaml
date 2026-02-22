@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: Rao2014FattyAcidBetaOxidationReducedModelBiomd0000000835Model'
-description: 'This represents the reduced version of the ''time course model'' of
-  Van Eunen et al (2013): Biochemical competition makes fatty-acid beta-oxidation
-  vulnerable to substrate overload. The SBML was created'
+description: "This represents the reduced version of the 'time course model' of Van Eunen et al (2013): Biochemical competition makes fatty-acid beta-oxidation vulnerable to substrate overload. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags:
 - ecology

@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: Singh2006Il6SignalTransductionBiomd0000000151Model'
-description: The model reproduces Fig 2 , Fig3A and Fig 3B of the paper. The ODE for
-  x1(gp180) and x3 (gp 130) is wrong and the authors have communicated to the curator
-  that the species ought to have a constant va
+description: "The model reproduces Fig 2 , Fig3A and Fig 3B of the paper. The ODE for x1(gp180) and x3 (gp 130) is wrong and the authors have communicated to the curator that the species ought to have a constant va."
 standard: other
 tags:
 - ecology

@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: E2PbpkModel1711210001Model'
-description: Using scaling from PhysB modelBlood flow in L/hrCompartments in KgBaseline
-  as ~0.013nM free E2 in plasma_venous E2 biosynthesis rate constant = 2 E2 biosynthesis
-  species = 1nMCLeh = 5CLint = 1scaled b
+description: "Using scaling from PhysB modelBlood flow in L/hrCompartments in KgBaseline as ~0.013nM free E2 in plasma_venous E2 biosynthesis rate constant = 2 E2 biosynthesis species = 1nMCLeh = 5CLint = 1scaled b. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags:
 - ecology

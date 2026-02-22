@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: Poliquin2013EnergyDeregulationsInParkinsonSModel1410060000Model'
-description: 'Poliquin2013 - Energy Deregulations inParkinson''s Disease Encoded non-curated
-  model. Issues: - Fluxes, reactions, parameters and species properly encodedbut Figure
-  2 not successfully simulated. - Unpa'
+description: "Poliquin2013 - Energy Deregulations inParkinson's Disease Encoded non-curated model. Issues: - Fluxes, reactions, parameters and species properly encodedbut Figure 2 not successfully simulated."
 standard: other
 tags:
 - ecology

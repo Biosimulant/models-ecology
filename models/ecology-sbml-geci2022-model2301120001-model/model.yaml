@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: Geci2022Model2301120001Model'
-description: The population genetics and population dynamics model describes how a
-  gene drive would increase in frequency through its molecular activities and then
-  suppress a population
+description: "The population genetics and population dynamics model describes how a gene drive would increase in frequency through its molecular activities and then suppress a population. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags:
 - ecology

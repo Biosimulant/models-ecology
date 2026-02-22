@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: Edelstein1996EpspAchSpeciesBiomd0000000002Model'
-description: Edelstein1996 - EPSP ACh species Model of a nicotinic Excitatory Post-Synaptic
-  Potential in a Torpedo electric organ. Acetylcholine is represented explicitely
-  as a molecular species. This model has in
+description: "Edelstein1996 - EPSP ACh species Model of a nicotinic Excitatory Post-Synaptic Potential in a Torpedo electric organ. Acetylcholine is represented explicitely as a molecular species."
 standard: other
 tags:
 - ecology

@@ -1,6 +1,6 @@
 schema_version: "2.0"
 title: "Ecology: PopulationMetrics"
-description: "Computes summary metrics from population state streams."
+description: "Computes summary metrics from population state streams. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags: [ecology, metrics]
 authors: ["Biosimulant Team"]

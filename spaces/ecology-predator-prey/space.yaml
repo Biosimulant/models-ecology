@@ -1,6 +1,6 @@
 schema_version: "2.0"
 title: "Ecology: Predator-Prey"
-description: "Classic predator-prey dynamics with environment broadcast and monitor outputs."
+description: "Classic predator-prey dynamics with environment broadcast and monitor outputs. It can be used to compare participant model trajectories and interpret differences under shared runtime settings."
 models:
   - repo: Biosimulant/models-ecology
     alias: environment

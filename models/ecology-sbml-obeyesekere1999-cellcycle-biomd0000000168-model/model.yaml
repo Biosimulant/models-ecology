@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: Obeyesekere1999CellcycleBiomd0000000168Model'
-description: The model reproduces the time profiles of the different species depicted
-  in Fig 3a of the paper. Model successfully reproduced using MathSBML. To the extent
-  possible under law, all copyright and relat
+description: "The model reproduces the time profiles of the different species depicted in Fig 3a of the paper. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags:
 - ecology

@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: NikDependentP100ProcessingIntoP52WithRelbBiomd0000000871Model'
-description: This model represents NIK-dependent p100 processing into p52 followed
-  by binding to RelB and NIK-dependent IkBd degradation. This model assesses the impact
-  of substrate complex competition on RelB-p52
+description: "This model represents NIK-dependent p100 processing into p52 followed by binding to RelB and NIK-dependent IkBd degradation. This model assesses the impact of substrate complex competition on RelB-p52."
 standard: other
 tags:
 - ecology

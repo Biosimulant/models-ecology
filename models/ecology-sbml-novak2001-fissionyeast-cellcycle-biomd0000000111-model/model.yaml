@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: Novak2001FissionyeastCellcycleBiomd0000000111Model'
-description: The model reproduces the time evolution of several species as depicted
-  in Fig 4 of the paper. Events have been used to reset cell mass when the value of
-  M-phase promoting factor (MPF) decreases throug
+description: "The model reproduces the time evolution of several species as depicted in Fig 4 of the paper. Events have been used to reset cell mass when the value of M-phase promoting factor (MPF) decreases throug."
 standard: other
 tags:
 - ecology

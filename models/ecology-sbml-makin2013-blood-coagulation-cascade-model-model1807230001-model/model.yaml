@@ -1,8 +1,6 @@
 schema_version: '2.0'
 title: 'Ecology: Makin2013BloodCoagulationCascadeModelModel1807230001Model'
-description: Mathematical model of the blood coagulation system including lipid binding
-  sites, meizothrombin, thrombomodulin, cleaved and light peptide chain Va species
-  and Heparin.
+description: "Mathematical model of the blood coagulation system including lipid binding sites, meizothrombin, thrombomodulin, cleaved and light peptide chain Va species and Heparin. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags:
 - ecology

@@ -1,6 +1,6 @@
 schema_version: "2.0"
 title: "Ecology: PopulationMonitor"
-description: "Tracks population time series and renders visuals."
+description: "Tracks population time series and renders visuals. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags: [ecology, monitor, visualization]
 authors: ["Biosimulant Team"]
