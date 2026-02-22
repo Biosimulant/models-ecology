@@ -44,11 +44,16 @@ Each model is a self-contained simulation component with a `model.yaml` manifest
 
 **Note:** This repository contains 30 models total, including 6 custom-built ecology models and 24 SBML models from various biological domains. For a complete list, see the `models/` directory.
 
+### Spaces (1 package)
+
+- `ecology-predator-prey` — classic rabbit/fox predator-prey dynamics with environment coupling and monitor outputs
+
 ## Layout
 
 ```
 models-ecology/
 ├── models/<model-slug>/     # One model package per folder, each with model.yaml
+├── spaces/<space-slug>/     # Composed simulation spaces with space.yaml + wiring.yaml
 ├── libs/                    # Shared helper code for curated models
 ├── templates/model-pack/    # Starter template for new model packs
 ├── scripts/                 # Manifest and entrypoint validation scripts

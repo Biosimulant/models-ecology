@@ -29,4 +29,5 @@ models:
 - models/ecology-sbml-weimann2004-circadianoscillator-biomd0000000170-model/model.yaml
 - models/ecology-sbml-wodarz2003-immunological-memory-biomd0000000684-model/model.yaml
 - models/ecology-sbml-wollbold2014-effects-of-reactive-oxygen-species-model1407230001-model/model.yaml
-spaces: []
+spaces:
+- spaces/ecology-predator-prey/space.yaml

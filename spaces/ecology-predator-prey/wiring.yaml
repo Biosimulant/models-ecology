@@ -1,0 +1,74 @@
+modules:
+  environment:
+    class: src.environment:Environment
+    args:
+      temperature: 20.0
+      water: 80.0
+      food_availability: 1.0
+      sunlight: 1.0
+      seasonal_cycle: false
+  rabbits:
+    class: src.organism_population:OrganismPopulation
+    args:
+      name: "Rabbits"
+      initial_count: 800
+      birth_rate: 0.10
+      death_rate: 0.02
+      optimal_temp: 20.0
+      temp_tolerance: 15.0
+      carrying_capacity: 2000
+      seed: 42
+  foxes:
+    class: src.organism_population:OrganismPopulation
+    args:
+      name: "Foxes"
+      initial_count: 100
+      birth_rate: 0.04
+      death_rate: 0.02
+      optimal_temp: 15.0
+      temp_tolerance: 20.0
+      food_efficiency: 0.8
+      carrying_capacity: 300
+      seed: 43
+  predation:
+    class: src.predator_prey:PredatorPreyInteraction
+    args:
+      predation_rate: 0.005
+      conversion_efficiency: 1.0
+      seed: 44
+  pop_monitor:
+    class: src.population_monitor:PopulationMonitor
+    args:
+      max_points: 10000
+  phase_space:
+    class: src.phase_space:PhaseSpaceMonitor
+    args:
+      x_species: "Rabbits"
+      y_species: "Foxes"
+      max_points: 5000
+  metrics:
+    class: src.ecology_metrics:EcologyMetrics
+    args: {}
+wiring:
+  - from: environment.conditions
+    to:
+      - rabbits.conditions
+      - foxes.conditions
+  - from: rabbits.population_state
+    to:
+      - predation.prey_state
+      - pop_monitor.population_state
+      - phase_space.population_state
+      - metrics.population_state
+  - from: foxes.population_state
+    to:
+      - predation.predator_state
+      - pop_monitor.population_state
+      - phase_space.population_state
+      - metrics.population_state
+  - from: predation.predation
+    to:
+      - rabbits.predation
+  - from: predation.food_gained
+    to:
+      - foxes.food_gained
