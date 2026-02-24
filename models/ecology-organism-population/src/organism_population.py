@@ -15,6 +15,10 @@ if TYPE_CHECKING:  # pragma: no cover - typing only
 from biosim import BioModule
 from biosim.signals import BioSignal, SignalMetadata
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 @dataclass
 class SpeciesPreset:
@@ -183,7 +187,7 @@ class OrganismPopulation(BioModule):
         if food is not None:
             try:
                 self._food_from_predation += float(food.value)
-            except Exception:
+            except (KeyError, ValueError, TypeError):  # narrowed from bare Exception
                 pass
 
     def advance_to(self, t: float) -> None:
