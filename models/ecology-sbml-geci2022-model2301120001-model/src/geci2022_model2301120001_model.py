@@ -17,7 +17,6 @@ if TYPE_CHECKING:  # pragma: no cover - typing only
 import biosim
 from biosim.signals import BioSignal, SignalMetadata
 
-
 class SbmlGeci2022(biosim.BioModule):
     """BioModule wrapper for SBML model: Geci2022."""
 
@@ -27,38 +26,10 @@ class SbmlGeci2022(biosim.BioModule):
         self._t = 0.0
         self._rr = None
         self._species_ids: list[str] = []
-        self._stub: bool = False
         self._outputs: Dict[str, BioSignal] = {}
 
-    @staticmethod
-    def _is_placeholder_file(path: Path) -> bool:
-        try:
-            head = path.open("rb").read(160)
-        except OSError:
-            return True
-        try:
-            text = head.decode("utf-8", errors="ignore")
-        except Exception:
-            return False
-        return "Placeholder:" in text
-
     def setup(self, config: Optional[Dict[str, Any]] = None) -> None:
-        if self._is_placeholder_file(self._model_path):
-            # "No downloads" mode: keep the module runnable without external simulators.
-            self._stub = True
-            self._rr = None
-            self._species_ids = []
-            self._t = 0.0
-            return
-
-        try:
-            import tellurium as te
-        except Exception:
-            self._stub = True
-            self._rr = None
-            self._species_ids = []
-            self._t = 0.0
-            return
+        import tellurium as te
 
         self._rr = te.loadSBMLModel(str(self._model_path))
         self._species_ids = list(self._rr.getFloatingSpeciesIds())
@@ -77,28 +48,13 @@ class SbmlGeci2022(biosim.BioModule):
         return {"state"}
 
     def advance_to(self, t: float) -> None:
-        if self._rr is None and not self._stub:
+        if self._rr is None:
             self.setup()
-        if self._stub:
-            self._t = t
-            source_name = getattr(self, "_world_name", self.__class__.__name__)
-            self._outputs = {
-                "state": BioSignal(
-                    source=source_name,
-                    name="state",
-                    value={"t": t, "placeholder": True},
-                    time=t,
-                    metadata=SignalMetadata(
-                        description="Placeholder SBML state (no downloads / simulator unavailable)",
-                        kind="state",
-                    ),
-                )
-            }
-            return
 
         if t > self._t:
             self._rr.integrate(self._t, t)
             self._t = t
+
         source_name = getattr(self, "_world_name", self.__class__.__name__)
         concentrations = {}
         for sid in self._species_ids:
