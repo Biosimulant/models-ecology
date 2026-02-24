@@ -56,7 +56,7 @@ class SbmlMasel2000DrugsToStopPrionAggregatesAndOtherAmyloids(biosim.BioModule):
             self.setup()
 
         if t > self._t:
-            self._rr.integrate(self._t, t)
+            self._rr.simulate(self._t, t)
             self._t = t
 
         source_name = getattr(self, "_world_name", self.__class__.__name__)
