@@ -135,9 +135,8 @@ class PredatorPreyInteraction(BioModule):
         })
 
         source_name = getattr(self, "_world_name", self.__class__.__name__)
-        outputs: Dict[str, BioSignal] = {}
-        if kills > 0:
-            outputs["predation"] = BioSignal(
+        self._outputs = {
+            "predation": BioSignal(
                 source=source_name,
                 name="predation",
                 value={
@@ -147,16 +146,15 @@ class PredatorPreyInteraction(BioModule):
                 },
                 time=t,
                 metadata=SignalMetadata(units=None, description="Predation events", kind="event"),
-            )
-        if food_gained > 0:
-            outputs["food_gained"] = BioSignal(
+            ),
+            "food_gained": BioSignal(
                 source=source_name,
                 name="food_gained",
                 value=food_gained,
                 time=t,
                 metadata=SignalMetadata(units=None, description="Food gained", kind="event"),
-            )
-        self._outputs = outputs
+            ),
+        }
 
     def get_outputs(self) -> Dict[str, BioSignal]:
         return dict(self._outputs)
