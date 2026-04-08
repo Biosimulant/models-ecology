@@ -1,5 +1,5 @@
 schema_version: "2.0"
-title: "Ecology: OrganismPopulation"
+title: "Organism Population"
 description: "Ecology Organism Population models ecology organism population dynamics as a OTHER simulation, focused on ecology, population, organism. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags: [ecology, population]

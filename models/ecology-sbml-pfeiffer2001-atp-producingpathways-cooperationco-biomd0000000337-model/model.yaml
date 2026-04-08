@@ -1,5 +1,5 @@
 schema_version: '2.0'
-title: 'Ecology: Pfeiffer2001AtpProducingpathwaysCooperationcoBiomd0000000337Model'
+title: "Pfeiffer2001_ATP-ProducingPathways_CooperationCompetition"
 description: "This model is from the article: Cooperation and Competition in the Evolution of ATP-Producing Pathways Thomas Pfeiffer, Stefan Schuster, Sebastian Bonhoeffer Science 2001 Apr; Volume:292 (Issue:5516);. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags:

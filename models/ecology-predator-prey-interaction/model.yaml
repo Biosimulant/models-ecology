@@ -1,5 +1,5 @@
 schema_version: "2.0"
-title: "Ecology: PredatorPreyInteraction"
+title: "Predator Prey Interaction"
 description: "Ecology Predator Prey Interaction represents ecology predator prey interaction mechanisms. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags: [ecology, interaction]

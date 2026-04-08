@@ -1,5 +1,5 @@
 schema_version: '2.0'
-title: 'Ecology: Obeyesekere1999CellcycleBiomd0000000168Model'
+title: "Obeyesekere1999_CellCycle"
 description: "The model reproduces the time profiles of the different species depicted in Fig 3a of the paper. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags:

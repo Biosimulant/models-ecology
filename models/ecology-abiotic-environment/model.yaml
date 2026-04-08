@@ -1,5 +1,5 @@
 schema_version: "2.0"
-title: "Ecology: AbioticEnvironment"
+title: "Abiotic Environment"
 description: "Broadcasts environmental conditions to populations. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags: [ecology, environment]

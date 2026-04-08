@@ -1,5 +1,5 @@
 schema_version: '2.0'
-title: 'Ecology: Wodarz2003ImmunologicalMemoryBiomd0000000684Model'
+title: "Wodarz2003 - Immunological Memory"
 description: "This a model from the article: Evolution of immunological memory and the regulation of competition betweenpathogens. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
 standard: other
 tags:
