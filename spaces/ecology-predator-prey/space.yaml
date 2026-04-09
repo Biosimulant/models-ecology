@@ -1,19 +1,19 @@
 schema_version: "2.0"
 title: "Ecology: Predator-Prey"
 description: "Classic predator-prey dynamics with environment broadcast and monitor outputs. It can be used to compare participant model trajectories and interpret differences under shared runtime settings."
+package: "Biosimulant/models-ecology/spaces/ecology-predator-prey"
+version: "00424971dbc811f9962af365fb9f5a8698643663-source-tree-1"
 models:
-  - repo: Biosimulant/models-ecology
+  - path: models/ecology-abiotic-environment
     alias: environment
-    manifest_path: models/ecology-abiotic-environment/model.yaml
     parameters:
       temperature: 20.0
       water: 80.0
       food_availability: 1.0
       sunlight: 1.0
       seasonal_cycle: false
-  - repo: Biosimulant/models-ecology
+  - path: models/ecology-organism-population
     alias: rabbits
-    manifest_path: models/ecology-organism-population/model.yaml
     parameters:
       name: "Rabbits"
       initial_count: 800
@@ -23,9 +23,8 @@ models:
       temp_tolerance: 15.0
       carrying_capacity: 2000
       seed: 42
-  - repo: Biosimulant/models-ecology
+  - path: models/ecology-organism-population
     alias: foxes
-    manifest_path: models/ecology-organism-population/model.yaml
     parameters:
       name: "Foxes"
       initial_count: 100
@@ -36,28 +35,24 @@ models:
       food_efficiency: 0.8
       carrying_capacity: 300
       seed: 43
-  - repo: Biosimulant/models-ecology
+  - path: models/ecology-predator-prey-interaction
     alias: predation
-    manifest_path: models/ecology-predator-prey-interaction/model.yaml
     parameters:
       predation_rate: 0.005
       conversion_efficiency: 1.0
       seed: 44
-  - repo: Biosimulant/models-ecology
+  - path: models/ecology-population-monitor
     alias: pop_monitor
-    manifest_path: models/ecology-population-monitor/model.yaml
     parameters:
       max_points: 10000
-  - repo: Biosimulant/models-ecology
+  - path: models/ecology-phase-space-monitor
     alias: phase_space
-    manifest_path: models/ecology-phase-space-monitor/model.yaml
     parameters:
       x_species: "Rabbits"
       y_species: "Foxes"
       max_points: 5000
-  - repo: Biosimulant/models-ecology
+  - path: models/ecology-population-metrics
     alias: metrics
-    manifest_path: models/ecology-population-metrics/model.yaml
     parameters: {}
 runtime:
   duration: 50.0
