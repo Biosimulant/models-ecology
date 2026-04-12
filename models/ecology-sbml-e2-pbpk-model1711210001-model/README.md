@@ -11,14 +11,13 @@ Using scaling from PhysB modelBlood flow in L/hrCompartments in KgBaseline as ~0
 
 ## Usage
 
-This model was auto-generated from the biomodels_ebi repository.
+This model was auto-generated from the BioModels EBI catalog.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - repo: Biosimulant/models
+  - path: ../../models/ecology-sbml-e2-pbpk-model1711210001-model
     alias: model
-    manifest_path: models/ecology-sbml-e2-pbpk-model1711210001-model/model.yaml
 ```
 
 ## Tags

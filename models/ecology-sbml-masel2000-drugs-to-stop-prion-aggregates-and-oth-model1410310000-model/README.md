@@ -11,14 +11,13 @@ Masel2000 - Drugs to stop prion aggregatesand other amyloids Encoded non-curated
 
 ## Usage
 
-This model was auto-generated from the biomodels_ebi repository.
+This model was auto-generated from the BioModels EBI catalog.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - repo: Biosimulant/models
+  - path: ../../models/ecology-sbml-masel2000-drugs-to-stop-prion-aggregates-and-oth-model1410310000-model
     alias: model
-    manifest_path: models/ecology-sbml-masel2000-drugs-to-stop-prion-aggregates-and-oth-model1410310000-model/model.yaml
 ```
 
 ## Tags

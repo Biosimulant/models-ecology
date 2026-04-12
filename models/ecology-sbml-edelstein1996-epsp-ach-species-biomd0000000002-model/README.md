@@ -11,14 +11,13 @@ Edelstein1996 - EPSP ACh species Model of a nicotinic Excitatory Post-Synaptic P
 
 ## Usage
 
-This model was auto-generated from the biomodels_ebi repository.
+This model was auto-generated from the BioModels EBI catalog.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - repo: Biosimulant/models
+  - path: ../../models/ecology-sbml-edelstein1996-epsp-ach-species-biomd0000000002-model
     alias: model
-    manifest_path: models/ecology-sbml-edelstein1996-epsp-ach-species-biomd0000000002-model/model.yaml
 ```
 
 ## Tags

@@ -11,14 +11,13 @@ The model reproduces the time profiles of the different species depicted in Fig 
 
 ## Usage
 
-This model was auto-generated from the biomodels_ebi repository.
+This model was auto-generated from the BioModels EBI catalog.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - repo: Biosimulant/models
+  - path: ../../models/ecology-sbml-obeyesekere1999-cellcycle-biomd0000000168-model
     alias: model
-    manifest_path: models/ecology-sbml-obeyesekere1999-cellcycle-biomd0000000168-model/model.yaml
 ```
 
 ## Tags

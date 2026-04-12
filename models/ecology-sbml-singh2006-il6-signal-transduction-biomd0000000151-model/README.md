@@ -11,14 +11,13 @@ The model reproduces Fig 2 , Fig3A and Fig 3B of the paper. The ODE for x1(gp180
 
 ## Usage
 
-This model was auto-generated from the biomodels_ebi repository.
+This model was auto-generated from the BioModels EBI catalog.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - repo: Biosimulant/models
+  - path: ../../models/ecology-sbml-singh2006-il6-signal-transduction-biomd0000000151-model
     alias: model
-    manifest_path: models/ecology-sbml-singh2006-il6-signal-transduction-biomd0000000151-model/model.yaml
 ```
 
 ## Tags

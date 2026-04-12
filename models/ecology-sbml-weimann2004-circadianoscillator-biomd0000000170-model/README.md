@@ -11,14 +11,13 @@ The model reproduces the time profile of the species as depicted in Fig 3A of th
 
 ## Usage
 
-This model was auto-generated from the biomodels_ebi repository.
+This model was auto-generated from the BioModels EBI catalog.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - repo: Biosimulant/models
+  - path: ../../models/ecology-sbml-weimann2004-circadianoscillator-biomd0000000170-model
     alias: model
-    manifest_path: models/ecology-sbml-weimann2004-circadianoscillator-biomd0000000170-model/model.yaml
 ```
 
 ## Tags

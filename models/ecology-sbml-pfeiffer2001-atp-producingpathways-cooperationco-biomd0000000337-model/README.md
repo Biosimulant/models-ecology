@@ -11,14 +11,13 @@ This model is from the article: Cooperation and Competition in the Evolution of 
 
 ## Usage
 
-This model was auto-generated from the biomodels_ebi repository.
+This model was auto-generated from the BioModels EBI catalog.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - repo: Biosimulant/models
+  - path: ../../models/ecology-sbml-pfeiffer2001-atp-producingpathways-cooperationco-biomd0000000337-model
     alias: model
-    manifest_path: models/ecology-sbml-pfeiffer2001-atp-producingpathways-cooperationco-biomd0000000337-model/model.yaml
 ```
 
 ## Tags

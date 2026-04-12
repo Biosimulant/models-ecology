@@ -11,14 +11,13 @@ This represents the reduced version of the 'time course model' of Van Eunen et a
 
 ## Usage
 
-This model was auto-generated from the biomodels_ebi repository.
+This model was auto-generated from the BioModels EBI catalog.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - repo: Biosimulant/models
+  - path: ../../models/ecology-sbml-rao2014-fatty-acid-beta-oxidation-reduced-model-biomd0000000835-model
     alias: model
-    manifest_path: models/ecology-sbml-rao2014-fatty-acid-beta-oxidation-reduced-model-biomd0000000835-model/model.yaml
 ```
 
 ## Tags

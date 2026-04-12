@@ -11,14 +11,13 @@ Venkatraman2011 - PLS-UPA behaviour in thepresence of substrate competition The 
 
 ## Usage
 
-This model was auto-generated from the biomodels_ebi repository.
+This model was auto-generated from the BioModels EBI catalog.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - repo: Biosimulant/models
+  - path: ../../models/ecology-sbml-venkatraman2011-pls-upa-behaviour-in-the-presenc-biomd0000000630-model
     alias: model
-    manifest_path: models/ecology-sbml-venkatraman2011-pls-upa-behaviour-in-the-presenc-biomd0000000630-model/model.yaml
 ```
 
 ## Tags

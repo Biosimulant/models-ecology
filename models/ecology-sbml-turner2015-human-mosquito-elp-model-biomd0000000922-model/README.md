@@ -11,14 +11,13 @@ the growth of the mosquito population is directly related to the spread of malar
 
 ## Usage
 
-This model was auto-generated from the biomodels_ebi repository.
+This model was auto-generated from the BioModels EBI catalog.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - repo: Biosimulant/models
+  - path: ../../models/ecology-sbml-turner2015-human-mosquito-elp-model-biomd0000000922-model
     alias: model
-    manifest_path: models/ecology-sbml-turner2015-human-mosquito-elp-model-biomd0000000922-model/model.yaml
 ```
 
 ## Tags

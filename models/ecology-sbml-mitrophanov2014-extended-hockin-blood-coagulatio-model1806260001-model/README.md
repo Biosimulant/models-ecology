@@ -11,14 +11,13 @@ Mathematical model of the blood coagulation cascade. Extended Hockin model with 
 
 ## Usage
 
-This model was auto-generated from the biomodels_ebi repository.
+This model was auto-generated from the BioModels EBI catalog.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - repo: Biosimulant/models
+  - path: ../../models/ecology-sbml-mitrophanov2014-extended-hockin-blood-coagulatio-model1806260001-model
     alias: model
-    manifest_path: models/ecology-sbml-mitrophanov2014-extended-hockin-blood-coagulatio-model1806260001-model/model.yaml
 ```
 
 ## Tags

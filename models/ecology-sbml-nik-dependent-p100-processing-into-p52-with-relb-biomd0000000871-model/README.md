@@ -11,14 +11,13 @@ This model represents NIK-dependent p100 processing into p52 followed by binding
 
 ## Usage
 
-This model was auto-generated from the biomodels_ebi repository.
+This model was auto-generated from the BioModels EBI catalog.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - repo: Biosimulant/models
+  - path: ../../models/ecology-sbml-nik-dependent-p100-processing-into-p52-with-relb-biomd0000000871-model
     alias: model
-    manifest_path: models/ecology-sbml-nik-dependent-p100-processing-into-p52-with-relb-biomd0000000871-model/model.yaml
 ```
 
 ## Tags

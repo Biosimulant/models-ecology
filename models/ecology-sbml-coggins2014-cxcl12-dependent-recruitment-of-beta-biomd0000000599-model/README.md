@@ -11,14 +11,13 @@ Nathaniel L. Coggins, Danielle Trakimas, S. Laura Chang, Anna Ehrlich, Paramita 
 
 ## Usage
 
-This model was auto-generated from the biomodels_ebi repository.
+This model was auto-generated from the BioModels EBI catalog.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - repo: Biosimulant/models
+  - path: ../../models/ecology-sbml-coggins2014-cxcl12-dependent-recruitment-of-beta-biomd0000000599-model
     alias: model
-    manifest_path: models/ecology-sbml-coggins2014-cxcl12-dependent-recruitment-of-beta-biomd0000000599-model/model.yaml
 ```
 
 ## Tags
