@@ -11,13 +11,14 @@ This a model from the article: Evolution of immunological memory and the regulat
 
 ## Usage
 
-This model was auto-generated from the BioModels EBI catalog.
+This model was auto-generated from the biomodels_ebi repository.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - path: ../../models/ecology-sbml-wodarz2003-immunological-memory-biomd0000000684-model
+  - repo: Biosimulant/models
     alias: model
+    manifest_path: models/ecology-sbml-wodarz2003-immunological-memory-biomd0000000684-model/model.yaml
 ```
 
 ## Tags

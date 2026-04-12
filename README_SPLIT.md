@@ -9,3 +9,4 @@ Generated from monolithic models repo split.
 Layout:
 - models/<slug>/model.yaml
 - scripts/, templates/, docs/, .github/
+

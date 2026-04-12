@@ -11,13 +11,14 @@ The population genetics and population dynamics model describes how a gene drive
 
 ## Usage
 
-This model was auto-generated from the BioModels EBI catalog.
+This model was auto-generated from the biomodels_ebi repository.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - path: ../../models/ecology-sbml-geci2022-model2301120001-model
+  - repo: Biosimulant/models
     alias: model
+    manifest_path: models/ecology-sbml-geci2022-model2301120001-model/model.yaml
 ```
 
 ## Tags

@@ -11,13 +11,14 @@ Poliquin2013 - Energy Deregulations inParkinson's Disease Encoded non-curated mo
 
 ## Usage
 
-This model was auto-generated from the BioModels EBI catalog.
+This model was auto-generated from the biomodels_ebi repository.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - path: ../../models/ecology-sbml-poliquin2013-energy-deregulations-in-parkinson-s-model1410060000-model
+  - repo: Biosimulant/models
     alias: model
+    manifest_path: models/ecology-sbml-poliquin2013-energy-deregulations-in-parkinson-s-model1410060000-model/model.yaml
 ```
 
 ## Tags

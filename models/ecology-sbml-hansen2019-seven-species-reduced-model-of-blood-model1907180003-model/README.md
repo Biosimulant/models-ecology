@@ -11,13 +11,14 @@ its a seven species reduced model of Hockin 2002. Model uses different level of 
 
 ## Usage
 
-This model was auto-generated from the BioModels EBI catalog.
+This model was auto-generated from the biomodels_ebi repository.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - path: ../../models/ecology-sbml-hansen2019-seven-species-reduced-model-of-blood-model1907180003-model
+  - repo: Biosimulant/models
     alias: model
+    manifest_path: models/ecology-sbml-hansen2019-seven-species-reduced-model-of-blood-model1907180003-model/model.yaml
 ```
 
 ## Tags

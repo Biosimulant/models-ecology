@@ -11,13 +11,14 @@ We are using a minimal model of interacting multispecies ecological communities 
 
 ## Usage
 
-This model was auto-generated from the BioModels EBI catalog.
+This model was auto-generated from the biomodels_ebi repository.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - path: ../../models/ecology-sbml-leibovich2022-multispecies-eco-competition-descr-model2212080001-model
+  - repo: Biosimulant/models
     alias: model
+    manifest_path: models/ecology-sbml-leibovich2022-multispecies-eco-competition-descr-model2212080001-model/model.yaml
 ```
 
 ## Tags

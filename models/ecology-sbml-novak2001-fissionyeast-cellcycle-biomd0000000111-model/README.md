@@ -11,13 +11,14 @@ The model reproduces the time evolution of several species as depicted in Fig 4 
 
 ## Usage
 
-This model was auto-generated from the BioModels EBI catalog.
+This model was auto-generated from the biomodels_ebi repository.
 
 ```yaml
 # In a space.yaml wiring file:
 models:
-  - path: ../../models/ecology-sbml-novak2001-fissionyeast-cellcycle-biomd0000000111-model
+  - repo: Biosimulant/models
     alias: model
+    manifest_path: models/ecology-sbml-novak2001-fissionyeast-cellcycle-biomd0000000111-model/model.yaml
 ```
 
 ## Tags

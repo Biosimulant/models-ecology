@@ -1,10 +1,9 @@
 schema_version: "2.0"
 title: "Population Metrics"
 description: "Computes summary metrics from population state streams. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
-package: "Biosimulant/models-ecology:models/ecology-population-metrics/model.yaml"
-version: "00424971dbc811f9962af365fb9f5a8698643663"
 standard: other
 tags: [ecology, metrics]
 authors: ["Biosimulant Team"]
 biosim:
   entrypoint: "src.ecology_metrics:EcologyMetrics"
+
