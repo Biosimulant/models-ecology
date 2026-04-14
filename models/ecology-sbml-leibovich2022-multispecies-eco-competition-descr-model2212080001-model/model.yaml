@@ -1,37 +1,46 @@
-schema_version: '2.0'
-title: "Leibovich2022 - multispecies eco-competition describes by Master equation"
-description: "We are using a minimal model of interacting multispecies ecological communities that incorporates competition, immigration, and demographic noise. Importantly, the dynamics of the system are described."
+schema_version: "2.0"
+title: "Leibovich2022 Multispecies Competition-Immigration Community Model"
+description: "Stochastic multispecies ecological community model with competition overlap, immigration, and demographic noise, curated from the Python Gillespie implementation distributed with BioModels MODEL2212080001."
 standard: other
 tags:
-- ecology
-- sbml
-- biomodels_ebi
-- faithful
+  - ecology
+  - community-dynamics
+  - competition
+  - stochastic
+  - faithful
 authors:
-- Biosimulant Team
-- Nava Leibovich
-- Jeremy Rothschild
-- Sidhartha Goyal
-- Anton Zilman
+  - Biosimulant Team
+  - Nava Leibovich
+  - Jeremy Rothschild
+  - Sidhartha Goyal
+  - Anton Zilman
 upstream:
   id: biomodels_ebi:MODEL2212080001
   source_db: biomodels_ebi
   source_id: MODEL2212080001
-  standard: sbml
+  standard: python
   original_url: https://www.ebi.ac.uk/biomodels/MODEL2212080001
   download_url: https://www.ebi.ac.uk/biomodels/model/download/MODEL2212080001?filename=gillespie.py
   license: CC0
 biosim:
   entrypoint: src.leibovich2022_multispecies_eco_competition_descr_model2212080001_model:Leibovich2022MultispeciesEcoCompetitionDescrModel2212080001Model
   init_kwargs:
-    model_path: data/MODEL2212080001.xml
-  min_dt: 0.01
+    species_count: 6
+    carrying_capacity: 600.0
+    birth_rate: 1.0
+    death_rate: 0.35
+    competition_strength: 0.7
+    competition_overlap: 0.65
+    immigration_rate: 0.6
+    initial_abundance: 45.0
+    rng_seed: 7
+  min_dt: 0.05
 runtime:
-  python_version: '3.12'
+  python_version: "3.12"
   dependencies:
     packages:
-    - tellurium==2.3.1
-    - numpy==1.26.4
+      - numpy==1.26.4
 io:
   outputs:
-  - state
+    - community_state
+    - diversity_metrics

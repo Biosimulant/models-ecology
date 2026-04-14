@@ -1,26 +1,27 @@
-# Pfeiffer2001_ATP-ProducingPathways_CooperationCompetition
+# Pfeiffer2001 ATP-Pathway Cooperation-Competition Model
 
-**Source**: [biomodels_ebi](https://www.ebi.ac.uk/biomodels/BIOMD0000000337)
-**Standard**: sbml
-**Authors**: T Pfeiffer; S Schuster; S Bonhoeffer
+**Upstream reference**: [BioModels BIOMD0000000337](https://www.ebi.ac.uk/biomodels/BIOMD0000000337)  
+**Original asset type**: SBML  
+**Package standard**: `other`
 
-## Description
+## Scientific Scope
 
-This model is from the article: Cooperation and Competition in the Evolution of ATP-Producing Pathways Thomas Pfeiffer, Stefan Schuster, Sebastian Bonhoeffer Science 2001 Apr; Volume:292 (Issue:5516);
+This package keeps the published SBML dynamics and surfaces the ecological
+observables that matter for interpretation:
 
+- Shared substrate resource (`S`)
+- Population using strategy `N1`
+- Population using strategy `N2`
+- Relative dominance of the two ATP-producing strategies
 
-## Usage
+## Visuals
 
-This model was auto-generated from the biomodels_ebi repository.
+- Resource and biomass time series
+- Strategy-fraction time series
+- Summary table for depletion and competitive outcome
 
-```yaml
-# In a space.yaml wiring file:
-models:
-  - repo: Biosimulant/models
-    alias: model
-    manifest_path: models/ecology-sbml-pfeiffer2001-atp-producingpathways-cooperationco-biomd0000000337-model/model.yaml
-```
+## Packaging Notes
 
-## Tags
-
-systemsbiology, sbml, biomodels_ebi, auto-generated, biomodels-ebi, curated
+- Units are propagated from SBML only when the source model declares them.
+- Time-series visuals are generated from the accumulated simulation history, not
+  a one-point snapshot.

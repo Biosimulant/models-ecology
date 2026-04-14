@@ -1,17 +1,19 @@
-schema_version: '2.0'
-title: "Pfeiffer2001_ATP-ProducingPathways_CooperationCompetition"
-description: "This model is from the article: Cooperation and Competition in the Evolution of ATP-Producing Pathways Thomas Pfeiffer, Stefan Schuster, Sebastian Bonhoeffer Science 2001 Apr; Volume:292 (Issue:5516);. It can be used to explore population and ecosystem dynamics and compare outcomes across conditions."
+schema_version: "2.0"
+title: "Pfeiffer2001 ATP-Pathway Cooperation-Competition Model"
+description: "Curated SBML packaging of the Pfeiffer2001 ATP-pathway ecology model, exposing substrate dynamics, strategy-specific biomass trajectories, and pathway-fraction diagnostics instead of a generic species dump."
 standard: other
 tags:
-- ecology
-- sbml
-- biomodels_ebi
-- faithful
+  - ecology
+  - sbml
+  - microbial
+  - cooperation
+  - competition
+  - faithful
 authors:
-- Biosimulant Team
-- T Pfeiffer
-- S Schuster
-- S Bonhoeffer
+  - Biosimulant Team
+  - T Pfeiffer
+  - S Schuster
+  - S Bonhoeffer
 upstream:
   id: biomodels_ebi:BIOMD0000000337
   source_db: biomodels_ebi
@@ -24,13 +26,15 @@ biosim:
   entrypoint: src.pfeiffer2001_atp_producingpathways_cooperationco_biomd0000000337_model:Pfeiffer2001AtpProducingpathwaysCooperationcoBiomd0000000337Model
   init_kwargs:
     model_path: data/BIOMD0000000337.xml
-  min_dt: 0.01
+  min_dt: 0.1
 runtime:
-  python_version: '3.12'
+  python_version: "3.12"
   dependencies:
     packages:
-    - tellurium==2.3.1
-    - numpy==1.26.4
+      - tellurium==2.3.1
+      - numpy==1.26.4
 io:
   outputs:
-  - state
+    - resource_state
+    - community_state
+    - cooperation_metrics

@@ -393,8 +393,8 @@ implementation of the same concept is added.
 | `neuro-hodgkin-huxley-population` | Good | Named algorithm + clear role |
 | `neuro-izhikevich-population` | Good | Named algorithm + clear role |
 | `neuro-poisson-input` | Good | Named distribution + clear role |
-| `ecology-predator-prey-interaction` | Good | Specific subject + role |
-| `ecology-phase-space-monitor` | Good | Specific visualization type + role |
+| `ecology-lotka-volterra-system` | Good | Named mechanism + clear system scope |
+| `ecology-predator-prey-space` | Good | Specific subject + composed-space role |
 | `neuro-metrics` | Bad | Missing subject — *which* metrics? For what? |
 | `ecology-environment` | Bad | Too generic — *what kind* of environment? |
 | `neuro-monitor` | Bad | Missing subject — could be anything |

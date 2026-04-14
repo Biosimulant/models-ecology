@@ -1,26 +1,35 @@
-# Geci2022
+# Geci2022 Eco-Genetic Gene Drive Suppression Model
 
-**Source**: [biomodels_ebi](https://www.ebi.ac.uk/biomodels/MODEL2301120001)
-**Standard**: sbml
-**Authors**: René Geci; Willis K; Burt A
+**Upstream reference**: [BioModels MODEL2301120001](https://www.ebi.ac.uk/biomodels/MODEL2301120001)  
+**Original asset type**: Julia source (`new model v9.jl`), not SBML  
+**Package standard**: `other`
 
-## Description
+## Scientific Scope
 
-The population genetics and population dynamics model describes how a gene drive would increase in frequency through its molecular activities and then suppress a population
+This package keeps the ecology-facing question from Geci et al. (2022): how a
+gene-drive construct changes sex ratio, spreads through a mosquito population,
+and suppresses adult abundance through time.
 
+Because the BioModels record is a Julia implementation rather than an SBML
+model, Biosimulant now exposes an explicit reduced deterministic
+eco-genetic reimplementation instead of a misleading SBML wrapper.
 
-## Usage
+## Observables
 
-This model was auto-generated from the biomodels_ebi repository.
+- Adult population abundance, split into females and males
+- Drive allele frequency
+- Resistance frequency
+- Population suppression ratio relative to the starting population
 
-```yaml
-# In a space.yaml wiring file:
-models:
-  - repo: Biosimulant/models
-    alias: model
-    manifest_path: models/ecology-sbml-geci2022-model2301120001-model/model.yaml
-```
+## Visuals
 
-## Tags
+- Adult population time series
+- Gene-drive metric time series
+- Summary table with peak drive, peak resistance, and minimum abundance
 
-systemsbiology, sbml, biomodels_ebi, auto-generated, biomodels-ebi, non_curated
+## Limits
+
+- This is a reduced ecology package, not a line-by-line execution of the
+  upstream Julia code.
+- Climate forcing, stage structure, and genotype-resolved bookkeeping are
+  intentionally compressed into aggregate eco-genetic observables.

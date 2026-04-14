@@ -1,11 +1,3 @@
-# SPDX-FileCopyrightText: 2025-present Demi <bjaiye1@gmail.com>
-#
-# SPDX-License-Identifier: MIT
-"""Auto-generated tests for Geci2022Model2301120001Model.
-
-These tests intentionally avoid requiring simulator dependencies. They should pass
-even when a wrapper falls back to stub outputs (e.g., simulator not installed).
-"""
 from __future__ import annotations
 
 import sys
@@ -15,56 +7,55 @@ import pytest
 
 
 MODEL_ROOT = Path(__file__).resolve().parents[1]
-if str(MODEL_ROOT) not in sys.path:
-    sys.path.insert(0, str(MODEL_ROOT))
+MONOREPO_ROOT = MODEL_ROOT.parents[3]
+BSIM_SRC = MONOREPO_ROOT / "bsim-active" / "biosim" / "src"
 
-def _find_repo_root(start: Path) -> Path:
-    for p in [start, *start.parents]:
-        if (p / "models" / "STANDARDS.md").exists():
-            return p
-    raise RuntimeError("repo root not found (models/STANDARDS.md missing)")
-
-REPO_ROOT = _find_repo_root(Path(__file__).resolve())
-BSIM_SRC = REPO_ROOT / "biosim" / "src"
-if BSIM_SRC.exists() and str(BSIM_SRC) not in sys.path:
-    # Ensure we import the real installable package at biosim/src/biosim/.
-    sys.path.insert(0, str(BSIM_SRC))
+for path in (str(MODEL_ROOT), str(BSIM_SRC)):
+    if path not in sys.path:
+        sys.path.insert(0, path)
 
 
 from src.geci2022_model2301120001_model import Geci2022Model2301120001Model  # noqa: E402
-from biosim.signals import BioSignal  # noqa: E402
 
 
-def test_instantiation() -> None:
-    module = Geci2022Model2301120001Model()
-    assert module.min_dt > 0
-    assert isinstance(module.inputs(), set)
-    assert isinstance(module.outputs(), set)
-    assert len(module.outputs()) > 0
+def test_outputs_and_history_accumulate() -> None:
+    module = Geci2022Model2301120001Model(min_dt=0.2)
+    module.advance_to(2.0)
 
-
-def test_advance_produces_outputs() -> None:
-    module = Geci2022Model2301120001Model(min_dt=0.1)
-    module.advance_to(0.1)
     outputs = module.get_outputs()
-    for name in module.outputs():
-        assert name in outputs
-        signal = outputs[name]
-        assert isinstance(signal, BioSignal)
-        assert signal.source is not None
-        assert signal.time == 0.1
+    assert set(outputs) == {"population_state", "gene_drive_metrics"}
+    assert len(module._history) == 10
+    assert outputs["population_state"].value["adult_females"] < outputs["population_state"].value["total_adults"]
 
 
-def test_output_keys_match() -> None:
+def test_drive_metrics_stay_in_physical_bounds() -> None:
     module = Geci2022Model2301120001Model(min_dt=0.1)
-    module.advance_to(0.1)
-    assert set(module.get_outputs().keys()) == module.outputs()
+    module.advance_to(5.0)
+
+    metrics = module.get_outputs()["gene_drive_metrics"].value
+    assert 0.0 <= metrics["drive_frequency"] <= 1.0
+    assert 0.0 <= metrics["resistance_frequency"] <= 1.0
+    assert 0.5 <= metrics["male_fraction"] <= 0.98
 
 
-def test_reset() -> None:
-    module = Geci2022Model2301120001Model(min_dt=0.1)
-    module.advance_to(0.1)
-    if hasattr(module, "reset"):
-        module.reset()
-        module.advance_to(0.1)
-        assert set(module.get_outputs().keys()) == module.outputs()
+def test_visuals_use_multi_point_trajectories() -> None:
+    module = Geci2022Model2301120001Model(min_dt=0.25)
+    module.advance_to(5.0)
+    visuals = module.visualize()
+
+    assert isinstance(visuals, list)
+    assert [visual["render"] for visual in visuals] == ["timeseries", "timeseries", "table"]
+    for series in visuals[0]["data"]["series"] + visuals[1]["data"]["series"]:
+        assert len(series["points"]) > 1
+
+
+def test_suppression_increases_under_stronger_drive() -> None:
+    weak = Geci2022Model2301120001Model(suppression_strength=0.2, min_dt=0.1)
+    strong = Geci2022Model2301120001Model(suppression_strength=1.2, min_dt=0.1)
+
+    weak.advance_to(6.0)
+    strong.advance_to(6.0)
+
+    weak_population = weak.get_outputs()["population_state"].value["total_adults"]
+    strong_population = strong.get_outputs()["population_state"].value["total_adults"]
+    assert strong_population < weak_population

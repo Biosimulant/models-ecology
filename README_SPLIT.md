@@ -1,12 +1,8 @@
 # models-ecology
 
-Generated from monolithic models repo split.
+Generated from the monolithic models repository split.
 
 - Domain: ecology
-- Model count: 30
-- Source: monolithic `models` repository
-
-Layout:
-- models/<slug>/model.yaml
-- scripts/, templates/, docs/, .github/
-
+- Model count: 5
+- Space count: 1
+- Focus: research-grade ecology and population dynamics only

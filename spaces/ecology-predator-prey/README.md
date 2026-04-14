@@ -1,32 +1,31 @@
 # Ecology: Predator-Prey
 
 ## Scientific Question
-How do rabbit and fox populations co-evolve under fixed abiotic conditions?
+How do prey and predator populations co-evolve in the canonical Lotka-Volterra system?
 
 ## Biological Context
-This space composes a classic two-species predator-prey system with a shared environment module, explicit predation coupling, and monitor modules for timeseries, phase-space, and summary metrics.
+This space runs a single deterministic Lotka-Volterra model with built-in population trajectories, phase portrait, summary metrics, and invariant-drift diagnostics.
 
 ## Mechanistic Assumptions
-- Environment conditions are broadcast to both populations at each simulation tick.
-- Predation is captured by a Lotka-Volterra-style interaction module.
-- Predation removes prey and returns food gain to predators.
-- Monitoring modules are passive observers and do not affect dynamics.
+- The dynamics are exactly:
+  - `dX/dt = alpha * X - beta * X * Y`
+  - `dY/dt = delta * X * Y - gamma * Y`
+- State variables are continuous real-valued populations.
+- RK4 is used with a fixed simulation step.
 
-## Wiring Rationale
-- `environment.conditions` drives both `rabbits` and `foxes`.
-- Population states feed into `predation` for causal interaction.
-- Both population streams are fanned out to monitor/metrics modules.
-- Predation outputs are routed back to species-specific input ports.
+## Model Rationale
+- The implementation is intentionally strict and omits environmental forcing, carrying capacity, satiation, and stochasticity.
+- Visualizations are owned directly by the Lotka-Volterra model instead of separate observer modules.
 
 ## Expected Behaviors
-- Oscillation or damped cycles in prey/predator counts.
-- Structured trajectories in rabbit-vs-fox phase-space.
-- Stability/extinction metrics available in the metrics table.
+- Oscillatory prey and predator trajectories.
+- Closed phase-space orbits around the non-trivial equilibrium.
+- Small conserved-quantity drift under RK4 integration.
 
 ## Known Limitations
-- Two-species system only; no additional trophic levels.
-- No stochastic external forcing besides module-internal randomness.
-- Fixed baseline environment in default configuration.
+- Two-species canonical system only.
+- No environmental forcing or density dependence.
+- No parameter sweep or batch-analysis visuals are included in this space.
 
 ## How to Run
 ```bash
@@ -35,6 +34,6 @@ python spaces/ecology-predator-prey/simui_local.py --port 8765
 ```
 
 ## How to Interpret Outputs
-- Use `PopulationMonitor` for direct trajectory comparison.
-- Use `PhaseSpaceMonitor` to inspect cycle geometry and attractor behavior.
-- Use `EcologyMetrics` for aggregate indicators (extinctions, diversity, stability).
+- Use the population trajectories panel to compare prey and predator timing.
+- Use the phase portrait to inspect orbit geometry, nullclines, and the equilibrium point.
+- Use the summary table and invariant audit to verify that the run behaves like a faithful numerical Lotka-Volterra simulation.

@@ -32,7 +32,7 @@ def _clear_module_cache(module_name: str) -> None:
 def test_space_schema_and_paths():
     s = _load_space()
     assert s["schema_version"] == "2.0"
-    assert s["models"]
+    assert len(s["models"]) == 1
     assert "runtime" in s and "wiring" in s
     current_repo_root = Path(__file__).resolve().parents[3]
     repo_map = _repo_root_map(current_repo_root)
@@ -43,6 +43,7 @@ def test_space_schema_and_paths():
 def test_wiring_alias_references():
     s = _load_space()
     aliases = {m["alias"] for m in s["models"]}
+    assert aliases == {"lv"}
     for w in s["wiring"]:
         src_alias = w["from"].split(".", 1)[0]
         assert src_alias in aliases
@@ -54,9 +55,14 @@ def test_wiring_alias_references():
 def test_space_smoke_runs_if_bsim_available():
     current_repo_root = Path(__file__).resolve().parents[3]
     monorepo_root = current_repo_root.parents[1]
-    bsim_src = monorepo_root / "bsim" / "src"
-    if bsim_src.exists():
-        sys.path.insert(0, str(bsim_src))
+    bsim_src_candidates = [
+        monorepo_root / "bsim-active" / "biosim" / "src",
+        monorepo_root / "bsim" / "src",
+    ]
+    for bsim_src in bsim_src_candidates:
+        if bsim_src.exists():
+            sys.path.insert(0, str(bsim_src))
+            break
     biosim = pytest.importorskip("biosim")
     s = _load_space()
     repo_map = _repo_root_map(current_repo_root)
@@ -86,3 +92,6 @@ def test_space_smoke_runs_if_bsim_available():
     world.run(duration=duration, tick_dt=tick_dt)
     visuals = world.collect_visuals()
     assert isinstance(visuals, list)
+    assert len(visuals) == 1
+    assert visuals[0]["module"] == "LotkaVolterraSystem"
+    assert len(visuals[0]["visuals"]) == 4

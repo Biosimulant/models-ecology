@@ -1,26 +1,36 @@
-# Leibovich2022 - multispecies eco-competition describes by Master equation
+# Leibovich2022 Multispecies Competition-Immigration Community Model
 
-**Source**: [biomodels_ebi](https://www.ebi.ac.uk/biomodels/MODEL2212080001)
-**Standard**: sbml
-**Authors**: Nava Leibovich; Jeremy Rothschild; Sidhartha Goyal; Anton Zilman
+**Upstream reference**: [BioModels MODEL2212080001](https://www.ebi.ac.uk/biomodels/MODEL2212080001)  
+**Original asset type**: Python Gillespie implementation  
+**Package standard**: `other`
 
-## Description
+## Scientific Scope
 
-We are using a minimal model of interacting multispecies ecological communities that incorporates competition, immigration, and demographic noise. Importantly, the dynamics of the system are described
+This package represents the ecological core of Leibovich et al. (2022): a
+multispecies community shaped by immigration, competition overlap, and
+demographic noise.
 
+The upstream BioModels record is Python simulation code rather than SBML, so
+this package now exposes an explicit stochastic ecology model instead of a
+misleading SBML wrapper.
 
-## Usage
+## Observables
 
-This model was auto-generated from the biomodels_ebi repository.
+- Species-resolved abundance trajectories
+- Total community abundance
+- Species richness
+- Shannon diversity and evenness
+- Dominant species identity
 
-```yaml
-# In a space.yaml wiring file:
-models:
-  - repo: Biosimulant/models
-    alias: model
-    manifest_path: models/ecology-sbml-leibovich2022-multispecies-eco-competition-descr-model2212080001-model/model.yaml
-```
+## Visuals
 
-## Tags
+- Multi-species abundance time series
+- Community metric time series
+- Summary table with diversity and dominance diagnostics
 
-systemsbiology, sbml, biomodels_ebi, auto-generated, biomodels-ebi, non_curated
+## Limits
+
+- This implementation is a curated stochastic competition-immigration model,
+  not a verbatim execution of the original research code.
+- Environmental forcing and parameter sweeps are not included in the package
+  outputs.

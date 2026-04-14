@@ -1,26 +1,28 @@
-# Turner2015-Human/Mosquito ELP Model
+# Turner2015 Mosquito Life-Stage Ecology Model
 
-**Source**: [biomodels_ebi](https://www.ebi.ac.uk/biomodels/BIOMD0000000922)
-**Standard**: sbml
-**Authors**: Amy Turner; Chanok Jung; Pan Tan; Srinivas Gotika; Vijay Mago
+**Upstream reference**: [BioModels BIOMD0000000922](https://www.ebi.ac.uk/biomodels/BIOMD0000000922)  
+**Original asset type**: SBML  
+**Package standard**: `other`
 
-## Description
+## Scientific Scope
 
-the growth of the mosquito population is directly related to the spread of malaria, the Four Stage Life Cycle is incorporated to model the effects of climate change and interspecies competition within
+This package keeps the original SBML dynamics but interprets them through the
+ecology observables that matter for this model:
 
+- Eggs
+- Larvae
+- Pupae
+- Total immature mosquito abundance
+- Stage composition through time
 
-## Usage
+## Visuals
 
-This model was auto-generated from the biomodels_ebi repository.
+- Life-stage abundance time series
+- Life-stage fraction time series
+- Summary table for immature population size
 
-```yaml
-# In a space.yaml wiring file:
-models:
-  - repo: Biosimulant/models
-    alias: model
-    manifest_path: models/ecology-sbml-turner2015-human-mosquito-elp-model-biomd0000000922-model/model.yaml
-```
+## Packaging Notes
 
-## Tags
-
-systemsbiology, sbml, biomodels_ebi, auto-generated, biomodels-ebi, curated
+- Units are emitted only when declared by the SBML source.
+- Visual payloads are built from accumulated trajectories rather than a single
+  endpoint sample.
