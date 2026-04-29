@@ -6,6 +6,14 @@ The usual answer is a cycle. Prey rise first. More prey supports more predators.
 
 This is the plain Lotka-Volterra model. It is useful as a clean baseline, not as a complete field ecology model. It does not include carrying capacity, seasons, disease, migration, age classes, changing habitat, or food limits. Those belong in a richer model such as the Rosenzweig-MacArthur lab.
 
+## What You'll See
+
+The lab opens as a small canvas with one Lotka-Volterra model node and a run-results panel. The first screenshot shows the population trajectory and phase portrait. The second shows the parameter summary and invariant-drift audit used to check that the numerical integration stayed faithful to the classical model.
+
+![Lotka-Volterra lab canvas with population trajectories and phase portrait](assets/readme/lotka-volterra-canvas-results.png)
+
+![Lotka-Volterra summary table and invariant drift diagnostics](assets/readme/lotka-volterra-summary-diagnostics.png)
+
 ## What This Lab Contains
 
 - `lab.yaml` describes the lab and exposes its inputs and outputs.
