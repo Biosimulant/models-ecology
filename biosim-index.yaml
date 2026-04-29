@@ -1,8 +1,0 @@
-models:
-- models/ecology-lotka-volterra-system/model.yaml
-- models/ecology-sbml-geci2022-model2301120001-model/model.yaml
-- models/ecology-sbml-leibovich2022-multispecies-eco-competition-descr-model2212080001-model/model.yaml
-- models/ecology-sbml-pfeiffer2001-atp-producingpathways-cooperationco-biomd0000000337-model/model.yaml
-- models/ecology-sbml-turner2015-human-mosquito-elp-model-biomd0000000922-model/model.yaml
-spaces:
-- spaces/ecology-predator-prey/space.yaml

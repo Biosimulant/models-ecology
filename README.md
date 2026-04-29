@@ -1,5 +1,8 @@
 # models-ecology
 
+> Storage-only repo: each former root model now lives in `labs/<slug>/model/` and is wrapped by
+> `labs/<slug>/lab.yaml`. This repo has no repo-level import catalog and no composed labs at the root.
+
 Focused research-grade ecology and population-dynamics model pack for the `biosim` platform.
 
 ## What's Inside
@@ -37,7 +40,7 @@ Focused research-grade ecology and population-dynamics model pack for the `biosi
 ```text
 models-ecology/
 ├── models/<model-slug>/     # One model package per folder, each with model.yaml
-├── spaces/<space-slug>/     # Composed simulation spaces with space.yaml
+├── labs/<space-slug>/     # Composed simulation spaces with lab.yaml
 ├── scripts/                 # Validation scripts
 ├── templates/model-pack/    # Starter template for new model packs
 ├── docs/                    # Governance documentation

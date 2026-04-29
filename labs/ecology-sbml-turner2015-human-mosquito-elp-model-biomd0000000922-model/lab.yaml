@@ -1,0 +1,11 @@
+schema_version: "2.0"
+title: "Turner2015 Mosquito Life-Stage Ecology Model Lab"
+description: "Single-model lab wrapper for Turner2015 Mosquito Life-Stage Ecology Model. Curated SBML packaging of the Turner2015 mosquito life-stage model, exposing egg, larval, and pupal trajectories together with stage-composition diagnostics for ecology-facing interpretation."
+models:
+  - alias: "ecology_sbml_turner2015_human_mosquito_elp_model_biomd0000000922_model"
+    path: "./model"
+wiring: []
+runtime:
+  duration: 0.01
+  communication_step: 0.01
+  initial_inputs: {}

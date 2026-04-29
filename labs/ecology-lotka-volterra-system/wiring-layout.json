@@ -1,0 +1,12 @@
+{
+  "edges": [],
+  "nodes": [
+    {
+      "id": "ecology_lotka_volterra_system",
+      "position": {
+        "x": 360,
+        "y": 0
+      }
+    }
+  ]
+}

@@ -23,7 +23,7 @@ Example:
 
 Typically includes (non-exhaustive):
 
-- `model.yaml`, `space.yaml`, wiring/config YAML/TOML
+- `model.yaml`, `lab.yaml`, wiring/config YAML/TOML
 - documentation under `docs/` and `README.md`
 - any curated metadata describing models/spaces
 

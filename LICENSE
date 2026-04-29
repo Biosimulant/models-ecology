@@ -18,7 +18,7 @@ See: LICENSE-CONTENT.txt
 
 Examples (non-exhaustive):
 - models/**/model.yaml
-- spaces/**/space.yaml
+- labs/**/lab.yaml
 - docs/**
 - README.md
 

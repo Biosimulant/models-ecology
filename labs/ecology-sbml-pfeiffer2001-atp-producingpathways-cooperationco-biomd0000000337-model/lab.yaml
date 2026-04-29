@@ -1,0 +1,11 @@
+schema_version: "2.0"
+title: "Pfeiffer2001 ATP-Pathway Cooperation-Competition Model Lab"
+description: "Single-model lab wrapper for Pfeiffer2001 ATP-Pathway Cooperation-Competition Model. Curated SBML packaging of the Pfeiffer2001 ATP-pathway ecology model, exposing substrate dynamics, strategy-specific biomass trajectories, and pathway-fraction diagnostics instead of a generic species dump."
+models:
+  - alias: "ecology_sbml_pfeiffer2001_atp_producingpathways_cooperationco_biomd0000000337_model"
+    path: "./model"
+wiring: []
+runtime:
+  duration: 0.01
+  communication_step: 0.01
+  initial_inputs: {}

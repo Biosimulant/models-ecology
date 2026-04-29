@@ -1,0 +1,11 @@
+schema_version: "2.0"
+title: "Leibovich2022 Multispecies Competition-Immigration Community Model Lab"
+description: "Single-model lab wrapper for Leibovich2022 Multispecies Competition-Immigration Community Model. Stochastic multispecies ecological community model with competition overlap, immigration, and demographic noise, curated from the Python Gillespie implementation distributed with BioModels MODEL2212080001."
+models:
+  - alias: "ecology_sbml_leibovich2022_multispecies_eco_competition_descr_model2212080001_model"
+    path: "./model"
+wiring: []
+runtime:
+  duration: 0.01
+  communication_step: 0.01
+  initial_inputs: {}
