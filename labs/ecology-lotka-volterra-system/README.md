@@ -10,9 +10,9 @@ This is the plain Lotka-Volterra model. It is useful as a clean baseline, not as
 
 The lab opens as a small canvas with one Lotka-Volterra model node and a run-results panel. The first screenshot shows the population trajectory and phase portrait. The second shows the parameter summary and invariant-drift audit used to check that the numerical integration stayed faithful to the classical model.
 
-![Lotka-Volterra lab canvas with population trajectories and phase portrait](assets/readme/lotka-volterra-canvas-results.png)
+![Lotka-Volterra lab canvas with population trajectories and phase portrait](assets/lotka-volterra-canvas-results.png)
 
-![Lotka-Volterra summary table and invariant drift diagnostics](assets/readme/lotka-volterra-summary-diagnostics.png)
+![Lotka-Volterra summary table and invariant drift diagnostics](assets/lotka-volterra-summary-diagnostics.png)
 
 ## What This Lab Contains
 
