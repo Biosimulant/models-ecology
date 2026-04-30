@@ -1,22 +1,6 @@
 from __future__ import annotations
-from biosim.signals import (AcceptedSignalProfile, ArraySignal, BioSignal, EventSignal, RecordSignal, ScalarSignal, SignalSpec)
 
-import sys
-from pathlib import Path
-
-
-MODEL_ROOT = Path(__file__).resolve().parents[1]
-MONOREPO_ROOT = MODEL_ROOT.parents[3]
-BSIM_SRC = MONOREPO_ROOT / "bsim-active" / "biosim" / "src"
-
-for path in (str(MODEL_ROOT), str(BSIM_SRC)):
-    if path not in sys.path:
-        sys.path.insert(0, path)
-
-
-from src.turner2015_human_mosquito_elp_model_biomd0000000922_model import (  # noqa: E402
-    Turner2015HumanMosquitoElpModelBiomd0000000922Model,
-)
+from src.turner2015_mosquito_life_stages import Turner2015MosquitoLifeStagesModel
 
 
 class FakeRunner:
@@ -39,12 +23,12 @@ class FakeRunner:
 
 def test_history_and_outputs_accumulate(monkeypatch) -> None:
     monkeypatch.setattr(
-        Turner2015HumanMosquitoElpModelBiomd0000000922Model,
+        Turner2015MosquitoLifeStagesModel,
         "_build_runner",
         lambda self: FakeRunner(),
     )
 
-    module = Turner2015HumanMosquitoElpModelBiomd0000000922Model(integration_step=0.5)
+    module = Turner2015MosquitoLifeStagesModel(integration_step=0.5)
     module.advance_window(0.0, 2.0)
     outputs = module.get_outputs()
 
@@ -55,12 +39,12 @@ def test_history_and_outputs_accumulate(monkeypatch) -> None:
 
 def test_visuals_are_multi_point(monkeypatch) -> None:
     monkeypatch.setattr(
-        Turner2015HumanMosquitoElpModelBiomd0000000922Model,
+        Turner2015MosquitoLifeStagesModel,
         "_build_runner",
         lambda self: FakeRunner(),
     )
 
-    module = Turner2015HumanMosquitoElpModelBiomd0000000922Model(integration_step=0.5)
+    module = Turner2015MosquitoLifeStagesModel(integration_step=0.5)
     module.advance_window(0.0, 3.0)
     visuals = module.visualize()
 
@@ -73,12 +57,12 @@ def test_visuals_are_multi_point(monkeypatch) -> None:
 
 def test_stage_fractions_sum_to_one(monkeypatch) -> None:
     monkeypatch.setattr(
-        Turner2015HumanMosquitoElpModelBiomd0000000922Model,
+        Turner2015MosquitoLifeStagesModel,
         "_build_runner",
         lambda self: FakeRunner(),
     )
 
-    module = Turner2015HumanMosquitoElpModelBiomd0000000922Model(integration_step=0.5)
+    module = Turner2015MosquitoLifeStagesModel(integration_step=0.5)
     module.advance_window(0.0, 1.0)
     metrics = module.get_outputs()["population_metrics"].value
 

@@ -71,7 +71,7 @@ def _make_signal(*, source, name, value, emitted_at, spec=None):
         record_value = {"payload": value}
     return RecordSignal(source=source, name=name, value=record_value, emitted_at=emitted_at, spec=spec)
 
-class Pfeiffer2001AtpProducingpathwaysCooperationcompetition(biosim.BioModule):
+class Pfeiffer2001AtpCooperationModel(biosim.BioModule):
     """Expose pathway and resource observables from the Pfeiffer2001 SBML model."""
 
     _OBSERVABLES = {
@@ -273,4 +273,3 @@ class Pfeiffer2001AtpProducingpathwaysCooperationcompetition(biosim.BioModule):
         }
 
 
-Pfeiffer2001AtpProducingpathwaysCooperationcoBiomd0000000337Model = Pfeiffer2001AtpProducingpathwaysCooperationcompetition

@@ -24,9 +24,10 @@ upstream:
   download_url: https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000922?filename=Turner2015_ELP.xml
   license: CC0
 biosim:
-  entrypoint: src.turner2015_human_mosquito_elp_model_biomd0000000922_model:Turner2015HumanMosquitoElpModelBiomd0000000922Model
+  entrypoint: src.turner2015_mosquito_life_stages:Turner2015MosquitoLifeStagesModel
   init_kwargs:
     model_path: data/BIOMD0000000922.xml
+    integration_step: 0.1
   communication_step: 0.1
 runtime:
   python_version: "3.12"

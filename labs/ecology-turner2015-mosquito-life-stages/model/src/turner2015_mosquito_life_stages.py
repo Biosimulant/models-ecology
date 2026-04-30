@@ -71,7 +71,7 @@ def _make_signal(*, source, name, value, emitted_at, spec=None):
         record_value = {"payload": value}
     return RecordSignal(source=source, name=name, value=record_value, emitted_at=emitted_at, spec=spec)
 
-class SbmlTurner2015HumanMosquitoElpModel(biosim.BioModule):
+class Turner2015MosquitoLifeStagesModel(biosim.BioModule):
     """Expose life-stage ecology observables from the Turner2015 SBML model."""
 
     _STAGES = {
@@ -298,4 +298,3 @@ class SbmlTurner2015HumanMosquitoElpModel(biosim.BioModule):
         }
 
 
-Turner2015HumanMosquitoElpModelBiomd0000000922Model = SbmlTurner2015HumanMosquitoElpModel

@@ -1,22 +1,6 @@
 from __future__ import annotations
-from biosim.signals import (AcceptedSignalProfile, ArraySignal, BioSignal, EventSignal, RecordSignal, ScalarSignal, SignalSpec)
 
-import sys
-from pathlib import Path
-
-
-MODEL_ROOT = Path(__file__).resolve().parents[1]
-MONOREPO_ROOT = MODEL_ROOT.parents[3]
-BSIM_SRC = MONOREPO_ROOT / "bsim-active" / "biosim" / "src"
-
-for path in (str(MODEL_ROOT), str(BSIM_SRC)):
-    if path not in sys.path:
-        sys.path.insert(0, path)
-
-
-from src.pfeiffer2001_atp_producingpathways_cooperationco_biomd0000000337_model import (  # noqa: E402
-    Pfeiffer2001AtpProducingpathwaysCooperationcoBiomd0000000337Model,
-)
+from src.pfeiffer2001_atp_cooperation import Pfeiffer2001AtpCooperationModel
 
 
 class FakeRunner:
@@ -39,12 +23,12 @@ class FakeRunner:
 
 def test_history_accumulates_and_outputs_are_domain_specific(monkeypatch) -> None:
     monkeypatch.setattr(
-        Pfeiffer2001AtpProducingpathwaysCooperationcoBiomd0000000337Model,
+        Pfeiffer2001AtpCooperationModel,
         "_build_runner",
         lambda self: FakeRunner(),
     )
 
-    module = Pfeiffer2001AtpProducingpathwaysCooperationcoBiomd0000000337Model(integration_step=0.5)
+    module = Pfeiffer2001AtpCooperationModel(integration_step=0.5)
     module.advance_window(0.0, 2.0)
     outputs = module.get_outputs()
 
@@ -55,12 +39,12 @@ def test_history_accumulates_and_outputs_are_domain_specific(monkeypatch) -> Non
 
 def test_visuals_have_real_trajectories(monkeypatch) -> None:
     monkeypatch.setattr(
-        Pfeiffer2001AtpProducingpathwaysCooperationcoBiomd0000000337Model,
+        Pfeiffer2001AtpCooperationModel,
         "_build_runner",
         lambda self: FakeRunner(),
     )
 
-    module = Pfeiffer2001AtpProducingpathwaysCooperationcoBiomd0000000337Model(integration_step=0.5)
+    module = Pfeiffer2001AtpCooperationModel(integration_step=0.5)
     module.advance_window(0.0, 3.0)
     visuals = module.visualize()
 
@@ -73,12 +57,12 @@ def test_visuals_have_real_trajectories(monkeypatch) -> None:
 
 def test_fraction_metrics_sum_to_one(monkeypatch) -> None:
     monkeypatch.setattr(
-        Pfeiffer2001AtpProducingpathwaysCooperationcoBiomd0000000337Model,
+        Pfeiffer2001AtpCooperationModel,
         "_build_runner",
         lambda self: FakeRunner(),
     )
 
-    module = Pfeiffer2001AtpProducingpathwaysCooperationcoBiomd0000000337Model(integration_step=0.5)
+    module = Pfeiffer2001AtpCooperationModel(integration_step=0.5)
     module.advance_window(0.0, 1.0)
     metrics = module.get_outputs()["cooperation_metrics"].value
 
