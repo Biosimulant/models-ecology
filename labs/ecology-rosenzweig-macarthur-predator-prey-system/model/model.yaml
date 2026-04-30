@@ -15,42 +15,42 @@ biosim:
   communication_step: 0.1
 parameters:
   - name: prey_initial_population
-    value: 60.0
+    value: 20.0
     min: 0.0
     units: "count"
-    description: "Initial prey population count."
+    description: "Initial prey population count for the boom-bust demonstration scenario."
   - name: predator_initial_population
-    value: 12.0
+    value: 4.0
     min: 0.0
     units: "count"
-    description: "Initial predator population count."
+    description: "Initial predator population count for the boom-bust demonstration scenario."
   - name: prey_growth_rate
     value: 0.8
     min: 0.0
     units: "1/day"
     description: "Intrinsic prey growth rate."
   - name: prey_carrying_capacity
-    value: 120.0
+    value: 450.0
     min: 0.001
     units: "count"
-    description: "Prey carrying capacity under baseline resources."
+    description: "High prey carrying capacity used to expose overshoot and collapse risk."
   - name: attack_rate
-    value: 0.08
+    value: 0.12
     min: 0.0
     units: "1/(count*day)"
     description: "Holling type II predator attack rate."
   - name: handling_time
-    value: 0.25
+    value: 0.18
     min: 0.0
     units: "day"
     description: "Predator handling time per prey item."
   - name: predator_mortality_rate
-    value: 0.25
+    value: 0.18
     min: 0.0
     units: "1/day"
     description: "Predator mortality rate."
   - name: predator_conversion_efficiency
-    value: 0.12
+    value: 0.09
     min: 0.0
     units: "predator/prey"
     description: "Predator gain per prey consumed."

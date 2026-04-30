@@ -11,6 +11,30 @@ A simple way to read it:
 
 This is still a model, not a field survey. Its job is to test scenarios, compare assumptions, and see which settings make a population stable, risky, or likely to collapse.
 
+## Default Scenario
+
+The lab opens with an intentionally unstable boom-bust scenario. Prey start low, predators start low, and the prey carrying capacity is high. That lets prey surge first. Predators then lag behind, grow quickly once prey are abundant, overexploit the prey population, and eventually crash because food becomes scarce.
+
+This default is meant to make the value of the model visible in one run: the population trajectory should show delayed predator response, overshoot, collapse risk, and threshold warnings instead of a quiet equilibrium.
+
+## What You'll See
+
+The lab opens as a canvas with one Rosenzweig-MacArthur model node and a run-results panel. The first screenshot shows the full-run population trajectories and the phase portrait. The second shows the Holling type II functional response and the final ecology state/risk table.
+
+![Rosenzweig-MacArthur lab canvas with boom-bust population trajectories and phase portrait](assets/rosenzweig-macarthur-canvas-trajectories-phase.png)
+
+![Rosenzweig-MacArthur Holling type II functional response and extinction risk table](assets/rosenzweig-macarthur-functional-response-risk.png)
+
+## How to Read the Visualizations
+
+The population trajectory plot is the time view of the simulation. The x-axis is time in days and the y-axis is population count. In the default boom-bust scenario, prey climb first because the habitat can support many more prey than the starting count. Predator growth follows after a delay. When predators become abundant, prey are pushed down hard; predators then crash because there is not enough food left. Repeated peaks show the lagged predator-prey feedback.
+
+The phase portrait shows the same run in state space instead of time. The x-axis is prey count and the y-axis is predator count. Each point on the curve is one simulated ecosystem state. A large loop means the system is moving through boom-bust states rather than settling quietly. The green vertical line is the effective carrying capacity, the yellow marker is the coexistence equilibrium, the green marker is the start, and the red marker is the end.
+
+The Holling type II functional response plot explains the predator feeding limit. The x-axis is prey density and the y-axis is prey consumed per predator per day. The orange curve rises when prey become more available, then flattens because predators are limited by handling time. The dashed blue line marks the current prey density. In the final state of the default run, that marker is far left because prey have collapsed.
+
+The ecology state and risk table summarizes the final state. In the default run, both prey and predator counts are close to zero, effective carrying capacity remains high, and the risk row reports `prey=1`, `predator=1`, and `joint=1`. That means the scenario has crossed the model's extinction-risk thresholds. The mechanisms row shows which ecological mechanisms were active; by default, the demonstration uses carrying capacity and Holling type II predation without disease, seasonality, migration, or patch structure.
+
 ## Why This Is Not Just Lotka-Volterra
 
 Lotka-Volterra is the clean teaching model. It assumes prey grow without a limit and predator-prey encounters follow a simple mass-action rule.
@@ -57,7 +81,7 @@ Optional inputs can turn on or configure seasonal forcing, disease, migration, a
 - `threshold_crossings`: records when prey or predators cross risk thresholds.
 - `scenario_summary`: enabled mechanisms, labels, and units.
 
-The visualizations are specific to this model: population trajectories, a phase portrait with effective carrying capacity, a Holling type II predation curve, and a patch/resource/risk table.
+The visualizations are specific to this model: full-run population trajectories, a phase portrait with effective carrying capacity, a Holling type II predation curve, and a patch/resource/risk table.
 
 ## Recreate and Run with the Biosim CLI
 

@@ -14,6 +14,8 @@ if TYPE_CHECKING:  # pragma: no cover - typing only
 
 
 EPS = 1e-9
+HISTORY_POINT_LIMIT = 10000
+VISUAL_POINT_LIMIT = 900
 
 
 def _make_signal(*, source: str, name: str, value: Any, emitted_at: float, spec: SignalSpec) -> BioSignal:
@@ -152,22 +154,32 @@ class RosenzweigMacArthurPredatorPreySystem(BioModule):
             "food_resource_index": self._scalar_input("dimensionless", "Relative food/resource multiplier."),
             "seasonal_forcing": SignalSpec.record(
                 schema={"amplitude": "float", "period": "float", "phase": "float"},
-                accepted_profiles=(AcceptedSignalProfile(signal_type="record"),),
+                accepted_profiles=(
+                    AcceptedSignalProfile(
+                        signal_type="record",
+                        schema={"amplitude": "float", "period": "float", "phase": "float"},
+                    ),
+                ),
                 description="Seasonal forcing settings for growth, capacity, and mortality.",
             ),
             "disease_parameters": SignalSpec.record(
                 schema={"transmission_rate": "float", "recovery_rate": "float", "mortality_rate": "float"},
-                accepted_profiles=(AcceptedSignalProfile(signal_type="record"),),
+                accepted_profiles=(
+                    AcceptedSignalProfile(
+                        signal_type="record",
+                        schema={"transmission_rate": "float", "recovery_rate": "float", "mortality_rate": "float"},
+                    ),
+                ),
                 description="Disease rates for susceptible/infected compartments.",
             ),
             "migration_matrix": SignalSpec.record(
                 schema={"matrix": "json"},
-                accepted_profiles=(AcceptedSignalProfile(signal_type="record"),),
+                accepted_profiles=(AcceptedSignalProfile(signal_type="record", schema={"matrix": "json"}),),
                 description="Patch migration matrix or migration-rate configuration.",
             ),
             "patch_configuration": SignalSpec.record(
                 schema={"patches": "json"},
-                accepted_profiles=(AcceptedSignalProfile(signal_type="record"),),
+                accepted_profiles=(AcceptedSignalProfile(signal_type="record", schema={"patches": "json"}),),
                 description="Patch-specific carrying capacities, food resources, and initial populations.",
             ),
         }
@@ -559,8 +571,8 @@ class RosenzweigMacArthurPredatorPreySystem(BioModule):
             "predator_patches": [float(value) for value in self._predator],
         }
         self._history.append(point)
-        if len(self._history) > 2000:
-            self._history = self._history[-2000:]
+        if len(self._history) > HISTORY_POINT_LIMIT:
+            self._history = self._history[-HISTORY_POINT_LIMIT:]
 
     def _equilibrium_summary(self) -> dict[str, Any]:
         replacement = self.predator_conversion_efficiency - self.predator_mortality_rate * self.handling_time
@@ -751,7 +763,7 @@ class RosenzweigMacArthurPredatorPreySystem(BioModule):
         ]
 
     def _timeseries_visual(self) -> "VisualSpec":
-        points = self._history[-300:]
+        points = self._visual_history()
         return {
             "render": "timeseries",
             "description": "Prey and predator population counts under the configured Rosenzweig-MacArthur scenario.",
@@ -765,6 +777,22 @@ class RosenzweigMacArthurPredatorPreySystem(BioModule):
                 ],
             },
         }
+
+    def _visual_history(self, limit: int = VISUAL_POINT_LIMIT) -> List[Dict[str, Any]]:
+        if len(self._history) <= limit:
+            return list(self._history)
+        if limit <= 1:
+            return [self._history[-1]]
+
+        max_index = len(self._history) - 1
+        sampled: List[Dict[str, Any]] = []
+        last_index = -1
+        for index in range(limit):
+            history_index = round(index * max_index / (limit - 1))
+            if history_index != last_index:
+                sampled.append(self._history[history_index])
+                last_index = history_index
+        return sampled
 
     def _phase_visual(self) -> "VisualSpec":
         svg = self._phase_svg()
@@ -844,7 +872,8 @@ class RosenzweigMacArthurPredatorPreySystem(BioModule):
         left, right, top, bottom = 64, 24, 32, 50
         plot_w = width - left - right
         plot_h = height - top - bottom
-        points = [(p["prey"], p["predator"]) for p in self._history[-300:]]
+        visual_history = self._visual_history()
+        points = [(p["prey"], p["predator"]) for p in visual_history]
         if len(points) < 2:
             points = [(sum(self._prey), sum(self._predator)), (sum(self._prey), sum(self._predator))]
         equilibrium = self._equilibrium_summary()
@@ -862,6 +891,8 @@ class RosenzweigMacArthurPredatorPreySystem(BioModule):
 
         path = " ".join(("M" if i == 0 else "L") + f" {sx(x):.2f},{sy(y):.2f}" for i, (x, y) in enumerate(points))
         k_x = sx(carrying_capacity)
+        start_x, start_y = points[0]
+        end_x, end_y = points[-1]
         eq = "" if equilibrium["method"] == "no_positive_coexistence" else f'<circle cx="{sx(eq_prey):.2f}" cy="{sy(eq_predator):.2f}" r="5" fill="#facc15"/><text x="{sx(eq_prey)+8:.2f}" y="{sy(eq_predator)-8:.2f}" fill="#e5e7eb" font-size="12">coexistence equilibrium</text>'
         return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}">
   <rect width="{width}" height="{height}" fill="#111827" rx="10"/>
@@ -869,9 +900,13 @@ class RosenzweigMacArthurPredatorPreySystem(BioModule):
   <line x1="{left}" y1="{top}" x2="{left}" y2="{height-bottom}" stroke="#64748b"/>
   <line x1="{k_x:.2f}" y1="{top}" x2="{k_x:.2f}" y2="{height-bottom}" stroke="#22c55e" stroke-dasharray="6 5"/>
   <path d="{path}" fill="none" stroke="#38bdf8" stroke-width="3"/>
+  <circle cx="{sx(start_x):.2f}" cy="{sy(start_y):.2f}" r="4" fill="#22c55e"/>
+  <circle cx="{sx(end_x):.2f}" cy="{sy(end_y):.2f}" r="4" fill="#ef4444"/>
   {eq}
   <text x="{width/2}" y="23" text-anchor="middle" fill="#f8fafc" font-size="16" font-family="sans-serif">Rosenzweig-MacArthur Phase Portrait</text>
   <text x="{k_x + 6:.2f}" y="{top + 16}" fill="#86efac" font-size="12">effective K</text>
+  <text x="{left + 8}" y="{top + 16}" fill="#86efac" font-size="12">start</text>
+  <text x="{left + 8}" y="{top + 32}" fill="#fca5a5" font-size="12">end</text>
   <text x="{width/2}" y="{height-14}" text-anchor="middle" fill="#cbd5e1" font-size="13">Prey population (count)</text>
   <text x="18" y="{height/2}" transform="rotate(-90 18 {height/2})" text-anchor="middle" fill="#cbd5e1" font-size="13">Predator population (count)</text>
 </svg>"""

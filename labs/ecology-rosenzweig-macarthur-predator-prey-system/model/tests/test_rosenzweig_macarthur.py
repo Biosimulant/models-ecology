@@ -172,3 +172,14 @@ def test_visualizations_are_ecology_specific():
     titles = [visual["data"]["title"] for visual in visuals]
     assert "Holling Type II Functional Response" in titles
     assert "Ecology State and Risk" in titles
+
+
+def test_population_visual_spans_the_retained_run():
+    module = RosenzweigMacArthurPredatorPreySystem()
+    run_days(module, 200)
+
+    visuals = module.visualize()
+    prey_points = visuals[0]["data"]["series"][0]["points"]
+
+    assert prey_points[0][0] == pytest.approx(0.5)
+    assert prey_points[-1][0] == pytest.approx(200.0)
