@@ -14,6 +14,23 @@ The lab opens as a small canvas with one Lotka-Volterra model node and a run-res
 
 ![Lotka-Volterra summary table and invariant drift diagnostics](assets/lotka-volterra-summary-diagnostics.png)
 
+## How to Read the Visualizations
+
+The population trajectory plot is the direct time view of the simulation. The x-axis is time in days and the y-axis is population count. In the classical Lotka-Volterra cycle, prey usually rise first because they grow without needing predators. Predator numbers then rise after a delay because reproduction depends on prey encounters. As predator pressure increases, prey decline; once prey are scarce, predators decline too.
+
+The phase portrait shows the same run in state space instead of time. The x-axis is prey count and the y-axis is predator count. Each point on the curve is one simulated predator-prey state. A closed loop means the model is cycling around the non-zero equilibrium:
+
+```text
+prey equilibrium N* = gamma / delta
+predator equilibrium P* = alpha / beta
+```
+
+The horizontal `dN/dt = 0` line marks where prey growth switches direction. The vertical `dP/dt = 0` line marks where predator growth switches direction. Their intersection is the equilibrium. The start marker shows the initial populations, and the end marker shows where the run finished.
+
+The summary table gives the parameter values, equilibrium point, final populations, min/max ranges, estimated cycle period, and extinction checks. Use it to compare runs when you change initial populations or rates.
+
+The invariant drift audit is a numerical quality check. The ideal Lotka-Volterra system conserves a quantity over time, so the drift from the initial value should stay small. Large or steadily growing drift usually means the integration step is too coarse for the chosen parameters, not that the ecological story changed.
+
 ## What This Lab Contains
 
 - `lab.yaml` describes the lab and exposes its inputs and outputs.
