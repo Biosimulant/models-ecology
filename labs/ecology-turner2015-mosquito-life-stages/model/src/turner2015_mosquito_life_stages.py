@@ -123,7 +123,7 @@ class Turner2015MosquitoLifeStagesModel(biosim.BioModule):
 
     def inputs(self) -> dict[str, SignalSpec]:
         return {
-            "integration_step": self._scalar_input_spec("time", "ODE solver integration step size."),
+            "integration_step": self._scalar_input_spec("day", "ODE solver integration step size."),
         }
 
     def set_inputs(self, inputs: dict[str, BioSignal]) -> None:
@@ -152,8 +152,8 @@ class Turner2015MosquitoLifeStagesModel(biosim.BioModule):
 
     def outputs(self) -> dict[str, SignalSpec]:
         return {
-            'life_stage_state': SignalSpec.record(schema={'eggs': 'json', 'larvae': 'json', 'pupae': 'json', 'total_immature_population': 'json'}, description='Immature mosquito life-stage abundances from the Turner2015 model.'),
-            'population_metrics': SignalSpec.record(schema={'egg_fraction': 'json', 'larval_fraction': 'json', 'pupal_fraction': 'json', 'total_immature_population': 'json'}, description='Stage fractions and total immature abundance for the Turner2015 mosquito life-stage model.'),
+            'life_stage_state': SignalSpec.record(schema={'eggs': 'json', 'larvae': 'json', 'pupae': 'json', 'total_immature_population': 'json'}, emitted_unit='individuals', description='Immature mosquito life-stage abundances from the Turner2015 model.'),
+            'population_metrics': SignalSpec.record(schema={'egg_fraction': 'json', 'larval_fraction': 'json', 'pupal_fraction': 'json', 'total_immature_population': 'json'}, emitted_unit='fraction', description='Stage fractions and total immature abundance for the Turner2015 mosquito life-stage model.'),
         }
 
     def advance_window(self, start: float, end: float, inputs: dict[str, BioSignal] | None = None) -> None:

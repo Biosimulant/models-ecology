@@ -41,8 +41,8 @@ The summary table gives initial and final population sizes, peak drive and resis
 All parameters are set through `model/model.yaml` init_kwargs and are also exposed as input ports for workflow wiring. In a multi-model workflow, another model can feed values into any of these ports at runtime. If genetic parameters change at runtime, the model rebuilds its process matrices automatically.
 
 - `net_reproduction_rate` (`dimensionless`): net reproduction rate (default 6.0).
-- `juvenile_survival` (`dimensionless`): juvenile survival probability (default 0.1).
-- `initial_population` (`dimensionless`): normalized initial population size (default 1.0).
+- `juvenile_survival` (`fraction`): juvenile survival probability (default 0.1).
+- `initial_population` (`population`): normalized initial population size (default 1.0).
 - `release_size` (`fraction`): transgenic release as a fraction of the initial population (default 0.1).
 - `homing_efficiency` (`fraction`): homing efficiency (default 0.95).
 - `editing_efficiency` (`fraction`): editing efficiency (default 0.95).
@@ -68,7 +68,7 @@ All parameters are set through `model/model.yaml` init_kwargs and are also expos
 ## Outputs
 
 - `population_state` (`individuals`): total adults, adult females, and adult males.
-- `gene_drive_metrics`: drive frequency, resistance frequency, male fraction, and suppression ratio.
+- `gene_drive_metrics` (`fraction`): drive frequency, resistance frequency, male fraction, and suppression ratio.
 
 ## Recreate and Run with the Biosim CLI
 

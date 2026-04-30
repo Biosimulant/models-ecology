@@ -738,8 +738,8 @@ class Geci2022GeneDriveModel(biosim.BioModule):
     def inputs(self) -> dict[str, SignalSpec]:
         return {
             "net_reproduction_rate": self._scalar_input_spec("dimensionless", "Net reproduction rate."),
-            "juvenile_survival": self._scalar_input_spec("dimensionless", "Juvenile survival probability."),
-            "initial_population": self._scalar_input_spec("dimensionless", "Normalized initial population size."),
+            "juvenile_survival": self._scalar_input_spec("fraction", "Juvenile survival probability."),
+            "initial_population": self._scalar_input_spec("population", "Normalized initial population size."),
             "release_size": self._scalar_input_spec("fraction", "Transgenic release as fraction of initial population."),
             "homing_efficiency": self._scalar_input_spec("fraction", "Homing efficiency."),
             "editing_efficiency": self._scalar_input_spec("fraction", "Editing efficiency."),
@@ -837,6 +837,7 @@ class Geci2022GeneDriveModel(biosim.BioModule):
             'gene_drive_metrics': SignalSpec.record(
                 schema={'drive_frequency': 'json', 'resistance_frequency': 'json',
                         'male_fraction': 'json', 'suppression_ratio': 'json'},
+                emitted_unit='fraction',
                 description='Eco-genetic metrics for drive spread, resistance, and suppression.',
             ),
         }

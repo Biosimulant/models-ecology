@@ -32,12 +32,12 @@ The summary table gives final and extremal values for each life stage and the to
 Parameters are set through `model/model.yaml` init_kwargs. The `integration_step` parameter is also exposed as an input port for workflow wiring.
 
 - `model_path` (`path`): relative path to the SBML file (default `data/BIOMD0000000922.xml`). This should not normally be changed.
-- `integration_step` (`time`): numerical integration step size for the ODE solver (default 0.1). Also available as an input port. Smaller values give more precise output but take longer. The SBML model's internal parameters (development rates, mortality rates, initial populations) are defined in the SBML file itself, not in init_kwargs.
+- `integration_step` (`day`): numerical integration step size for the ODE solver (default 0.1). Also available as an input port. Smaller values give more precise output but take longer. The SBML model's internal parameters (development rates, mortality rates, initial populations) are defined in the SBML file itself, not in init_kwargs.
 
 ## Outputs
 
-- `life_stage_state`: egg, larval, and pupal abundances, plus total immature population.
-- `population_metrics`: egg fraction, larval fraction, pupal fraction, and total immature population.
+- `life_stage_state` (`individuals`): egg, larval, and pupal abundances, plus total immature population.
+- `population_metrics` (`fraction`): egg fraction, larval fraction, pupal fraction, and total immature population.
 
 ## Recreate and Run with the Biosim CLI
 

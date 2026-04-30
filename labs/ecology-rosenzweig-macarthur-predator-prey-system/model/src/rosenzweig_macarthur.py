@@ -203,18 +203,22 @@ class RosenzweigMacArthurPredatorPreySystem(BioModule):
             ),
             "equilibrium_summary": SignalSpec.record(
                 schema={"prey_equilibrium": "float", "predator_equilibrium": "float", "method": "str"},
+                emitted_unit="count",
                 description="Rosenzweig-MacArthur coexistence equilibrium summary.",
             ),
             "stability_summary": SignalSpec.record(
                 schema={"classification": "str", "prey_growth_margin": "float", "predator_replacement_margin": "float"},
+                emitted_unit="dimensionless",
                 description="Local qualitative stability indicators.",
             ),
             "extinction_risk": SignalSpec.record(
                 schema={"prey": "float", "predator": "float", "joint": "float"},
+                emitted_unit="fraction",
                 description="Threshold-based extinction risk scores.",
             ),
             "threshold_crossings": SignalSpec.record(
                 schema={"prey_below_threshold": "bool", "predator_below_threshold": "bool", "events": "json"},
+                emitted_unit="dimensionless",
                 description="Recent threshold crossing events.",
             ),
             "scenario_summary": SignalSpec.record(

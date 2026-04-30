@@ -56,30 +56,82 @@ runtime:
       - numpy==1.26.4
 io:
   inputs:
-    - net_reproduction_rate
-    - juvenile_survival
-    - initial_population
-    - release_size
-    - homing_efficiency
-    - editing_efficiency
-    - shredding_efficiency
-    - copy_mutation_rate
-    - background_mutation_rate
-    - editing_resistance_rate
-    - shredding_resistance_rate
-    - homing_resistance_rate
-    - fitness_cost_cas9
-    - fitness_cost_grna
-    - fitness_cost_shredder
-    - fitness_cost_nuclease
-    - fitness_cost_shredder_activity
-    - fitness_cost_edited_female
-    - fitness_cost_edited_male
-    - dominance_editing
-    - dominance_shredder
-    - dominance_shredder_gamete
-    - cas9_cofactor
-    - recombination_rate
+    - name: net_reproduction_rate
+      accepted_units: ["dimensionless"]
+      description: "Net reproduction rate (R0, unbounded scalar)."
+    - name: juvenile_survival
+      accepted_units: ["fraction"]
+      description: "Juvenile survival probability."
+    - name: initial_population
+      accepted_units: ["population"]
+      description: "Normalized initial population size."
+    - name: release_size
+      accepted_units: ["fraction"]
+      description: "Transgenic release as fraction of initial population."
+    - name: homing_efficiency
+      accepted_units: ["fraction"]
+      description: "Homing efficiency."
+    - name: editing_efficiency
+      accepted_units: ["fraction"]
+      description: "Editing efficiency."
+    - name: shredding_efficiency
+      accepted_units: ["fraction"]
+      description: "X-shredding efficiency."
+    - name: copy_mutation_rate
+      accepted_units: ["fraction"]
+      description: "Copying-error mutation rate."
+    - name: background_mutation_rate
+      accepted_units: ["fraction"]
+      description: "Background mutation rate."
+    - name: editing_resistance_rate
+      accepted_units: ["fraction"]
+      description: "Editing resistance rate."
+    - name: shredding_resistance_rate
+      accepted_units: ["fraction"]
+      description: "Shredding resistance rate."
+    - name: homing_resistance_rate
+      accepted_units: ["fraction"]
+      description: "Homing resistance rate."
+    - name: fitness_cost_cas9
+      accepted_units: ["fraction"]
+      description: "Cas9 expression fitness cost."
+    - name: fitness_cost_grna
+      accepted_units: ["fraction"]
+      description: "gRNA expression fitness cost."
+    - name: fitness_cost_shredder
+      accepted_units: ["fraction"]
+      description: "Shredder expression fitness cost."
+    - name: fitness_cost_nuclease
+      accepted_units: ["fraction"]
+      description: "Nuclease activity fitness cost."
+    - name: fitness_cost_shredder_activity
+      accepted_units: ["fraction"]
+      description: "Shredder activity fitness cost."
+    - name: fitness_cost_edited_female
+      accepted_units: ["fraction"]
+      description: "Female edited-target fitness cost."
+    - name: fitness_cost_edited_male
+      accepted_units: ["fraction"]
+      description: "Male edited-target fitness cost."
+    - name: dominance_editing
+      accepted_units: ["dimensionless"]
+      description: "Dominance coefficient for female editing."
+    - name: dominance_shredder
+      accepted_units: ["dimensionless"]
+      description: "Dominance coefficient for shredder activity."
+    - name: dominance_shredder_gamete
+      accepted_units: ["dimensionless"]
+      description: "Dominance coefficient for shredder in gametes."
+    - name: cas9_cofactor
+      accepted_units: ["dimensionless"]
+      description: "Cas9 cofactor for shredding."
+    - name: recombination_rate
+      accepted_units: ["fraction"]
+      description: "X-linked recombination rate."
   outputs:
-    - population_state
-    - gene_drive_metrics
+    - name: population_state
+      emitted_unit: "individuals"
+      description: "Adult mosquito population partitioned into females and males."
+    - name: gene_drive_metrics
+      emitted_unit: "fraction"
+      description: "Eco-genetic metrics for drive spread, resistance, and suppression."

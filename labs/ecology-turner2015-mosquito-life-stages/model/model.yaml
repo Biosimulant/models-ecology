@@ -37,7 +37,13 @@ runtime:
       - numpy==1.26.4
 io:
   inputs:
-    - integration_step
+    - name: integration_step
+      accepted_units: ["day"]
+      description: "ODE solver integration step size."
   outputs:
-    - life_stage_state
-    - population_metrics
+    - name: life_stage_state
+      emitted_unit: "individuals"
+      description: "Immature mosquito life-stage abundances from the Turner2015 model."
+    - name: population_metrics
+      emitted_unit: "fraction"
+      description: "Stage fractions and total immature abundance for the Turner2015 mosquito life-stage model."

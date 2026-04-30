@@ -41,12 +41,28 @@ runtime:
       - numpy==1.26.4
 io:
   inputs:
-    - carrying_capacity
-    - birth_rate
-    - death_rate
-    - competition_overlap
-    - immigration_rate
-    - initial_abundance
+    - name: carrying_capacity
+      accepted_units: ["individuals"]
+      description: "Habitat carrying capacity."
+    - name: birth_rate
+      accepted_units: ["1/time"]
+      description: "Per-capita birth rate."
+    - name: death_rate
+      accepted_units: ["1/time"]
+      description: "Per-capita baseline death rate."
+    - name: competition_overlap
+      accepted_units: ["dimensionless"]
+      description: "Fraction of competition that is interspecific."
+    - name: immigration_rate
+      accepted_units: ["individuals/time"]
+      description: "Constant immigration rate per species."
+    - name: initial_abundance
+      accepted_units: ["individuals"]
+      description: "Starting abundance per species."
   outputs:
-    - community_state
-    - diversity_metrics
+    - name: community_state
+      emitted_unit: "individuals"
+      description: "Species-resolved abundances for the stochastic competition community."
+    - name: diversity_metrics
+      emitted_unit: "dimensionless"
+      description: "Diversity and dominance metrics for the multispecies community."

@@ -36,8 +36,16 @@ runtime:
       - numpy==1.26.4
 io:
   inputs:
-    - integration_step
+    - name: integration_step
+      accepted_units: ["time"]
+      description: "ODE solver integration step size."
   outputs:
-    - resource_state
-    - community_state
-    - cooperation_metrics
+    - name: resource_state
+      emitted_unit: "concentration"
+      description: "Shared substrate resource concentration from the Pfeiffer2001 SBML model."
+    - name: community_state
+      emitted_unit: "population"
+      description: "Population sizes for the two ATP-pathway strategies encoded by the model."
+    - name: cooperation_metrics
+      emitted_unit: "fraction"
+      description: "Strategy fractions and resource intensity for the ATP-pathway competition model."

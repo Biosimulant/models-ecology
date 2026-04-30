@@ -189,7 +189,7 @@ class Leibovich2022CommunityModel(biosim.BioModule):
     def outputs(self) -> dict[str, SignalSpec]:
         return {
             'community_state': SignalSpec.record(schema={'species_abundances': 'json', 'total_abundance': 'json'}, emitted_unit='individuals', description='Species-resolved abundances for the stochastic competition community.'),
-            'diversity_metrics': SignalSpec.record(schema={'richness': 'json', 'shannon_diversity': 'json', 'evenness': 'json', 'dominant_species': 'json'}, description='Diversity and dominance metrics for the multispecies community.'),
+            'diversity_metrics': SignalSpec.record(schema={'richness': 'json', 'shannon_diversity': 'json', 'evenness': 'json', 'dominant_species': 'json'}, emitted_unit='dimensionless', description='Diversity and dominance metrics for the multispecies community.'),
         }
 
     def advance_window(self, start: float, end: float, inputs: dict[str, BioSignal] | None = None) -> None:

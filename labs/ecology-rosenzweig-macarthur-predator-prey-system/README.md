@@ -75,10 +75,10 @@ Optional inputs can turn on or configure seasonal forcing, disease, migration, a
 - `prey_population_state` (`count`): current prey count, timestamp, and patch counts.
 - `predator_population_state` (`count`): current predator count, timestamp, and patch counts.
 - `population_timeseries` (`count`): trajectory over time.
-- `equilibrium_summary`: rough coexistence equilibrium information.
-- `stability_summary`: plain-language stability classification.
-- `extinction_risk`: recent threshold-based risk scores.
-- `threshold_crossings`: records when prey or predators cross risk thresholds.
+- `equilibrium_summary` (`count`): rough coexistence equilibrium information.
+- `stability_summary` (`dimensionless`): plain-language stability classification.
+- `extinction_risk` (`fraction`): recent threshold-based risk scores.
+- `threshold_crossings` (`dimensionless`): records when prey or predators cross risk thresholds.
 - `scenario_summary`: enabled mechanisms, labels, and units.
 
 The visualizations are specific to this model: full-run population trajectories, a phase portrait with effective carrying capacity, a Holling type II predation curve, and a patch/resource/risk table.

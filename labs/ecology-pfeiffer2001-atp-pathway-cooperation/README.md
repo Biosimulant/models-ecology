@@ -36,9 +36,9 @@ Parameters are set through `model/model.yaml` init_kwargs. The `integration_step
 
 ## Outputs
 
-- `resource_state`: shared substrate resource concentration (S).
-- `community_state`: population sizes for the high-yield (N1) and low-yield (N2) strategies, plus total population.
-- `cooperation_metrics`: high-yield fraction, low-yield fraction, and resource-per-biomass ratio.
+- `resource_state` (`concentration`): shared substrate resource concentration (S).
+- `community_state` (`population`): population sizes for the high-yield (N1) and low-yield (N2) strategies, plus total population.
+- `cooperation_metrics` (`fraction`): high-yield fraction, low-yield fraction, and resource-per-biomass ratio.
 
 ## Recreate and Run with the Biosim CLI
 

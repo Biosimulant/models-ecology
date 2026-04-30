@@ -112,12 +112,16 @@ io:
       accepted_units: ["dimensionless"]
       description: "Food and habitat resource multiplier."
     - name: seasonal_forcing
+      accepted_units: ["day"]
       description: "Record with amplitude, period, and phase."
     - name: disease_parameters
+      accepted_units: ["1/day"]
       description: "Record with disease transmission, recovery, and mortality rates."
     - name: migration_matrix
+      accepted_units: ["1/day"]
       description: "Record describing patch migration."
     - name: patch_configuration
+      accepted_units: ["dimensionless"]
       description: "Record describing patch resource and initial states."
   outputs:
     - name: prey_population_state
@@ -130,12 +134,16 @@ io:
       emitted_unit: "count"
       description: "Population trajectory."
     - name: equilibrium_summary
+      emitted_unit: "count"
       description: "Equilibrium summary."
     - name: stability_summary
+      emitted_unit: "dimensionless"
       description: "Stability summary."
     - name: extinction_risk
+      emitted_unit: "fraction"
       description: "Extinction risk scores."
     - name: threshold_crossings
+      emitted_unit: "dimensionless"
       description: "Threshold crossing events."
     - name: scenario_summary
       description: "Enabled mechanisms, units, and labels."

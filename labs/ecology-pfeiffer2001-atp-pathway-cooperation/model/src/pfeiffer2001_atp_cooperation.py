@@ -152,9 +152,9 @@ class Pfeiffer2001AtpCooperationModel(biosim.BioModule):
 
     def outputs(self) -> dict[str, SignalSpec]:
         return {
-            'resource_state': SignalSpec.record(schema={'substrate_resource': 'json'}, description='Shared substrate resource concentration from the Pfeiffer2001 SBML model.'),
-            'community_state': SignalSpec.record(schema={'high_yield_population': 'json', 'low_yield_population': 'json', 'total_population': 'json'}, description='Population sizes for the two ATP-pathway strategies encoded by the model.'),
-            'cooperation_metrics': SignalSpec.record(schema={'high_yield_fraction': 'json', 'low_yield_fraction': 'json', 'resource_per_biomass': 'json'}, description='Strategy fractions and resource intensity for the ATP-pathway competition model.'),
+            'resource_state': SignalSpec.record(schema={'substrate_resource': 'json'}, emitted_unit='concentration', description='Shared substrate resource concentration from the Pfeiffer2001 SBML model.'),
+            'community_state': SignalSpec.record(schema={'high_yield_population': 'json', 'low_yield_population': 'json', 'total_population': 'json'}, emitted_unit='population', description='Population sizes for the two ATP-pathway strategies encoded by the model.'),
+            'cooperation_metrics': SignalSpec.record(schema={'high_yield_fraction': 'json', 'low_yield_fraction': 'json', 'resource_per_biomass': 'json'}, emitted_unit='fraction', description='Strategy fractions and resource intensity for the ATP-pathway competition model.'),
         }
 
     def advance_window(self, start: float, end: float, inputs: dict[str, BioSignal] | None = None) -> None:

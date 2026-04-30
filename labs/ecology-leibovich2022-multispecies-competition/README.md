@@ -47,7 +47,7 @@ All parameters are set through `model/model.yaml` init_kwargs. The six runtime-t
 ## Outputs
 
 - `community_state` (`individuals`): species-resolved abundances and total abundance.
-- `diversity_metrics`: species richness, Shannon diversity, evenness, and dominant species identity.
+- `diversity_metrics` (`dimensionless`): species richness, Shannon diversity, evenness, and dominant species identity.
 
 ## Recreate and Run with the Biosim CLI
 
