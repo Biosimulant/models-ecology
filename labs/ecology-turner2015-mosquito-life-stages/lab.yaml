@@ -6,6 +6,6 @@ models:
     path: "./model"
 wiring: []
 runtime:
-  duration: 0.01
-  communication_step: 0.01
+  duration: 365
+  communication_step: 1.0
   initial_inputs: {}

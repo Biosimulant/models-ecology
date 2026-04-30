@@ -1,0 +1,18 @@
+schema_version: "2.0"
+title: "Leibovich2022 Multispecies Competition Lab"
+description: "Single-model lab wrapper for the Leibovich2022 stochastic multispecies competition-immigration community model. Faithful port of the upstream MultiLV Gillespie propensity rules."
+models:
+  - alias: ecology_leibovich2022_multispecies_competition
+    path: model
+wiring: []
+runtime:
+  duration: 500
+  communication_step: 0.5
+  initial_inputs: {}
+io:
+  inputs: []
+  outputs:
+    - name: community_state
+      maps_to: ecology_leibovich2022_multispecies_competition.community_state
+    - name: diversity_metrics
+      maps_to: ecology_leibovich2022_multispecies_competition.diversity_metrics

@@ -1,0 +1,18 @@
+schema_version: "2.0"
+title: "Geci2022 Gene-Drive Suppression Lab"
+description: "Single-model lab wrapper for the Geci2022 mosquito gene-drive suppression model. Tracks 1071 genotypes across Y-linked editor, X-shredder, and autosomal homing components with discrete-generation dynamics."
+models:
+  - alias: ecology_geci2022_gene_drive_suppression
+    path: model
+wiring: []
+runtime:
+  duration: 100
+  communication_step: 1.0
+  initial_inputs: {}
+io:
+  inputs: []
+  outputs:
+    - name: population_state
+      maps_to: ecology_geci2022_gene_drive_suppression.population_state
+    - name: gene_drive_metrics
+      maps_to: ecology_geci2022_gene_drive_suppression.gene_drive_metrics

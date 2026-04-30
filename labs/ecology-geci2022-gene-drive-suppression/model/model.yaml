@@ -1,0 +1,60 @@
+schema_version: "2.0"
+title: "Geci2022 Gene-Drive Suppression Model"
+description: "Genotype-tracking gene-drive model for mosquito population suppression, ported from the upstream Julia implementation (BioModels MODEL2301120001). Tracks 1071 genotypes across Y-linked editor, X-shredder, and autosomal homing components with discrete-generation dynamics including homing, editing, recombination, mutation, X-shredding, Beverton-Holt density dependence, and genotype-specific fitness selection."
+standard: other
+tags:
+  - ecology
+  - population-genetics
+  - gene-drive
+  - mosquito
+  - faithful
+authors:
+  - Biosimulant Team
+  - "René Geci"
+  - Willis K
+  - Burt A
+upstream:
+  id: biomodels_ebi:MODEL2301120001
+  source_db: biomodels_ebi
+  source_id: MODEL2301120001
+  standard: other
+  original_url: https://www.ebi.ac.uk/biomodels/MODEL2301120001
+  download_url: https://www.ebi.ac.uk/biomodels/model/download/MODEL2301120001?filename=new%20model%20v9.jl
+  license: CC0
+biosim:
+  entrypoint: src.geci2022_gene_drive:Geci2022GeneDriveModel
+  init_kwargs:
+    net_reproduction_rate: 6.0
+    juvenile_survival: 0.1
+    initial_population: 1.0
+    homing_efficiency: 0.95
+    editing_efficiency: 0.95
+    shredding_efficiency: 0.95
+    copy_mutation_rate: 0.0
+    background_mutation_rate: 0.0
+    editing_resistance_rate: 0.0
+    shredding_resistance_rate: 0.0
+    homing_resistance_rate: 0.0
+    fitness_cost_cas9: 0.0
+    fitness_cost_grna: 0.0
+    fitness_cost_shredder: 0.0
+    fitness_cost_nuclease: 0.0
+    fitness_cost_shredder_activity: 0.0
+    fitness_cost_edited_female: 0.0
+    fitness_cost_edited_male: 0.0
+    dominance_editing: 0.5
+    dominance_shredder: 0.5
+    dominance_shredder_gamete: 0.5
+    cas9_cofactor: 1.0
+    recombination_rate: 0.0
+    release_size: 0.1
+  communication_step: 1.0
+runtime:
+  python_version: "3.12"
+  dependencies:
+    packages:
+      - numpy==1.26.4
+io:
+  outputs:
+    - population_state
+    - gene_drive_metrics

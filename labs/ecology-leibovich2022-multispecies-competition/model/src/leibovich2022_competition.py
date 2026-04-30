@@ -1,12 +1,21 @@
 # SPDX-FileCopyrightText: 2025-present Demi <bjaiye1@gmail.com>
 #
 # SPDX-License-Identifier: MIT
-"""Stochastic multispecies competition model grounded in Leibovich et al. (2022).
+"""Faithful stochastic multispecies competition model from Leibovich et al. (2022).
 
 The upstream BioModels record for MODEL2212080001 distributes Python Gillespie
-code, not SBML. This Biosimulant package therefore exposes a curated
-competition-immigration model with explicit ecological observables instead of a
-generic SBML wrapper.
+code, not SBML.  This Biosimulant package ports the upstream ``MultiLV``
+propensity rules (gillespie_models.py) directly:
+
+    birth propensity per species:  immi_rate + n_i * birth_rate
+    death propensity per species:  n_i * (death_rate
+        + (birth_rate - death_rate)
+          * ((1 - comp_overlap) * n_i + comp_overlap * sum(n))
+          / carry_capacity)
+
+Immigration is uniform across species (no rarer-species weighting).
+Competition coefficient is ``birth_rate - death_rate`` (not a separate
+parameter), exactly matching the upstream ``MultiLV.propensity`` function.
 """
 from __future__ import annotations
 
@@ -76,18 +85,17 @@ def _make_signal(*, source, name, value, emitted_at, spec=None):
     return RecordSignal(source=source, name=name, value=record_value, emitted_at=emitted_at, spec=spec)
 
 class Leibovich2022CommunityModel(biosim.BioModule):
-    """Competition-immigration model with demographic noise."""
+    """Faithful competition-immigration model matching upstream MultiLV propensities."""
 
     def __init__(
         self,
         species_count: int = 6,
-        carrying_capacity: float = 600.0,
-        birth_rate: float = 1.0,
-        death_rate: float = 0.35,
-        competition_strength: float = 0.7,
-        competition_overlap: float = 0.65,
-        immigration_rate: float = 0.6,
-        initial_abundance: float = 45.0,
+        carrying_capacity: float = 100.0,
+        birth_rate: float = 2.0,
+        death_rate: float = 1.0,
+        competition_overlap: float = 0.2,
+        immigration_rate: float = 0.1,
+        initial_abundance: float = 50.0,
         rng_seed: int = 7,
         integration_step: float = 0.05,
     ) -> None:
@@ -101,7 +109,6 @@ class Leibovich2022CommunityModel(biosim.BioModule):
         self.carrying_capacity = float(carrying_capacity)
         self.birth_rate = float(birth_rate)
         self.death_rate = float(death_rate)
-        self.competition_strength = float(competition_strength)
         self.competition_overlap = float(competition_overlap)
         self.immigration_rate = float(immigration_rate)
         self.initial_abundance = float(initial_abundance)
@@ -164,24 +171,29 @@ class Leibovich2022CommunityModel(biosim.BioModule):
         return np.maximum(0, np.rint(self.initial_abundance * offsets)).astype(int)
 
     def _step(self, dt: float) -> None:
+        """Tau-leaping step with upstream MultiLV propensity formulas."""
         total_abundance = float(np.sum(self._abundances))
         next_state = self._abundances.copy()
+        comp_coeff = self.birth_rate - self.death_rate
 
-        immigration_weights = np.linspace(1.0, 1.0 + 0.35 * (self.species_count - 1), self.species_count)
-        immigration_weights = immigration_weights / float(np.sum(immigration_weights))
+        for idx in range(self.species_count):
+            n_i = float(self._abundances[idx])
 
-        for idx, abundance in enumerate(self._abundances):
-            own_density = float(abundance)
+            # Upstream birth propensity: immi_rate + n_i * birth_rate
+            birth_prop = self.immigration_rate + n_i * self.birth_rate
+
+            # Upstream death propensity: n_i * (death_rate + (b-d) * crowding / K)
             crowding = (
-                (1.0 - self.competition_overlap) * own_density
+                (1.0 - self.competition_overlap) * n_i
                 + self.competition_overlap * total_abundance
-            ) / max(self.carrying_capacity, 1.0)
-            births_mean = max(0.0, (self.birth_rate * own_density + self.immigration_rate * immigration_weights[idx]) * dt)
-            deaths_mean = max(0.0, (self.death_rate + self.competition_strength * crowding) * own_density * dt)
+            )
+            death_prop = n_i * (
+                self.death_rate + comp_coeff * crowding / self.carrying_capacity
+            )
 
-            births = int(self._rng.poisson(births_mean))
-            deaths = int(self._rng.poisson(deaths_mean))
-            next_state[idx] = max(0, int(abundance) + births - deaths)
+            births = int(self._rng.poisson(max(0.0, birth_prop * dt)))
+            deaths = int(self._rng.poisson(max(0.0, death_prop * dt)))
+            next_state[idx] = max(0, int(n_i) + births - deaths)
 
         self._abundances = next_state
 
@@ -216,13 +228,13 @@ class Leibovich2022CommunityModel(biosim.BioModule):
             "community_state": _make_signal(source=source_name, name="community_state", value={
                     "species_abundances": species_abundances,
                     "total_abundance": int(latest["total_abundance"]),
-                }, emitted_at=float(t), spec=self.outputs().get("community_state") if 'self' in locals() else None),
+                }, emitted_at=float(t), spec=self.outputs().get("community_state")),
             "diversity_metrics": _make_signal(source=source_name, name="diversity_metrics", value={
                     "richness": int(latest["richness"]),
                     "shannon_diversity": float(latest["shannon_diversity"]),
                     "evenness": float(latest["evenness"]),
                     "dominant_species": f"species_{int(latest['dominant_species_index'])}",
-                }, emitted_at=float(t), spec=self.outputs().get("diversity_metrics") if 'self' in locals() else None),
+                }, emitted_at=float(t), spec=self.outputs().get("diversity_metrics")),
         }
 
     def _abundance_visual(self) -> "VisualSpec":
@@ -281,4 +293,3 @@ class Leibovich2022CommunityModel(biosim.BioModule):
         }
 
 
-Leibovich2022MultispeciesEcoCompetitionDescrModel2212080001Model = Leibovich2022CommunityModel
