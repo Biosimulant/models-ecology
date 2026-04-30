@@ -8,20 +8,24 @@ This is a faithful Python port of the upstream Julia model from Geci et al. (202
 
 ## What You'll See
 
-The lab opens as a canvas with one gene-drive model node and a run-results panel. After running, you will see three visualizations: an adult population time series showing suppression, a gene-drive metrics plot showing drive spread and resistance, and a summary table.
+The lab opens as a canvas with one gene-drive model node and a run-results panel. After running, you will see three visualizations: an adult population time series showing suppression, a gene-drive metrics plot showing drive spread and resistance, and a summary table. The first screenshot shows the canvas and results panel with both time-series plots. The second shows the full parameter list and summary statistics.
+
+![Geci2022 lab canvas with adult population suppression and gene-drive metrics](assets/geci2022-canvas-results.png)
+
+![Geci2022 parameter panel and summary table](assets/geci2022-parameters-summary.png)
 
 ## How to Read the Visualizations
 
-The adult population plot shows total adults, females, and males over generations. In the default scenario, the transgenic release causes X-shredding that biases sex ratio toward males. Fewer females means fewer eggs, which pushes the population down. If the drive spreads efficiently, the population collapses within tens of generations.
+The adult population plot shows total adults, females, and males over generations. In the default scenario, the transgenic release causes X-shredding that biases sex ratio toward males. Fewer females means fewer eggs, which pushes the population down. If the drive spreads efficiently, the population collapses within tens of generations. In the screenshot above, the population peaks briefly around generation 5 before collapsing to near zero by generation 50.
 
 The gene-drive metrics plot tracks four quantities:
 
-- **Drive frequency**: fraction of males carrying transgenic Y chromosomes. This rises as the drive spreads.
-- **Resistance frequency**: fraction of autosomal alleles that are homing-resistant (r3). If resistance emerges, it can rescue the population.
-- **Male fraction**: should increase above 0.5 when X-shredding is active.
+- **Drive frequency**: fraction of males carrying transgenic Y chromosomes. This rises as the drive spreads through the population, reaching near 1.0 in the default scenario.
+- **Resistance frequency**: fraction of autosomal alleles that are homing-resistant (r3). If resistance emerges, it can rescue the population. In the default scenario with zero resistance rates, this stays at 0.
+- **Male fraction**: should increase above 0.5 when X-shredding is active. The screenshot shows it rising to about 0.95, indicating strong sex-ratio distortion.
 - **Suppression ratio**: how much the population has declined relative to its starting size. A value near 1.0 means near-complete suppression.
 
-The summary table gives initial and final population sizes, peak drive and resistance frequencies, and the final suppression ratio.
+The summary table gives initial and final population sizes, peak drive and resistance frequencies, and the final suppression ratio. In the default run, the final suppression ratio reaches 1.0 (complete suppression) with peak drive frequency near 0.99.
 
 ## What This Lab Contains
 
