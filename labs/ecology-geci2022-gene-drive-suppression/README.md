@@ -38,7 +38,7 @@ The summary table gives initial and final population sizes, peak drive and resis
 
 ## Inputs
 
-This model has no external input ports. All parameters are set through `model/model.yaml` init_kwargs:
+All parameters are set through `model/model.yaml` init_kwargs and are also exposed as input ports for workflow wiring. In a multi-model workflow, another model can feed values into any of these ports at runtime. If genetic parameters change at runtime, the model rebuilds its process matrices automatically.
 
 - `net_reproduction_rate` (`dimensionless`): net reproduction rate (default 6.0).
 - `juvenile_survival` (`dimensionless`): juvenile survival probability (default 0.1).

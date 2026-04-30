@@ -40,6 +40,13 @@ runtime:
     packages:
       - numpy==1.26.4
 io:
+  inputs:
+    - carrying_capacity
+    - birth_rate
+    - death_rate
+    - competition_overlap
+    - immigration_rate
+    - initial_abundance
   outputs:
     - community_state
     - diversity_metrics

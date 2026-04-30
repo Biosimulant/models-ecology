@@ -9,3 +9,12 @@ runtime:
   duration: 365
   communication_step: 1.0
   initial_inputs: {}
+io:
+  inputs:
+    - name: integration_step
+      maps_to: ecology_turner2015_mosquito_life_stages.integration_step
+  outputs:
+    - name: life_stage_state
+      maps_to: ecology_turner2015_mosquito_life_stages.life_stage_state
+    - name: population_metrics
+      maps_to: ecology_turner2015_mosquito_life_stages.population_metrics

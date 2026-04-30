@@ -9,3 +9,14 @@ runtime:
   duration: 25
   communication_step: 0.1
   initial_inputs: {}
+io:
+  inputs:
+    - name: integration_step
+      maps_to: ecology_pfeiffer2001_atp_pathway_cooperation.integration_step
+  outputs:
+    - name: resource_state
+      maps_to: ecology_pfeiffer2001_atp_pathway_cooperation.resource_state
+    - name: community_state
+      maps_to: ecology_pfeiffer2001_atp_pathway_cooperation.community_state
+    - name: cooperation_metrics
+      maps_to: ecology_pfeiffer2001_atp_pathway_cooperation.cooperation_metrics

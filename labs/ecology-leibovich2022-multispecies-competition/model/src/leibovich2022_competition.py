@@ -117,6 +117,7 @@ class Leibovich2022CommunityModel(biosim.BioModule):
         self._time = 0.0
         self._rng = np.random.default_rng(self.rng_seed)
         self._abundances = self._initial_state()
+        self._input_overrides: Dict[str, BioSignal] = {}
         self._history: List[Dict[str, float]] = []
         self._outputs: Dict[str, BioSignal] = {}
 
@@ -130,8 +131,60 @@ class Leibovich2022CommunityModel(biosim.BioModule):
         self._history = []
         self._outputs = {}
 
+    @staticmethod
+    def _scalar_input_spec(unit: str, description: str) -> SignalSpec:
+        return SignalSpec.scalar(
+            dtype="float64",
+            accepted_profiles=(
+                AcceptedSignalProfile(signal_type="scalar", dtype="float64",
+                                     accepted_units=(unit,), description=description),
+                AcceptedSignalProfile(signal_type="record", schema={"payload": "json"},
+                                     description=description),
+            ),
+            description=description,
+        )
+
     def inputs(self) -> dict[str, SignalSpec]:
-        return {}
+        return {
+            "carrying_capacity": self._scalar_input_spec("individuals", "Habitat carrying capacity."),
+            "birth_rate": self._scalar_input_spec("1/time", "Per-capita birth rate."),
+            "death_rate": self._scalar_input_spec("1/time", "Per-capita baseline death rate."),
+            "competition_overlap": self._scalar_input_spec("dimensionless", "Fraction of competition that is interspecific."),
+            "immigration_rate": self._scalar_input_spec("individuals/time", "Constant immigration rate per species."),
+            "initial_abundance": self._scalar_input_spec("individuals", "Starting abundance per species."),
+        }
+
+    def set_inputs(self, inputs: dict[str, BioSignal]) -> None:
+        self._input_overrides = dict(inputs or {})
+        self._apply_input_overrides(reset_initial_state=self._time <= 0.0 and not self._history)
+
+    def _input_number(self, name: str) -> float | None:
+        signal = self._input_overrides.get(name)
+        if signal is None:
+            return None
+        value = _signal_value(signal)
+        if isinstance(value, dict):
+            for key in ("value", "count", "payload"):
+                if key in value:
+                    value = value[key]
+                    break
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return None
+
+    def _apply_input_overrides(self, *, reset_initial_state: bool) -> None:
+        for attr in ("carrying_capacity", "birth_rate", "death_rate",
+                     "competition_overlap", "immigration_rate"):
+            value = self._input_number(attr)
+            if value is not None and value >= 0.0:
+                setattr(self, attr, value)
+
+        value = self._input_number("initial_abundance")
+        if value is not None and value >= 0.0:
+            self.initial_abundance = value
+            if reset_initial_state:
+                self._abundances = self._initial_state()
 
     def outputs(self) -> dict[str, SignalSpec]:
         return {
@@ -139,7 +192,12 @@ class Leibovich2022CommunityModel(biosim.BioModule):
             'diversity_metrics': SignalSpec.record(schema={'richness': 'json', 'shannon_diversity': 'json', 'evenness': 'json', 'dominant_species': 'json'}, description='Diversity and dominance metrics for the multispecies community.'),
         }
 
-    def advance_window(self, start: float, end: float) -> None:
+    def advance_window(self, start: float, end: float, inputs: dict[str, BioSignal] | None = None) -> None:
+        if inputs:
+            self.set_inputs(inputs)
+        else:
+            self._apply_input_overrides(reset_initial_state=False)
+
         t = float(end)
         if t <= self._time:
             return

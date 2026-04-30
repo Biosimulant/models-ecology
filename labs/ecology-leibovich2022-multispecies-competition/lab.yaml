@@ -10,7 +10,19 @@ runtime:
   communication_step: 0.5
   initial_inputs: {}
 io:
-  inputs: []
+  inputs:
+    - name: carrying_capacity
+      maps_to: ecology_leibovich2022_multispecies_competition.carrying_capacity
+    - name: birth_rate
+      maps_to: ecology_leibovich2022_multispecies_competition.birth_rate
+    - name: death_rate
+      maps_to: ecology_leibovich2022_multispecies_competition.death_rate
+    - name: competition_overlap
+      maps_to: ecology_leibovich2022_multispecies_competition.competition_overlap
+    - name: immigration_rate
+      maps_to: ecology_leibovich2022_multispecies_competition.immigration_rate
+    - name: initial_abundance
+      maps_to: ecology_leibovich2022_multispecies_competition.initial_abundance
   outputs:
     - name: community_state
       maps_to: ecology_leibovich2022_multispecies_competition.community_state

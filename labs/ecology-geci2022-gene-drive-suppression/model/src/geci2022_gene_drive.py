@@ -694,6 +694,7 @@ class Geci2022GeneDriveModel(biosim.BioModule):
         self._time = 0.0
         self._genotype_vector = self._initial_state()
         self._initial_total = float(np.sum(self._genotype_vector))
+        self._input_overrides: Dict[str, BioSignal] = {}
         self._history: List[Dict[str, float]] = []
         self._outputs: Dict[str, BioSignal] = {}
 
@@ -721,8 +722,110 @@ class Geci2022GeneDriveModel(biosim.BioModule):
 
         return gv
 
+    @staticmethod
+    def _scalar_input_spec(unit: str, description: str) -> SignalSpec:
+        return SignalSpec.scalar(
+            dtype="float64",
+            accepted_profiles=(
+                AcceptedSignalProfile(signal_type="scalar", dtype="float64",
+                                     accepted_units=(unit,), description=description),
+                AcceptedSignalProfile(signal_type="record", schema={"payload": "json"},
+                                     description=description),
+            ),
+            description=description,
+        )
+
     def inputs(self) -> dict[str, SignalSpec]:
-        return {}
+        return {
+            "net_reproduction_rate": self._scalar_input_spec("dimensionless", "Net reproduction rate."),
+            "juvenile_survival": self._scalar_input_spec("dimensionless", "Juvenile survival probability."),
+            "initial_population": self._scalar_input_spec("dimensionless", "Normalized initial population size."),
+            "release_size": self._scalar_input_spec("fraction", "Transgenic release as fraction of initial population."),
+            "homing_efficiency": self._scalar_input_spec("fraction", "Homing efficiency."),
+            "editing_efficiency": self._scalar_input_spec("fraction", "Editing efficiency."),
+            "shredding_efficiency": self._scalar_input_spec("fraction", "X-shredding efficiency."),
+            "copy_mutation_rate": self._scalar_input_spec("fraction", "Copying-error mutation rate."),
+            "background_mutation_rate": self._scalar_input_spec("fraction", "Background mutation rate."),
+            "editing_resistance_rate": self._scalar_input_spec("fraction", "Editing resistance rate."),
+            "shredding_resistance_rate": self._scalar_input_spec("fraction", "Shredding resistance rate."),
+            "homing_resistance_rate": self._scalar_input_spec("fraction", "Homing resistance rate."),
+            "fitness_cost_cas9": self._scalar_input_spec("fraction", "Cas9 expression fitness cost."),
+            "fitness_cost_grna": self._scalar_input_spec("fraction", "gRNA expression fitness cost."),
+            "fitness_cost_shredder": self._scalar_input_spec("fraction", "Shredder expression fitness cost."),
+            "fitness_cost_nuclease": self._scalar_input_spec("fraction", "Nuclease activity fitness cost."),
+            "fitness_cost_shredder_activity": self._scalar_input_spec("fraction", "Shredder activity fitness cost."),
+            "fitness_cost_edited_female": self._scalar_input_spec("fraction", "Female edited-target fitness cost."),
+            "fitness_cost_edited_male": self._scalar_input_spec("fraction", "Male edited-target fitness cost."),
+            "dominance_editing": self._scalar_input_spec("dimensionless", "Dominance coefficient for female editing."),
+            "dominance_shredder": self._scalar_input_spec("dimensionless", "Dominance coefficient for shredder activity."),
+            "dominance_shredder_gamete": self._scalar_input_spec("dimensionless", "Dominance coefficient for shredder in gametes."),
+            "cas9_cofactor": self._scalar_input_spec("dimensionless", "Cas9 cofactor for shredding."),
+            "recombination_rate": self._scalar_input_spec("fraction", "X-linked recombination rate."),
+        }
+
+    def set_inputs(self, inputs: dict[str, BioSignal]) -> None:
+        self._input_overrides = dict(inputs or {})
+        self._apply_input_overrides(reset_initial_state=self._time <= 0.0 and not self._history)
+
+    def _input_number(self, name: str) -> float | None:
+        signal = self._input_overrides.get(name)
+        if signal is None:
+            return None
+        value = signal.value
+        if isinstance(value, dict):
+            if "payload" in value:
+                value = value["payload"]
+            elif "value" in value:
+                value = value["value"]
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return None
+
+    def _apply_input_overrides(self, *, reset_initial_state: bool) -> None:
+        rebuild_matrices = False
+
+        # Genetic parameters (stored in self._params)
+        for param_name in list(self._params.keys()):
+            value = self._input_number(param_name)
+            if value is not None:
+                self._params[param_name] = value
+                rebuild_matrices = True
+
+        if rebuild_matrices:
+            self._rebuild_matrices()
+
+        # Ecology parameters
+        for attr in ("net_reproduction_rate", "juvenile_survival"):
+            value = self._input_number(attr)
+            if value is not None and value > 0:
+                setattr(self, attr, value)
+                self._f = (self.net_reproduction_rate * 2.0) / self.juvenile_survival
+                self._alpha = self.initial_population * self._f / (self.net_reproduction_rate - 1.0)
+
+        # Initial-condition parameters (only apply before simulation starts)
+        for attr in ("initial_population", "release_size"):
+            value = self._input_number(attr)
+            if value is not None and value >= 0:
+                setattr(self, attr, value)
+                if reset_initial_state:
+                    self._f = (self.net_reproduction_rate * 2.0) / self.juvenile_survival
+                    self._alpha = self.initial_population * self._f / (self.net_reproduction_rate - 1.0)
+                    self._genotype_vector = self._initial_state()
+                    self._initial_total = float(np.sum(self._genotype_vector))
+
+    def _rebuild_matrices(self) -> None:
+        """Rebuild all process matrices from current self._params."""
+        sperm_mat, egg_mat = _build_gamete_matrices(self._params)
+        self._matrices = {
+            "selection": _build_selection_vector(self._params),
+            "homing": _build_homing_matrix(self._params),
+            "editing": _build_editing_matrix(self._params),
+            "recombination": _build_recombination_matrix(self._params),
+            "mutation": _build_mutation_matrix(self._params),
+            "sperm": sperm_mat,
+            "egg": egg_mat,
+        }
 
     def outputs(self) -> dict[str, SignalSpec]:
         return {
@@ -748,7 +851,12 @@ class Geci2022GeneDriveModel(biosim.BioModule):
         self._history = []
         self._outputs = {}
 
-    def advance_window(self, start: float, end: float) -> None:
+    def advance_window(self, start: float, end: float, inputs: dict[str, BioSignal] | None = None) -> None:
+        if inputs:
+            self.set_inputs(inputs)
+        else:
+            self._apply_input_overrides(reset_initial_state=False)
+
         t = float(end)
         if t <= self._time:
             return

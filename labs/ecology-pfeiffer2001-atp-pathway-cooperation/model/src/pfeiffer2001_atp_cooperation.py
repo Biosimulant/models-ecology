@@ -89,6 +89,7 @@ class Pfeiffer2001AtpCooperationModel(biosim.BioModule):
         self._runner: Any = None
         self._species_ids: List[str] = []
         self._species_units: Dict[str, Optional[str]] = {}
+        self._input_overrides: Dict[str, BioSignal] = {}
         self._history: List[Dict[str, float]] = []
         self._outputs: Dict[str, BioSignal] = {}
 
@@ -107,8 +108,47 @@ class Pfeiffer2001AtpCooperationModel(biosim.BioModule):
         self._history = []
         self._outputs = {}
 
+    @staticmethod
+    def _scalar_input_spec(unit: str, description: str) -> SignalSpec:
+        return SignalSpec.scalar(
+            dtype="float64",
+            accepted_profiles=(
+                AcceptedSignalProfile(signal_type="scalar", dtype="float64",
+                                     accepted_units=(unit,), description=description),
+                AcceptedSignalProfile(signal_type="record", schema={"payload": "json"},
+                                     description=description),
+            ),
+            description=description,
+        )
+
     def inputs(self) -> dict[str, SignalSpec]:
-        return {}
+        return {
+            "integration_step": self._scalar_input_spec("time", "ODE solver integration step size."),
+        }
+
+    def set_inputs(self, inputs: dict[str, BioSignal]) -> None:
+        self._input_overrides = dict(inputs or {})
+        self._apply_input_overrides()
+
+    def _input_number(self, name: str) -> float | None:
+        signal = self._input_overrides.get(name)
+        if signal is None:
+            return None
+        value = _signal_value(signal)
+        if isinstance(value, dict):
+            for key in ("value", "count", "payload"):
+                if key in value:
+                    value = value[key]
+                    break
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return None
+
+    def _apply_input_overrides(self) -> None:
+        value = self._input_number("integration_step")
+        if value is not None and value > 0:
+            self.integration_step = value
 
     def outputs(self) -> dict[str, SignalSpec]:
         return {
@@ -117,7 +157,12 @@ class Pfeiffer2001AtpCooperationModel(biosim.BioModule):
             'cooperation_metrics': SignalSpec.record(schema={'high_yield_fraction': 'json', 'low_yield_fraction': 'json', 'resource_per_biomass': 'json'}, description='Strategy fractions and resource intensity for the ATP-pathway competition model.'),
         }
 
-    def advance_window(self, start: float, end: float) -> None:
+    def advance_window(self, start: float, end: float, inputs: dict[str, BioSignal] | None = None) -> None:
+        if inputs:
+            self.set_inputs(inputs)
+        else:
+            self._apply_input_overrides()
+
         t = float(end)
         if self._runner is None:
             self.setup()

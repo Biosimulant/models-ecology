@@ -35,6 +35,8 @@ runtime:
       - tellurium==2.3.1
       - numpy==1.26.4
 io:
+  inputs:
+    - integration_step
   outputs:
     - resource_state
     - community_state

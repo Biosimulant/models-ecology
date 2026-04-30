@@ -55,6 +55,31 @@ runtime:
     packages:
       - numpy==1.26.4
 io:
+  inputs:
+    - net_reproduction_rate
+    - juvenile_survival
+    - initial_population
+    - release_size
+    - homing_efficiency
+    - editing_efficiency
+    - shredding_efficiency
+    - copy_mutation_rate
+    - background_mutation_rate
+    - editing_resistance_rate
+    - shredding_resistance_rate
+    - homing_resistance_rate
+    - fitness_cost_cas9
+    - fitness_cost_grna
+    - fitness_cost_shredder
+    - fitness_cost_nuclease
+    - fitness_cost_shredder_activity
+    - fitness_cost_edited_female
+    - fitness_cost_edited_male
+    - dominance_editing
+    - dominance_shredder
+    - dominance_shredder_gamete
+    - cas9_cofactor
+    - recombination_rate
   outputs:
     - population_state
     - gene_drive_metrics

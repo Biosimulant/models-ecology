@@ -33,7 +33,7 @@ The summary table gives the parameter settings, final and extremal abundances, p
 
 ## Inputs
 
-This model has no external input ports. All parameters are set through `model/model.yaml` init_kwargs:
+All parameters are set through `model/model.yaml` init_kwargs. The six runtime-tunable parameters below are also exposed as input ports for workflow wiring. `species_count` and `rng_seed` are structural and not available as input ports.
 
 - `species_count` (`count`): number of competing species (default 6).
 - `carrying_capacity` (`individuals`): habitat carrying capacity (default 100).

@@ -29,10 +29,10 @@ The summary table gives final and extremal values for substrate, population size
 
 ## Inputs
 
-This model has no external input ports. All parameters are set through `model/model.yaml` init_kwargs:
+Parameters are set through `model/model.yaml` init_kwargs. The `integration_step` parameter is also exposed as an input port for workflow wiring.
 
 - `model_path` (`path`): relative path to the SBML file (default `data/BIOMD0000000337.xml`). This should not normally be changed.
-- `integration_step` (`time`): numerical integration step size for the ODE solver (default 0.1). Smaller values give more precise output but take longer. The SBML model's internal parameters (rate constants, initial concentrations) are defined in the SBML file itself, not in init_kwargs.
+- `integration_step` (`time`): numerical integration step size for the ODE solver (default 0.1). Also available as an input port. Smaller values give more precise output but take longer. The SBML model's internal parameters (rate constants, initial concentrations) are defined in the SBML file itself, not in init_kwargs.
 
 ## Outputs
 
