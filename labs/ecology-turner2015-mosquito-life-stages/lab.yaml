@@ -1,20 +1,20 @@
-schema_version: "2.0"
-title: "Turner2015 Mosquito Life-Stage Ecology Model Lab"
-description: "Single-model lab wrapper for Turner2015 Mosquito Life-Stage Ecology Model. Curated SBML packaging of the Turner2015 mosquito life-stage model, exposing egg, larval, and pupal trajectories together with stage-composition diagnostics for ecology-facing interpretation."
-models:
-  - alias: "ecology_turner2015_mosquito_life_stages"
-    path: "./model"
-wiring: []
-runtime:
-  duration: 365
-  communication_step: 1.0
-  initial_inputs: {}
+description: Single-model lab wrapper for Turner2015 Mosquito Life-Stage Ecology Model. Curated SBML packaging of the Turner2015 mosquito life-stage model, exposing egg, larval, and pupal trajectories together with stage-composition diagnostics for ecology-facing interpretation.
 io:
   inputs:
-    - name: integration_step
-      maps_to: ecology_turner2015_mosquito_life_stages.integration_step
+  - maps_to: ecology_turner2015_mosquito_life_stages.integration_step
+    name: integration_step
   outputs:
-    - name: life_stage_state
-      maps_to: ecology_turner2015_mosquito_life_stages.life_stage_state
-    - name: population_metrics
-      maps_to: ecology_turner2015_mosquito_life_stages.population_metrics
+  - maps_to: ecology_turner2015_mosquito_life_stages.life_stage_state
+    name: life_stage_state
+  - maps_to: ecology_turner2015_mosquito_life_stages.population_metrics
+    name: population_metrics
+models:
+- alias: ecology_turner2015_mosquito_life_stages
+  path: model
+runtime:
+  communication_step: 1
+  duration: 120
+  initial_inputs: {}
+schema_version: '2.0'
+title: Turner2015 Mosquito Life-Stage Ecology Model Lab
+wiring: []

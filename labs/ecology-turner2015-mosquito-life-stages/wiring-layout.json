@@ -3,7 +3,10 @@
   "nodes": [
     {
       "id": "ecology_turner2015_mosquito_life_stages",
-      "position": { "x": 360, "y": 0 }
+      "position": {
+        "x": 360,
+        "y": 0
+      }
     }
   ]
 }
