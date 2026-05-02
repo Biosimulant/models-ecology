@@ -8,19 +8,23 @@ This is a faithful Python port of the upstream MultiLV Gillespie model from Leib
 
 ## What You'll See
 
-The lab opens as a canvas with one community model node and a run-results panel. After running, you will see three visualizations: species-resolved abundance trajectories, community-level metrics over time, and a summary table.
+The lab opens as a canvas with one community model node and a run-results panel. After running, you will see three visualizations: species-resolved abundance trajectories, community-level metrics over time, and a summary table. The first screenshot shows the canvas and results panel with the abundance trajectories and community metrics visible. The second scrolls further down to focus on the community metrics and the summary table for the same default run.
+
+![Leibovich2022 lab canvas with species abundance trajectories and community metrics](assets/leibovich2022-canvas-results.png)
+
+![Leibovich2022 community metrics and summary table](assets/leibovich2022-community-summary.png)
 
 ## How to Read the Visualizations
 
-The abundance trajectory plot shows each species as a separate line. The x-axis is time and the y-axis is individual count. In a typical run with six species, you will see stochastic fluctuations around a shared carrying capacity. Some species may go extinct if competition is strong and immigration is low.
+The abundance trajectory plot shows each species as a separate line. The x-axis is time and the y-axis is individual count. In a typical run with six species, you will see stochastic fluctuations around a shared carrying capacity. Some species may temporarily collapse to zero and then re-enter through immigration; low immigration and strong competition make those losses more persistent.
 
 The community metrics plot tracks three quantities:
 
 - **Total abundance**: sum of all species. This should settle near the carrying capacity.
-- **Species richness**: how many species have at least one individual. Immigration prevents extinction, so higher immigration rates support higher richness.
+- **Species richness**: how many species have at least one individual. Immigration can rescue species after local loss, so higher immigration rates support higher richness.
 - **Shannon diversity**: an information-theoretic measure of evenness. Higher values mean more equal abundances across species.
 
-The summary table gives the parameter settings, final and extremal abundances, peak richness, and the dominant species.
+The summary table gives the parameter settings, final and extremal abundances, peak richness, and the dominant species. In the default screenshot, the community finishes with total abundance near 301 after fluctuating between about 197 and 380 individuals, with all six species reached during the run and `species_1` dominant at the end.
 
 ## What This Lab Contains
 
