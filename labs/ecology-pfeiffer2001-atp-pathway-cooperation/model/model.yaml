@@ -32,7 +32,7 @@ runtime:
   python_version: "3.12"
   dependencies:
     packages:
-      - tellurium==2.3.1
+      - tellurium==2.2.11.2
 io:
   inputs:
     - name: integration_step
