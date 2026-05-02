@@ -8,15 +8,19 @@ This model wraps the upstream SBML from Pfeiffer et al. (2001), published as [Bi
 
 ## What You'll See
 
-The lab opens as a canvas with one model node and a run-results panel. After running, you will see three visualizations: resource and population trajectories, strategy-fraction time series, and a summary table.
+The lab opens as a canvas with one model node and a run-results panel. After running, you will see three visualizations: resource and population trajectories, strategy-fraction time series, and a summary table. The first screenshot shows the canvas and results panel with the trajectory and strategy-fraction plots visible. The second scrolls down to focus on the strategy-fraction plot and the summary table for the same default run.
+
+![Pfeiffer2001 lab canvas with resource, population, and strategy-fraction results](assets/pfeiffer2001-canvas-results.png)
+
+![Pfeiffer2001 strategy fractions and summary table](assets/pfeiffer2001-strategy-summary.png)
 
 ## How to Read the Visualizations
 
-The trajectory plot shows three curves: the shared substrate resource (S), the high-yield population (N1), and the low-yield population (N2). As the populations grow, they deplete the substrate. The relative growth rates of N1 and N2 determine which strategy dominates.
+The trajectory plot shows three curves: the shared substrate resource (S), the high-yield population (N1), and the low-yield population (N2). As the populations grow, they deplete the substrate. In the default run shown above, the high-yield population collapses as the low-yield strategy expands, leaving a low-yield-dominated community after the substrate is nearly exhausted.
 
-The strategy-fraction plot shows the proportion of total biomass belonging to each strategy, plus the resource-per-biomass ratio. If one strategy outcompetes the other, its fraction will approach 1.0 while the other approaches 0.0.
+The strategy-fraction plot shows the proportion of total biomass belonging to each strategy, plus the resource-per-biomass ratio. If one strategy outcompetes the other, its fraction will approach 1.0 while the other approaches 0.0. In the screenshot, the low-yield fraction rises to 1.0 while the high-yield fraction falls to 0.0.
 
-The summary table gives final and extremal values for substrate, population sizes, and strategy fractions.
+The summary table gives final and extremal values for substrate, population sizes, and strategy fractions. In the default screenshot, final substrate is about 0.0526, final low-yield population is 10, and the high-yield population is effectively zero.
 
 ## What This Lab Contains
 
