@@ -8,15 +8,19 @@ This model wraps the upstream SBML from Turner et al. (2015), published as [BioM
 
 ## What You'll See
 
-The lab opens as a canvas with one model node and a run-results panel. After running, you will see three visualizations: life-stage abundance trajectories, stage-fraction time series, and a summary table.
+The lab opens as a canvas with one model node and a run-results panel. After running, you will see three visualizations: life-stage abundance trajectories, stage-fraction time series, and a summary table. The first screenshot shows the canvas and results panel with the immature life-stage trajectories and stage-fraction plot visible. The second scrolls down to focus on the stage-fraction plot and the summary table for the same run.
+
+![Turner2015 lab canvas with mosquito immature life-stage trajectories and stage fractions](assets/turner2015-canvas-results.png)
+
+![Turner2015 stage fractions and summary table](assets/turner2015-fractions-summary.png)
 
 ## How to Read the Visualizations
 
-The life-stage plot shows three curves: eggs, larvae, and pupae over time (days). The x-axis is time in days and the y-axis is population count. In a typical 365-day run, you will see the populations reach dynamic equilibrium as development rates balance mortality.
+The life-stage plot shows three curves: eggs, larvae, and pupae over time (days). The x-axis is time in days and the y-axis is population count. In a typical run, you will see the populations fall from their initial transient and then approach a stable immature-stage composition as development rates balance mortality.
 
-The stage-fraction plot shows the proportion of total immature population in each stage. These fractions always sum to 1.0. If one stage dominates (e.g., eggs make up most of the population), its fraction will be close to 1.0.
+The stage-fraction plot shows the proportion of total immature population in each stage. These fractions always sum to 1.0. If one stage dominates, its fraction will be close to 1.0. In the screenshot, the system settles into an egg-heavy composition, with eggs around 46%, larvae around 39%, and pupae around 15% of the immature population.
 
-The summary table gives final and extremal values for each life stage and the total immature population.
+The summary table gives final and extremal values for each life stage and the total immature population. In the shown run, the final immature population is about 3164 individuals, split across roughly 1460 eggs, 1227 larvae, and 477 pupae.
 
 ## What This Lab Contains
 
