@@ -3,7 +3,10 @@
   "nodes": [
     {
       "id": "ecology_pfeiffer2001_atp_pathway_cooperation",
-      "position": { "x": 360, "y": 0 }
+      "position": {
+        "x": 360,
+        "y": 0
+      }
     }
   ]
 }

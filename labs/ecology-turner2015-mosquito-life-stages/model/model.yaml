@@ -34,7 +34,6 @@ runtime:
   dependencies:
     packages:
       - tellurium==2.3.1
-      - numpy==1.26.4
 io:
   inputs:
     - name: integration_step
