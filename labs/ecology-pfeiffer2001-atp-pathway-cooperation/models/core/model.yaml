@@ -1,0 +1,58 @@
+schema_version: '2.0'
+title: Pfeiffer2001 ATP-Pathway Cooperation-Competition Model
+description: Curated SBML packaging of the Pfeiffer2001 ATP-pathway ecology model,
+  exposing substrate dynamics, strategy-specific biomass trajectories, and pathway-fraction
+  diagnostics instead of a generic species dump.
+standard: other
+tags:
+- ecology
+- sbml
+- microbial
+- cooperation
+- competition
+- faithful
+authors:
+- Biosimulant Team
+- T Pfeiffer
+- S Schuster
+- S Bonhoeffer
+upstream:
+  id: biomodels_ebi:BIOMD0000000337
+  source_db: biomodels_ebi
+  source_id: BIOMD0000000337
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000337
+  download_url: https://www.ebi.ac.uk/biomodels/models/core/download/BIOMD0000000337?filename=BIOMD0000000337_url.xml
+  license: CC0
+biosim:
+  entrypoint: src.pfeiffer2001_atp_cooperation:Pfeiffer2001AtpCooperationModel
+  init_kwargs:
+    model_path: data/BIOMD0000000337.xml
+    integration_step: 0.1
+  communication_step: 0.1
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.2.11.2
+io:
+  inputs:
+  - name: integration_step
+    accepted_units:
+    - time
+    description: ODE solver integration step size.
+  outputs:
+  - name: resource_state
+    emitted_unit: concentration
+    description: Shared substrate resource concentration from the Pfeiffer2001 SBML
+      model.
+  - name: community_state
+    emitted_unit: population
+    description: Population sizes for the two ATP-pathway strategies encoded by the
+      model.
+  - name: cooperation_metrics
+    emitted_unit: fraction
+    description: Strategy fractions and resource intensity for the ATP-pathway competition
+      model.
+  - name: visualisation_payload
+    description: Internal history payload for the sibling visualisation model.

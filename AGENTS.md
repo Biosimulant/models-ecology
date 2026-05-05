@@ -86,8 +86,8 @@ python scripts/check_entrypoints.py
 For focused model tests, run the relevant lab test folders, for example:
 
 ```bash
-python -m pytest labs/ecology-lotka-volterra-system/model/tests
-python -m pytest labs/ecology-rosenzweig-macarthur-predator-prey-system/model/tests
+python -m pytest labs/ecology-lotka-volterra-system/models/core/tests
+python -m pytest labs/ecology-rosenzweig-macarthur-predator-prey-system/models/core/tests
 ```
 
 In the local monorepo, the working Python environment is usually:

@@ -1,0 +1,79 @@
+schema_version: '2.0'
+title: Leibovich2022 Multispecies Competition Model
+description: Stochastic multispecies competition-immigration community model, ported
+  from the upstream MultiLV Gillespie implementation (BioModels MODEL2212080001).
+  Uses tau-leaping with birth and death propensities matching the upstream formulas
+  exactly.
+standard: other
+tags:
+- ecology
+- community-dynamics
+- competition
+- stochastic
+- faithful
+authors:
+- Biosimulant Team
+- Nava Leibovich
+- Jeremy Rothschild
+- Sidhartha Goyal
+- Anton Zilman
+upstream:
+  id: biomodels_ebi:MODEL2212080001
+  source_db: biomodels_ebi
+  source_id: MODEL2212080001
+  standard: python
+  original_url: https://www.ebi.ac.uk/biomodels/MODEL2212080001
+  download_url: https://www.ebi.ac.uk/biomodels/models/core/download/MODEL2212080001?filename=gillespie.py
+  license: CC0
+biosim:
+  entrypoint: src.leibovich2022_competition:Leibovich2022CommunityModel
+  init_kwargs:
+    species_count: 6
+    carrying_capacity: 100.0
+    birth_rate: 2.0
+    death_rate: 1.0
+    competition_overlap: 0.2
+    immigration_rate: 0.1
+    initial_abundance: 50.0
+    rng_seed: 7
+  communication_step: 0.05
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - numpy==1.26.4
+io:
+  inputs:
+  - name: carrying_capacity
+    accepted_units:
+    - individuals
+    description: Habitat carrying capacity.
+  - name: birth_rate
+    accepted_units:
+    - 1/time
+    description: Per-capita birth rate.
+  - name: death_rate
+    accepted_units:
+    - 1/time
+    description: Per-capita baseline death rate.
+  - name: competition_overlap
+    accepted_units:
+    - dimensionless
+    description: Fraction of competition that is interspecific.
+  - name: immigration_rate
+    accepted_units:
+    - individuals/time
+    description: Constant immigration rate per species.
+  - name: initial_abundance
+    accepted_units:
+    - individuals
+    description: Starting abundance per species.
+  outputs:
+  - name: community_state
+    emitted_unit: individuals
+    description: Species-resolved abundances for the stochastic competition community.
+  - name: diversity_metrics
+    emitted_unit: dimensionless
+    description: Diversity and dominance metrics for the multispecies community.
+  - name: visualisation_payload
+    description: Internal history payload for the sibling visualisation model.

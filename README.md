@@ -1,6 +1,6 @@
 # models-ecology
 
-> Storage-only repo: each former root model now lives in `labs/<slug>/model/` and is wrapped by
+> Storage-only repo: each former root model now lives in `labs/<slug>/models/core/` and is wrapped by
 > `labs/<slug>/lab.yaml`. This repo has no repo-level import catalog and no composed labs at the root.
 
 Focused research-grade ecology and population-dynamics model pack for the `biosim` platform.

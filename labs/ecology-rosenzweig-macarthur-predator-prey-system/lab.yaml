@@ -1,64 +1,73 @@
-schema_version: "2.0"
-title: "Rosenzweig-MacArthur Predator-Prey System Lab"
-description: "Applied ecology lab for predator-prey dynamics with carrying capacity, food limits, seasonality, noise, disease, stage structure, migration, and patch effects."
+schema_version: '2.0'
+title: Rosenzweig-MacArthur Predator-Prey System Lab
+description: Applied ecology lab for predator-prey dynamics with carrying capacity,
+  food limits, seasonality, noise, disease, stage structure, migration, and patch
+  effects.
 models:
-  - alias: ecology_rosenzweig_macarthur_predator_prey_system
-    path: model
-    parameters:
-      prey_initial_population: 20.0
-      predator_initial_population: 4.0
-      prey_carrying_capacity: 450.0
-      attack_rate: 0.12
-      handling_time: 0.18
-      predator_mortality_rate: 0.18
-      predator_conversion_efficiency: 0.09
+- alias: ecology_rosenzweig_macarthur_predator_prey_system
+  path: models/core
+  parameters:
+    prey_initial_population: 20.0
+    predator_initial_population: 4.0
+    prey_carrying_capacity: 450.0
+    attack_rate: 0.12
+    handling_time: 0.18
+    predator_mortality_rate: 0.18
+    predator_conversion_efficiency: 0.09
+- alias: visualisation
+  path: models/visualisation
+  parameters:
+    integration_step: 0.1
 runtime:
   duration: 365
   communication_step: 0.1
   initial_inputs: {}
 io:
   inputs:
-    - name: prey_initial_population
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.prey_initial_population
-    - name: predator_initial_population
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.predator_initial_population
-    - name: prey_growth_rate
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.prey_growth_rate
-    - name: prey_carrying_capacity
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.prey_carrying_capacity
-    - name: attack_rate
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.attack_rate
-    - name: handling_time
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.handling_time
-    - name: predator_mortality_rate
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.predator_mortality_rate
-    - name: predator_conversion_efficiency
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.predator_conversion_efficiency
-    - name: food_resource_index
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.food_resource_index
-    - name: seasonal_forcing
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.seasonal_forcing
-    - name: disease_parameters
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.disease_parameters
-    - name: migration_matrix
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.migration_matrix
-    - name: patch_configuration
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.patch_configuration
+  - name: prey_initial_population
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.prey_initial_population
+  - name: predator_initial_population
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.predator_initial_population
+  - name: prey_growth_rate
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.prey_growth_rate
+  - name: prey_carrying_capacity
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.prey_carrying_capacity
+  - name: attack_rate
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.attack_rate
+  - name: handling_time
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.handling_time
+  - name: predator_mortality_rate
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.predator_mortality_rate
+  - name: predator_conversion_efficiency
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.predator_conversion_efficiency
+  - name: food_resource_index
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.food_resource_index
+  - name: seasonal_forcing
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.seasonal_forcing
+  - name: disease_parameters
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.disease_parameters
+  - name: migration_matrix
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.migration_matrix
+  - name: patch_configuration
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.patch_configuration
   outputs:
-    - name: prey_population_state
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.prey_population_state
-    - name: predator_population_state
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.predator_population_state
-    - name: population_timeseries
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.population_timeseries
-    - name: equilibrium_summary
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.equilibrium_summary
-    - name: stability_summary
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.stability_summary
-    - name: extinction_risk
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.extinction_risk
-    - name: threshold_crossings
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.threshold_crossings
-    - name: scenario_summary
-      maps_to: ecology_rosenzweig_macarthur_predator_prey_system.scenario_summary
-wiring: []
+  - name: prey_population_state
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.prey_population_state
+  - name: predator_population_state
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.predator_population_state
+  - name: population_timeseries
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.population_timeseries
+  - name: equilibrium_summary
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.equilibrium_summary
+  - name: stability_summary
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.stability_summary
+  - name: extinction_risk
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.extinction_risk
+  - name: threshold_crossings
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.threshold_crossings
+  - name: scenario_summary
+    maps_to: ecology_rosenzweig_macarthur_predator_prey_system.scenario_summary
+wiring:
+- from: ecology_rosenzweig_macarthur_predator_prey_system.visualisation_payload
+  to:
+  - visualisation.ecology_rosenzweig_macarthur_predator_prey_system_visualisation_payload

@@ -4,7 +4,14 @@
     {
       "id": "ecology_geci2022_gene_drive_suppression",
       "position": {
-        "x": 360,
+        "x": -2.7191886959741964,
+        "y": -59.822151311432165
+      }
+    },
+    {
+      "id": "visualisation",
+      "position": {
+        "x": 380,
         "y": 0
       }
     }

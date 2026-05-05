@@ -1,66 +1,73 @@
-schema_version: "2.0"
-title: "Geci2022 Gene-Drive Suppression Lab"
-description: "Single-model lab wrapper for the Geci2022 mosquito gene-drive suppression model. Tracks 1071 genotypes across Y-linked editor, X-shredder, and autosomal homing components with discrete-generation dynamics."
-models:
-  - alias: ecology_geci2022_gene_drive_suppression
-    path: model
-wiring: []
-runtime:
-  duration: 100
-  communication_step: 1.0
-  initial_inputs: {}
+description: Multi-model lab with an embedded visualisation sibling for the Geci2022 mosquito gene-drive suppression model. Tracks 1071 genotypes across Y-linked editor, X-shredder, and autosomal homing components with discrete-generation dynamics.
 io:
   inputs:
-    - name: net_reproduction_rate
-      maps_to: ecology_geci2022_gene_drive_suppression.net_reproduction_rate
-    - name: juvenile_survival
-      maps_to: ecology_geci2022_gene_drive_suppression.juvenile_survival
-    - name: initial_population
-      maps_to: ecology_geci2022_gene_drive_suppression.initial_population
-    - name: release_size
-      maps_to: ecology_geci2022_gene_drive_suppression.release_size
-    - name: homing_efficiency
-      maps_to: ecology_geci2022_gene_drive_suppression.homing_efficiency
-    - name: editing_efficiency
-      maps_to: ecology_geci2022_gene_drive_suppression.editing_efficiency
-    - name: shredding_efficiency
-      maps_to: ecology_geci2022_gene_drive_suppression.shredding_efficiency
-    - name: copy_mutation_rate
-      maps_to: ecology_geci2022_gene_drive_suppression.copy_mutation_rate
-    - name: background_mutation_rate
-      maps_to: ecology_geci2022_gene_drive_suppression.background_mutation_rate
-    - name: editing_resistance_rate
-      maps_to: ecology_geci2022_gene_drive_suppression.editing_resistance_rate
-    - name: shredding_resistance_rate
-      maps_to: ecology_geci2022_gene_drive_suppression.shredding_resistance_rate
-    - name: homing_resistance_rate
-      maps_to: ecology_geci2022_gene_drive_suppression.homing_resistance_rate
-    - name: fitness_cost_cas9
-      maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_cas9
-    - name: fitness_cost_grna
-      maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_grna
-    - name: fitness_cost_shredder
-      maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_shredder
-    - name: fitness_cost_nuclease
-      maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_nuclease
-    - name: fitness_cost_shredder_activity
-      maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_shredder_activity
-    - name: fitness_cost_edited_female
-      maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_edited_female
-    - name: fitness_cost_edited_male
-      maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_edited_male
-    - name: dominance_editing
-      maps_to: ecology_geci2022_gene_drive_suppression.dominance_editing
-    - name: dominance_shredder
-      maps_to: ecology_geci2022_gene_drive_suppression.dominance_shredder
-    - name: dominance_shredder_gamete
-      maps_to: ecology_geci2022_gene_drive_suppression.dominance_shredder_gamete
-    - name: cas9_cofactor
-      maps_to: ecology_geci2022_gene_drive_suppression.cas9_cofactor
-    - name: recombination_rate
-      maps_to: ecology_geci2022_gene_drive_suppression.recombination_rate
+  - maps_to: ecology_geci2022_gene_drive_suppression.net_reproduction_rate
+    name: net_reproduction_rate
+  - maps_to: ecology_geci2022_gene_drive_suppression.juvenile_survival
+    name: juvenile_survival
+  - maps_to: ecology_geci2022_gene_drive_suppression.initial_population
+    name: initial_population
+  - maps_to: ecology_geci2022_gene_drive_suppression.release_size
+    name: release_size
+  - maps_to: ecology_geci2022_gene_drive_suppression.homing_efficiency
+    name: homing_efficiency
+  - maps_to: ecology_geci2022_gene_drive_suppression.editing_efficiency
+    name: editing_efficiency
+  - maps_to: ecology_geci2022_gene_drive_suppression.shredding_efficiency
+    name: shredding_efficiency
+  - maps_to: ecology_geci2022_gene_drive_suppression.copy_mutation_rate
+    name: copy_mutation_rate
+  - maps_to: ecology_geci2022_gene_drive_suppression.background_mutation_rate
+    name: background_mutation_rate
+  - maps_to: ecology_geci2022_gene_drive_suppression.editing_resistance_rate
+    name: editing_resistance_rate
+  - maps_to: ecology_geci2022_gene_drive_suppression.shredding_resistance_rate
+    name: shredding_resistance_rate
+  - maps_to: ecology_geci2022_gene_drive_suppression.homing_resistance_rate
+    name: homing_resistance_rate
+  - maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_cas9
+    name: fitness_cost_cas9
+  - maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_grna
+    name: fitness_cost_grna
+  - maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_shredder
+    name: fitness_cost_shredder
+  - maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_nuclease
+    name: fitness_cost_nuclease
+  - maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_shredder_activity
+    name: fitness_cost_shredder_activity
+  - maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_edited_female
+    name: fitness_cost_edited_female
+  - maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_edited_male
+    name: fitness_cost_edited_male
+  - maps_to: ecology_geci2022_gene_drive_suppression.dominance_editing
+    name: dominance_editing
+  - maps_to: ecology_geci2022_gene_drive_suppression.dominance_shredder
+    name: dominance_shredder
+  - maps_to: ecology_geci2022_gene_drive_suppression.dominance_shredder_gamete
+    name: dominance_shredder_gamete
+  - maps_to: ecology_geci2022_gene_drive_suppression.cas9_cofactor
+    name: cas9_cofactor
+  - maps_to: ecology_geci2022_gene_drive_suppression.recombination_rate
+    name: recombination_rate
   outputs:
-    - name: population_state
-      maps_to: ecology_geci2022_gene_drive_suppression.population_state
-    - name: gene_drive_metrics
-      maps_to: ecology_geci2022_gene_drive_suppression.gene_drive_metrics
+  - maps_to: ecology_geci2022_gene_drive_suppression.population_state
+    name: population_state
+  - maps_to: ecology_geci2022_gene_drive_suppression.gene_drive_metrics
+    name: gene_drive_metrics
+models:
+- alias: ecology_geci2022_gene_drive_suppression
+  path: models/core
+- alias: visualisation
+  parameters:
+    integration_step: 1
+  path: models/visualisation
+runtime:
+  communication_step: 1
+  duration: 100
+  initial_inputs: {}
+schema_version: '2.0'
+title: Geci2022 Gene-Drive Suppression Lab
+wiring:
+- from: ecology_geci2022_gene_drive_suppression.visualisation_payload
+  to:
+  - visualisation.ecology_geci2022_gene_drive_suppression_visualisation_payload

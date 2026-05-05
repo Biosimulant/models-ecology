@@ -13,7 +13,7 @@ packages:
     package: biosimulant/ecology-geci2022-gene-drive-suppression-model
     version: 1.0.0
     type: model
-    path: labs/ecology-geci2022-gene-drive-suppression/model
+    path: labs/ecology-geci2022-gene-drive-suppression/models/core
   - id: ecology-leibovich2022-multispecies-competition-lab
     package: biosimulant/ecology-leibovich2022-multispecies-competition-lab
     version: 1.0.0
@@ -23,7 +23,7 @@ packages:
     package: biosimulant/ecology-leibovich2022-multispecies-competition-model
     version: 1.0.0
     type: model
-    path: labs/ecology-leibovich2022-multispecies-competition/model
+    path: labs/ecology-leibovich2022-multispecies-competition/models/core
   - id: ecology-lotka-volterra-system-lab
     package: biosimulant/ecology-lotka-volterra-system-lab
     version: 1.0.0
@@ -33,7 +33,7 @@ packages:
     package: biosimulant/ecology-lotka-volterra-system-model
     version: 1.0.0
     type: model
-    path: labs/ecology-lotka-volterra-system/model
+    path: labs/ecology-lotka-volterra-system/models/core
   - id: ecology-pfeiffer2001-atp-pathway-cooperation-lab
     package: biosimulant/ecology-pfeiffer2001-atp-pathway-cooperation-lab
     version: 1.0.0
@@ -43,7 +43,7 @@ packages:
     package: biosimulant/ecology-pfeiffer2001-atp-pathway-cooperation-model
     version: 1.0.0
     type: model
-    path: labs/ecology-pfeiffer2001-atp-pathway-cooperation/model
+    path: labs/ecology-pfeiffer2001-atp-pathway-cooperation/models/core
   - id: ecology-rosenzweig-macarthur-predator-prey-system-lab
     package: biosimulant/ecology-rosenzweig-macarthur-predator-prey-system-lab
     version: 1.0.0
@@ -53,7 +53,7 @@ packages:
     package: biosimulant/ecology-rosenzweig-macarthur-predator-prey-system-model
     version: 1.0.0
     type: model
-    path: labs/ecology-rosenzweig-macarthur-predator-prey-system/model
+    path: labs/ecology-rosenzweig-macarthur-predator-prey-system/models/core
   - id: ecology-turner2015-mosquito-life-stages-lab
     package: biosimulant/ecology-turner2015-mosquito-life-stages-lab
     version: 1.0.0
@@ -63,4 +63,4 @@ packages:
     package: biosimulant/ecology-turner2015-mosquito-life-stages-model
     version: 1.0.0
     type: model
-    path: labs/ecology-turner2015-mosquito-life-stages/model
+    path: labs/ecology-turner2015-mosquito-life-stages/models/core

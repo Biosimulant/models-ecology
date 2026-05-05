@@ -1,4 +1,7 @@
-description: Single-model lab wrapper for Turner2015 Mosquito Life-Stage Ecology Model. Curated SBML packaging of the Turner2015 mosquito life-stage model, exposing egg, larval, and pupal trajectories together with stage-composition diagnostics for ecology-facing interpretation.
+description: Multi-model lab with an embedded visualisation sibling for Turner2015 Mosquito Life-Stage Ecology Model.
+  Curated SBML packaging of the Turner2015 mosquito life-stage model, exposing egg,
+  larval, and pupal trajectories together with stage-composition diagnostics for ecology-facing
+  interpretation.
 io:
   inputs:
   - maps_to: ecology_turner2015_mosquito_life_stages.integration_step
@@ -10,11 +13,18 @@ io:
     name: population_metrics
 models:
 - alias: ecology_turner2015_mosquito_life_stages
-  path: model
+  path: models/core
+- alias: visualisation
+  path: models/visualisation
+  parameters:
+    integration_step: 0.1
 runtime:
   communication_step: 1
   duration: 120
   initial_inputs: {}
 schema_version: '2.0'
 title: Turner2015 Mosquito Life-Stage Ecology Model Lab
-wiring: []
+wiring:
+- from: ecology_turner2015_mosquito_life_stages.visualisation_payload
+  to:
+  - visualisation.ecology_turner2015_mosquito_life_stages_visualisation_payload

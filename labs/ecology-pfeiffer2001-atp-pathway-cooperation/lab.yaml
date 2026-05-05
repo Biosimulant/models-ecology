@@ -1,4 +1,7 @@
-description: Single-model lab wrapper for Pfeiffer2001 ATP-Pathway Cooperation-Competition Model. Curated SBML packaging of the Pfeiffer2001 ATP-pathway ecology model, exposing substrate dynamics, strategy-specific biomass trajectories, and pathway-fraction diagnostics instead of a generic species dump.
+description: Multi-model lab with an embedded visualisation sibling for Pfeiffer2001 ATP-Pathway Cooperation-Competition
+  Model. Curated SBML packaging of the Pfeiffer2001 ATP-pathway ecology model, exposing
+  substrate dynamics, strategy-specific biomass trajectories, and pathway-fraction
+  diagnostics instead of a generic species dump.
 io:
   inputs:
   - maps_to: ecology_pfeiffer2001_atp_pathway_cooperation.integration_step
@@ -12,11 +15,18 @@ io:
     name: cooperation_metrics
 models:
 - alias: ecology_pfeiffer2001_atp_pathway_cooperation
-  path: model
+  path: models/core
+- alias: visualisation
+  path: models/visualisation
+  parameters:
+    integration_step: 0.1
 runtime:
   communication_step: 0.1
   duration: 75
   initial_inputs: {}
 schema_version: '2.0'
 title: Pfeiffer2001 ATP-Pathway Cooperation-Competition Model Lab
-wiring: []
+wiring:
+- from: ecology_pfeiffer2001_atp_pathway_cooperation.visualisation_payload
+  to:
+  - visualisation.ecology_pfeiffer2001_atp_pathway_cooperation_visualisation_payload

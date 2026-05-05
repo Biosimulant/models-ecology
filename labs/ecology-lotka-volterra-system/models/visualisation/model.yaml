@@ -1,0 +1,25 @@
+schema_version: "2.0"
+title: "Lotka-Volterra Visualisation"
+description: "Dedicated presentation model for this ecology lab."
+standard: other
+tags:
+  - ecology
+  - visualisation
+authors:
+  - "Biosimulant Team"
+biosim:
+  entrypoint: "src.ecology_visualisation:EcologyVisualisationModel"
+  init_kwargs:
+    integration_step: 0.01
+    source_alias: "ecology_lotka_volterra_system"
+    mode: "lotka_volterra"
+    lab_title: "Lotka-Volterra Visualisation"
+  communication_step: 0.01
+parameters:
+  - name: integration_step
+    value: 0.01
+    min: 0.0
+    description: "Sampling step for the visualisation model."
+io:
+  inputs: []
+  outputs: []

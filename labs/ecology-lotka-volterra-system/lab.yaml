@@ -1,30 +1,38 @@
-schema_version: "2.0"
-title: "Lotka-Volterra System Lab"
-description: "Single-model lab wrapper for the canonical deterministic Lotka-Volterra predator-prey system."
+schema_version: '2.0'
+title: Lotka-Volterra System Lab
+description: Multi-model lab with an embedded visualisation sibling for the canonical deterministic Lotka-Volterra
+  predator-prey system.
 models:
-  - alias: ecology_lotka_volterra_system
-    path: model
+- alias: ecology_lotka_volterra_system
+  path: models/core
+- alias: visualisation
+  path: models/visualisation
+  parameters:
+    integration_step: 0.01
 runtime:
   duration: 250
   communication_step: 0.01
   initial_inputs: {}
 io:
   inputs:
-    - name: prey_initial_population
-      maps_to: ecology_lotka_volterra_system.prey_initial_population
-    - name: predator_initial_population
-      maps_to: ecology_lotka_volterra_system.predator_initial_population
-    - name: prey_growth_rate
-      maps_to: ecology_lotka_volterra_system.prey_growth_rate
-    - name: predation_rate
-      maps_to: ecology_lotka_volterra_system.predation_rate
-    - name: predator_mortality_rate
-      maps_to: ecology_lotka_volterra_system.predator_mortality_rate
-    - name: predator_reproduction_rate
-      maps_to: ecology_lotka_volterra_system.predator_reproduction_rate
+  - name: prey_initial_population
+    maps_to: ecology_lotka_volterra_system.prey_initial_population
+  - name: predator_initial_population
+    maps_to: ecology_lotka_volterra_system.predator_initial_population
+  - name: prey_growth_rate
+    maps_to: ecology_lotka_volterra_system.prey_growth_rate
+  - name: predation_rate
+    maps_to: ecology_lotka_volterra_system.predation_rate
+  - name: predator_mortality_rate
+    maps_to: ecology_lotka_volterra_system.predator_mortality_rate
+  - name: predator_reproduction_rate
+    maps_to: ecology_lotka_volterra_system.predator_reproduction_rate
   outputs:
-    - name: prey_population_state
-      maps_to: ecology_lotka_volterra_system.prey_population_state
-    - name: predator_population_state
-      maps_to: ecology_lotka_volterra_system.predator_population_state
-wiring: []
+  - name: prey_population_state
+    maps_to: ecology_lotka_volterra_system.prey_population_state
+  - name: predator_population_state
+    maps_to: ecology_lotka_volterra_system.predator_population_state
+wiring:
+- from: ecology_lotka_volterra_system.visualisation_payload
+  to:
+  - visualisation.ecology_lotka_volterra_system_visualisation_payload

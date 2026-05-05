@@ -1,0 +1,25 @@
+schema_version: "2.0"
+title: "Geci2022 Visualisation"
+description: "Dedicated presentation model for this ecology lab."
+standard: other
+tags:
+  - ecology
+  - visualisation
+authors:
+  - "Biosimulant Team"
+biosim:
+  entrypoint: "src.ecology_visualisation:EcologyVisualisationModel"
+  init_kwargs:
+    integration_step: 1.0
+    source_alias: "ecology_geci2022_gene_drive_suppression"
+    mode: "gene_drive"
+    lab_title: "Geci2022 Visualisation"
+  communication_step: 1.0
+parameters:
+  - name: integration_step
+    value: 1.0
+    min: 0.0
+    description: "Sampling step for the visualisation model."
+io:
+  inputs: []
+  outputs: []

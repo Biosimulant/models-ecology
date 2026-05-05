@@ -1,0 +1,25 @@
+schema_version: "2.0"
+title: "Leibovich2022 Visualisation"
+description: "Dedicated presentation model for this ecology lab."
+standard: other
+tags:
+  - ecology
+  - visualisation
+authors:
+  - "Biosimulant Team"
+biosim:
+  entrypoint: "src.ecology_visualisation:EcologyVisualisationModel"
+  init_kwargs:
+    integration_step: 0.05
+    source_alias: "ecology_leibovich2022_multispecies_competition"
+    mode: "leibovich"
+    lab_title: "Leibovich2022 Visualisation"
+  communication_step: 0.05
+parameters:
+  - name: integration_step
+    value: 0.05
+    min: 0.0
+    description: "Sampling step for the visualisation model."
+io:
+  inputs: []
+  outputs: []

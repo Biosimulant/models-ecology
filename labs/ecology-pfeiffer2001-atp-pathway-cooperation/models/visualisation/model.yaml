@@ -1,0 +1,25 @@
+schema_version: "2.0"
+title: "Pfeiffer2001 Visualisation"
+description: "Dedicated presentation model for this ecology lab."
+standard: other
+tags:
+  - ecology
+  - visualisation
+authors:
+  - "Biosimulant Team"
+biosim:
+  entrypoint: "src.ecology_visualisation:EcologyVisualisationModel"
+  init_kwargs:
+    integration_step: 0.1
+    source_alias: "ecology_pfeiffer2001_atp_pathway_cooperation"
+    mode: "pfeiffer"
+    lab_title: "Pfeiffer2001 Visualisation"
+  communication_step: 0.1
+parameters:
+  - name: integration_step
+    value: 0.1
+    min: 0.0
+    description: "Sampling step for the visualisation model."
+io:
+  inputs: []
+  outputs: []
