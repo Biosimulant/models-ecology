@@ -1,0 +1,11 @@
+{
+  "schema_version": "1",
+  "local_id": "a164d05e-790a-4f9d-b764-1ca6fabc56e3",
+  "kind": "lab",
+  "source": "local",
+  "hub_id": "4465424c-70ed-4f7a-a851-be77a3f44cc2",
+  "created_at": "2026-05-13 06:51:09",
+  "last_synced_at": "2026-05-14T10:52:05.539156+00:00",
+  "hub_manifest_hash": "5a6004d2d1d8f3c935c2de2c4870ddfbe63926dc7571306cd5c7144c6cfa9aec",
+  "package_name": "turner2015-mosquito-life-stage-ecology-model-lab"
+}

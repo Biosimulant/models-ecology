@@ -4,8 +4,15 @@
     {
       "id": "ecology_pfeiffer2001_atp_pathway_cooperation",
       "position": {
-        "x": 360,
+        "x": 0,
         "y": 0
+      }
+    },
+    {
+      "id": "visualisation",
+      "position": {
+        "x": 343.5931558935361,
+        "y": -230.0912547528517
       }
     }
   ]

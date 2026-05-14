@@ -138,6 +138,8 @@ io:
     - dimensionless
     description: Record describing patch resource and initial states.
   outputs:
+  - name: visualisation_payload
+    description: Internal history payload for the sibling visualisation model.
   - name: prey_population_state
     emitted_unit: count
     description: Current prey population state.
@@ -161,5 +163,3 @@ io:
     description: Threshold crossing events.
   - name: scenario_summary
     description: Enabled mechanisms, units, and labels.
-  - name: visualisation_payload
-    description: Internal history payload for the sibling visualisation model.

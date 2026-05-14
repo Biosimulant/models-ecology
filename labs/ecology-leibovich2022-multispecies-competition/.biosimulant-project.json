@@ -1,0 +1,11 @@
+{
+  "schema_version": "1",
+  "local_id": "764363fb-4191-4b5e-861f-c6494aef8c87",
+  "kind": "lab",
+  "source": "local",
+  "hub_id": "1348127f-35df-4b01-9cdd-e75307c31063",
+  "created_at": "2026-05-04T16:27:05.085887023+00:00",
+  "last_synced_at": "2026-05-14T16:41:46.241062+00:00",
+  "hub_manifest_hash": "3a50de59ee6fe78e5a0fe709426696a98c3041dd69c480a02be74e27667b967d",
+  "package_name": "leibovich2022-multispecies-competition-lab"
+}

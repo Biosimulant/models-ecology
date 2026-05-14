@@ -8,6 +8,8 @@ from typing import Any, Dict, List, Optional, Sequence, TYPE_CHECKING
 
 from biosim import BioModule
 from biosim.signals import AcceptedSignalProfile, BioSignal, RecordSignal, ScalarSignal, SignalSpec
+from biosim.signals import coerce_float, unwrap_payload
+from biosim.signals import make_signal as _make_signal
 
 if TYPE_CHECKING:  # pragma: no cover - typing only
     from biosim.visuals import VisualSpec
@@ -17,11 +19,6 @@ EPS = 1e-9
 HISTORY_POINT_LIMIT = 10000
 VISUAL_POINT_LIMIT = 900
 
-
-def _make_signal(*, source: str, name: str, value: Any, emitted_at: float, spec: SignalSpec) -> BioSignal:
-    if spec.signal_type == "record":
-        return RecordSignal(source=source, name=name, value=value, emitted_at=emitted_at, spec=spec)
-    return ScalarSignal(source=source, name=name, value=value, emitted_at=emitted_at, spec=spec)
 
 
 class RosenzweigMacArthurPredatorPreySystem(BioModule):
@@ -186,6 +183,10 @@ class RosenzweigMacArthurPredatorPreySystem(BioModule):
 
     def outputs(self) -> dict[str, SignalSpec]:
         return {
+            "visualisation_payload": SignalSpec.record(
+                schema={"payload": "json"},
+                description="Internal history payload for the sibling visualisation model.",
+            ),
             "prey_population_state": SignalSpec.record(
                 schema={"role": "str", "label": "str", "count": "float", "patches": "json", "t": "float"},
                 emitted_unit="count",
@@ -224,10 +225,6 @@ class RosenzweigMacArthurPredatorPreySystem(BioModule):
             "scenario_summary": SignalSpec.record(
                 schema={"mechanisms": "json", "units": "json", "labels": "json"},
                 description="Enabled mechanisms, public units, and display labels.",
-            ),
-            "visualisation_payload": SignalSpec.record(
-                schema={"payload": "json"},
-                description="Internal history payload for the sibling visualisation model.",
             ),
         }
 
@@ -275,10 +272,6 @@ class RosenzweigMacArthurPredatorPreySystem(BioModule):
             normalized.append([0.0 for _ in range(count)])
         return normalized
 
-    @staticmethod
-    def _signal_value(signal: BioSignal) -> Any:
-        return getattr(signal, "value", None)
-
     def set_inputs(self, inputs: dict[str, BioSignal]) -> None:
         self._input_overrides = dict(inputs or {})
         self._apply_input_overrides(reset_initial_state=self._time <= 0.0 and not self._history)
@@ -287,22 +280,13 @@ class RosenzweigMacArthurPredatorPreySystem(BioModule):
         signal = self._input_overrides.get(name)
         if signal is None:
             return None
-        value = self._signal_value(signal)
-        if isinstance(value, dict):
-            for key in ("value", "count", "payload"):
-                if key in value:
-                    value = value[key]
-                    break
-        try:
-            return float(value)
-        except (TypeError, ValueError):
-            return None
+        return coerce_float(signal)
 
     def _record_input(self, name: str) -> dict[str, Any]:
         signal = self._input_overrides.get(name)
         if signal is None:
             return {}
-        value = self._signal_value(signal)
+        value = unwrap_payload(signal)
         return value if isinstance(value, dict) else {}
 
     def _apply_input_overrides(self, *, reset_initial_state: bool) -> None:
@@ -690,6 +674,13 @@ class RosenzweigMacArthurPredatorPreySystem(BioModule):
         prey_total = float(sum(self._prey))
         predator_total = float(sum(self._predator))
         self._outputs = {
+            "visualisation_payload": _make_signal(
+                source=source,
+                name="visualisation_payload",
+                value={"payload": self._visualisation_payload()},
+                emitted_at=float(self._time),
+                spec=specs["visualisation_payload"],
+            ),
             "prey_population_state": _make_signal(
                 source=source,
                 name="prey_population_state",
@@ -757,13 +748,6 @@ class RosenzweigMacArthurPredatorPreySystem(BioModule):
                 value=self._scenario_summary(),
                 emitted_at=float(self._time),
                 spec=specs["scenario_summary"],
-            ),
-            "visualisation_payload": _make_signal(
-                source=source,
-                name="visualisation_payload",
-                value={"payload": self._visualisation_payload()},
-                emitted_at=float(self._time),
-                spec=specs["visualisation_payload"],
             ),
         }
 

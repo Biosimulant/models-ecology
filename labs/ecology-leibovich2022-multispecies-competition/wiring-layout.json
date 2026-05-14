@@ -4,8 +4,15 @@
     {
       "id": "ecology_leibovich2022_multispecies_competition",
       "position": {
-        "x": 360,
-        "y": 0
+        "x": -43.688212927756666,
+        "y": -37.863117870722434
+      }
+    },
+    {
+      "id": "visualisation",
+      "position": {
+        "x": 310.0988593155893,
+        "y": -269.4106463878327
       }
     }
   ]

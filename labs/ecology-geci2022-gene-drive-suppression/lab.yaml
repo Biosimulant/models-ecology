@@ -62,7 +62,7 @@ models:
     integration_step: 1
   path: models/visualisation
 runtime:
-  communication_step: 1
+  communication_step: 10
   duration: 100
   initial_inputs: {}
 schema_version: '2.0'

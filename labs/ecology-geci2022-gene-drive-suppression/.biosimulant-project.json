@@ -5,5 +5,7 @@
   "source": "local",
   "hub_id": "9955f7cf-d553-4e60-84ef-995ef5780d64",
   "created_at": "2026-05-05 07:21:10",
-  "package_name": "local/Geci2022_Gene-Drive_Suppression_Lab"
+  "last_synced_at": "2026-05-14T16:31:26.099234+00:00",
+  "hub_manifest_hash": "b9de2c7a6e203204f4a2cc024e29109589858ad6e5ffdcdc4f222240ef763a50",
+  "package_name": "geci2022-gene-drive-suppression-lab"
 }

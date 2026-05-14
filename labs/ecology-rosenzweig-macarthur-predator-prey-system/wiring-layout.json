@@ -4,8 +4,15 @@
     {
       "id": "ecology_rosenzweig_macarthur_predator_prey_system",
       "position": {
-        "x": 360,
-        "y": 0
+        "x": 957.6756288501028,
+        "y": -66.06160164271046
+      }
+    },
+    {
+      "id": "visualisation",
+      "position": {
+        "x": 749.5154004106777,
+        "y": -566.5749486652977
       }
     }
   ]

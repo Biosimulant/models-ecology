@@ -22,69 +22,15 @@ from __future__ import annotations
 import math
 from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
-import biosim
 import numpy as np
-from biosim.signals import (AcceptedSignalProfile, ArraySignal, BioSignal, EventSignal, RecordSignal, ScalarSignal, SignalSpec)
+from biosim import StatefulBioModule
+from biosim.signals import BioSignal, SignalSpec, coerce_float, scalar_or_record_input
 
 if TYPE_CHECKING:  # pragma: no cover - typing only
     from biosim.visuals import VisualSpec
 
 
-def _schema_type(value):
-    if isinstance(value, bool):
-        return "bool"
-    if isinstance(value, int) and not isinstance(value, bool):
-        return "int"
-    if isinstance(value, float):
-        return "float"
-    if isinstance(value, str):
-        return "str"
-    return "json"
-
-
-def _signal_value(signal):
-    value = signal.value
-    if isinstance(value, dict) and set(value.keys()) == {"payload"}:
-        return value["payload"]
-    return value
-
-
-def _generic_input_spec(description=None):
-    return SignalSpec.record(
-        schema={"payload": "json"},
-        accepted_profiles=(
-            AcceptedSignalProfile(signal_type="record", schema={"payload": "json"}),
-            AcceptedSignalProfile(signal_type="scalar"),
-        ),
-        description=description,
-    )
-
-
-def _make_signal(*, source, name, value, emitted_at, spec=None):
-    if spec is None:
-        if isinstance(value, dict):
-            spec = SignalSpec.record(schema={str(key): _schema_type(item) for key, item in value.items()})
-        elif isinstance(value, (list, tuple)):
-            spec = SignalSpec.record(schema={"payload": "json"})
-        else:
-            spec = SignalSpec.scalar(dtype=_schema_type(value))
-
-    if spec.signal_type == "scalar":
-        return ScalarSignal(source=source, name=name, value=value, emitted_at=emitted_at, spec=spec)
-    if spec.signal_type == "array":
-        return ArraySignal(source=source, name=name, value=value, emitted_at=emitted_at, spec=spec)
-    if spec.signal_type == "event":
-        event_value = value
-        if spec.schema is not None and not (isinstance(value, dict) and set(value.keys()) == set(spec.schema.keys())):
-            event_value = {"payload": value}
-        return EventSignal(source=source, name=name, value=event_value, emitted_at=emitted_at, spec=spec)
-
-    record_value = value
-    if not isinstance(value, dict) or set(value.keys()) != set((spec.schema or {}).keys()):
-        record_value = {"payload": value}
-    return RecordSignal(source=source, name=name, value=record_value, emitted_at=emitted_at, spec=spec)
-
-class Leibovich2022CommunityModel(biosim.BioModule):
+class Leibovich2022CommunityModel(StatefulBioModule):
     """Faithful competition-immigration model matching upstream MultiLV propensities."""
 
     def __init__(
@@ -104,6 +50,7 @@ class Leibovich2022CommunityModel(biosim.BioModule):
         if species_count < 2:
             raise ValueError("species_count must be at least 2")
 
+        super().__init__(integration_step=integration_step, publish_on_zero_window=False)
         self.integration_step = float(integration_step)
         self.species_count = int(species_count)
         self.carrying_capacity = float(carrying_capacity)
@@ -114,66 +61,34 @@ class Leibovich2022CommunityModel(biosim.BioModule):
         self.initial_abundance = float(initial_abundance)
         self.rng_seed = int(rng_seed)
 
-        self._time = 0.0
         self._rng = np.random.default_rng(self.rng_seed)
         self._abundances = self._initial_state()
-        self._input_overrides: Dict[str, BioSignal] = {}
-        self._history: List[Dict[str, float]] = []
-        self._outputs: Dict[str, BioSignal] = {}
 
-    def setup(self, config: Optional[Dict[str, Any]] = None) -> None:
-        self.reset()
-
-    def reset(self) -> None:
-        self._time = 0.0
+    def reset_state(self) -> None:
         self._rng = np.random.default_rng(self.rng_seed)
         self._abundances = self._initial_state()
-        self._history = []
-        self._outputs = {}
-
-    @staticmethod
-    def _scalar_input_spec(unit: str, description: str) -> SignalSpec:
-        return SignalSpec.scalar(
-            dtype="float64",
-            accepted_profiles=(
-                AcceptedSignalProfile(signal_type="scalar", dtype="float64",
-                                     accepted_units=(unit,), description=description),
-                AcceptedSignalProfile(signal_type="record", schema={"payload": "json"},
-                                     description=description),
-            ),
-            description=description,
-        )
 
     def inputs(self) -> dict[str, SignalSpec]:
         return {
-            "carrying_capacity": self._scalar_input_spec("individuals", "Habitat carrying capacity."),
-            "birth_rate": self._scalar_input_spec("1/time", "Per-capita birth rate."),
-            "death_rate": self._scalar_input_spec("1/time", "Per-capita baseline death rate."),
-            "competition_overlap": self._scalar_input_spec("dimensionless", "Fraction of competition that is interspecific."),
-            "immigration_rate": self._scalar_input_spec("individuals/time", "Constant immigration rate per species."),
-            "initial_abundance": self._scalar_input_spec("individuals", "Starting abundance per species."),
+            "carrying_capacity": scalar_or_record_input("individuals", "Habitat carrying capacity."),
+            "birth_rate": scalar_or_record_input("1/time", "Per-capita birth rate."),
+            "death_rate": scalar_or_record_input("1/time", "Per-capita baseline death rate."),
+            "competition_overlap": scalar_or_record_input(
+                "dimensionless", "Fraction of competition that is interspecific."
+            ),
+            "immigration_rate": scalar_or_record_input(
+                "individuals/time", "Constant immigration rate per species."
+            ),
+            "initial_abundance": scalar_or_record_input("individuals", "Starting abundance per species."),
         }
-
-    def set_inputs(self, inputs: dict[str, BioSignal]) -> None:
-        self._input_overrides = dict(inputs or {})
-        self._apply_input_overrides(reset_initial_state=self._time <= 0.0 and not self._history)
 
     def _input_number(self, name: str) -> float | None:
         signal = self._input_overrides.get(name)
         if signal is None:
             return None
-        value = _signal_value(signal)
-        if isinstance(value, dict):
-            for key in ("value", "count", "payload"):
-                if key in value:
-                    value = value[key]
-                    break
-        try:
-            return float(value)
-        except (TypeError, ValueError):
-            return None
+        return coerce_float(signal)
 
-    def _apply_input_overrides(self, *, reset_initial_state: bool) -> None:
+    def apply_overrides(self, *, reset_initial_state: bool) -> None:
         for attr in ("carrying_capacity", "birth_rate", "death_rate",
                      "competition_overlap", "immigration_rate"):
             value = self._input_number(attr)
@@ -193,29 +108,6 @@ class Leibovich2022CommunityModel(biosim.BioModule):
             'visualisation_payload': SignalSpec.record(schema={'payload': 'json'}, description='Internal history payload for the sibling visualisation model.'),
         }
 
-    def advance_window(self, start: float, end: float, inputs: dict[str, BioSignal] | None = None) -> None:
-        if inputs:
-            self.set_inputs(inputs)
-        else:
-            self._apply_input_overrides(reset_initial_state=False)
-
-        t = float(end)
-        if t <= self._time:
-            return
-
-        current = self._time
-        while current < t - 1e-12:
-            dt = min(self.integration_step, t - current)
-            self._step(dt)
-            current += dt
-            self._record_state(current)
-
-        self._time = current
-        self._publish_outputs(current)
-
-    def get_outputs(self) -> Dict[str, BioSignal]:
-        return dict(self._outputs)
-
     def visualize(self) -> Optional[List["VisualSpec"]]:
         return None
 
@@ -223,7 +115,7 @@ class Leibovich2022CommunityModel(biosim.BioModule):
         offsets = np.linspace(1.3, 0.7, self.species_count)
         return np.maximum(0, np.rint(self.initial_abundance * offsets)).astype(int)
 
-    def _step(self, dt: float) -> None:
+    def step(self, dt: float) -> None:
         """Tau-leaping step with upstream MultiLV propensity formulas."""
         total_abundance = float(np.sum(self._abundances))
         next_state = self._abundances.copy()
@@ -250,7 +142,7 @@ class Leibovich2022CommunityModel(biosim.BioModule):
 
         self._abundances = next_state
 
-    def _record_state(self, t: float) -> None:
+    def record_state(self, t: float) -> None:
         total_abundance = int(np.sum(self._abundances))
         richness = int(np.count_nonzero(self._abundances > 0))
         proportions = self._abundances[self._abundances > 0] / max(float(total_abundance), 1.0)
@@ -270,31 +162,24 @@ class Leibovich2022CommunityModel(biosim.BioModule):
             record[f"species_{idx}"] = float(abundance)
         self._history.append(record)
 
-    def _publish_outputs(self, t: float) -> None:
+    def output_payload(self, t: float) -> dict[str, Any]:
         latest = self._history[-1]
         species_abundances = {
             f"species_{idx}": int(self._abundances[idx - 1])
             for idx in range(1, self.species_count + 1)
         }
-        source_name = getattr(self, "_world_name", self.__class__.__name__)
-        self._outputs = {
-            "community_state": _make_signal(source=source_name, name="community_state", value={
+        return {
+            "community_state": {
                     "species_abundances": species_abundances,
                     "total_abundance": int(latest["total_abundance"]),
-                }, emitted_at=float(t), spec=self.outputs().get("community_state")),
-            "diversity_metrics": _make_signal(source=source_name, name="diversity_metrics", value={
+                },
+            "diversity_metrics": {
                     "richness": int(latest["richness"]),
                     "shannon_diversity": float(latest["shannon_diversity"]),
                     "evenness": float(latest["evenness"]),
                     "dominant_species": f"species_{int(latest['dominant_species_index'])}",
-                }, emitted_at=float(t), spec=self.outputs().get("diversity_metrics")),
-            "visualisation_payload": _make_signal(
-                source=source_name,
-                name="visualisation_payload",
-                value={"payload": self._visualisation_payload()},
-                emitted_at=float(t),
-                spec=self.outputs().get("visualisation_payload"),
-            ),
+                },
+            "visualisation_payload": {"payload": self._visualisation_payload()},
         }
 
     def _visualisation_payload(self) -> Dict[str, Any]:
@@ -354,4 +239,3 @@ class Leibovich2022CommunityModel(biosim.BioModule):
                 ],
             },
         }
-

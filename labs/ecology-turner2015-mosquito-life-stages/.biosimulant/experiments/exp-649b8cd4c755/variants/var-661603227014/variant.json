@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "var-661603227014",
+  "experiment_id": "exp-649b8cd4c755",
+  "kind": "workspace",
+  "name": null,
+  "status": "ready",
+  "source_revision": "98952ef2a6369a816d65699ded54fbf1265376f1e54f7f8582eb9d120c490159",
+  "parameter_overlay": {},
+  "workspace_path": "/Volumes/dem-ssd/imp/projects/Nitoons/Biosimulant/bsim-active/models-done/models-ecology/labs/ecology-turner2015-mosquito-life-stages/.biosimulant/experiments/exp-649b8cd4c755/variants/var-661603227014/workspace",
+  "lab_id": "d801b7d2-5ab5-4ab2-af04-32a56f5386ce",
+  "changed_files": [],
+  "created_at": "2026-05-14T05:36:27.562336+00:00",
+  "updated_at": "2026-05-14T05:36:27.562336+00:00"
+}

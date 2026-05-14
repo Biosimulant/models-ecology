@@ -1,0 +1,11 @@
+{
+  "schema_version": "1",
+  "local_id": "d9247dd9-000a-4b00-8414-315503977bb5",
+  "kind": "lab",
+  "source": "local",
+  "hub_id": "e3a3cbae-cb67-466b-933d-82a23a5720f2",
+  "created_at": "2026-05-04T16:00:34.184386637+00:00",
+  "last_synced_at": "2026-05-14T18:01:44.211388+00:00",
+  "hub_manifest_hash": "931310ca065a727c098d624180d9c294758fbccde54b5a63b75f4c6985b91d90",
+  "package_name": "rosenzweig-macarthur-predator-prey-system-lab"
+}

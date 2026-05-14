@@ -8,66 +8,14 @@ import base64
 import math
 from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
-from biosim import BioModule
-from biosim.signals import (
-    AcceptedSignalProfile,
-    ArraySignal,
-    BioSignal,
-    EventSignal,
-    RecordSignal,
-    ScalarSignal,
-    SignalSpec,
-)
+from biosim import StatefulBioModule
+from biosim.signals import BioSignal, SignalSpec, coerce_float, scalar_or_record_input
 
 if TYPE_CHECKING:  # pragma: no cover - typing only
     from biosim.visuals import VisualSpec
 
 
-def _schema_type(value: Any) -> str:
-    if isinstance(value, bool):
-        return "bool"
-    if isinstance(value, int) and not isinstance(value, bool):
-        return "int"
-    if isinstance(value, float):
-        return "float"
-    if isinstance(value, str):
-        return "str"
-    return "json"
-
-
-def _signal_value(signal: BioSignal) -> Any:
-    value = getattr(signal, "value", None)
-    if isinstance(value, dict) and set(value.keys()) == {"payload"}:
-        return value["payload"]
-    return value
-
-
-def _make_signal(*, source: str, name: str, value: Any, emitted_at: float, spec: SignalSpec | None = None) -> BioSignal:
-    if spec is None:
-        if isinstance(value, dict):
-            spec = SignalSpec.record(schema={str(key): _schema_type(item) for key, item in value.items()})
-        elif isinstance(value, (list, tuple)):
-            spec = SignalSpec.record(schema={"payload": "json"})
-        else:
-            spec = SignalSpec.scalar(dtype=_schema_type(value))
-
-    if spec.signal_type == "scalar":
-        return ScalarSignal(source=source, name=name, value=value, emitted_at=emitted_at, spec=spec)
-    if spec.signal_type == "array":
-        return ArraySignal(source=source, name=name, value=value, emitted_at=emitted_at, spec=spec)
-    if spec.signal_type == "event":
-        event_value = value
-        if spec.schema is not None and not (isinstance(value, dict) and set(value.keys()) == set(spec.schema.keys())):
-            event_value = {"payload": value}
-        return EventSignal(source=source, name=name, value=event_value, emitted_at=emitted_at, spec=spec)
-
-    record_value = value
-    if not isinstance(value, dict) or set(value.keys()) != set((spec.schema or {}).keys()):
-        record_value = {"payload": value}
-    return RecordSignal(source=source, name=name, value=record_value, emitted_at=emitted_at, spec=spec)
-
-
-class LotkaVolterraSystem(BioModule):
+class LotkaVolterraSystem(StatefulBioModule):
     """Deterministic Lotka-Volterra predator-prey system with RK4 integration."""
 
     def __init__(
@@ -95,6 +43,11 @@ class LotkaVolterraSystem(BioModule):
             if value < 0:
                 raise ValueError(f"{name} must be non-negative")
 
+        super().__init__(
+            integration_step=integration_step,
+            max_history_points=10000,
+            publish_on_zero_window=False,
+        )
         self.integration_step = float(integration_step)
         self.alpha = float(alpha)
         self.beta = float(beta)
@@ -106,25 +59,20 @@ class LotkaVolterraSystem(BioModule):
         self.predator_name = predator_name or "Predator"
 
         self._epsilon = 1e-9
-        self._max_history_points = 10000
-        self._input_overrides: Dict[str, BioSignal] = {}
-        self._time = 0.0
         self._prey = self.prey_initial
         self._predator = self.predator_initial
-        self._history: List[Dict[str, float]] = []
         self._initial_invariant = self._invariant(self._prey, self._predator)
         self._prey_extinction_time: Optional[float] = 0.0 if self._prey <= self._epsilon else None
         self._predator_extinction_time: Optional[float] = 0.0 if self._predator <= self._epsilon else None
-        self._outputs: Dict[str, BioSignal] = {}
 
     def inputs(self) -> dict[str, SignalSpec]:
         return {
-            "prey_initial_population": self._scalar_input_spec("count", "Initial prey population count."),
-            "predator_initial_population": self._scalar_input_spec("count", "Initial predator population count."),
-            "prey_growth_rate": self._scalar_input_spec("1/day", "Intrinsic prey growth rate alpha."),
-            "predation_rate": self._scalar_input_spec("1/(count*day)", "Mass-action predation coefficient beta."),
-            "predator_mortality_rate": self._scalar_input_spec("1/day", "Predator mortality rate gamma."),
-            "predator_reproduction_rate": self._scalar_input_spec(
+            "prey_initial_population": scalar_or_record_input("count", "Initial prey population count."),
+            "predator_initial_population": scalar_or_record_input("count", "Initial predator population count."),
+            "prey_growth_rate": scalar_or_record_input("1/day", "Intrinsic prey growth rate alpha."),
+            "predation_rate": scalar_or_record_input("1/(count*day)", "Mass-action predation coefficient beta."),
+            "predator_mortality_rate": scalar_or_record_input("1/day", "Predator mortality rate gamma."),
+            "predator_reproduction_rate": scalar_or_record_input(
                 "1/(count*day)", "Predator reproduction coefficient delta."
             ),
         }
@@ -147,55 +95,20 @@ class LotkaVolterraSystem(BioModule):
             ),
         }
 
-    @staticmethod
-    def _scalar_input_spec(unit: str, description: str) -> SignalSpec:
-        return SignalSpec.scalar(
-            dtype="float64",
-            accepted_profiles=(
-                AcceptedSignalProfile(
-                    signal_type="scalar",
-                    dtype="float64",
-                    accepted_units=(unit,),
-                    description=description,
-                ),
-                AcceptedSignalProfile(signal_type="record", schema={"payload": "json"}, description=description),
-            ),
-            description=description,
-        )
-
-    def setup(self, config: Optional[Dict[str, Any]] = None) -> None:
-        self.reset()
-
-    def reset(self) -> None:
-        self._time = 0.0
+    def reset_state(self) -> None:
         self._prey = self.prey_initial
         self._predator = self.predator_initial
-        self._history = []
         self._initial_invariant = self._invariant(self._prey, self._predator)
         self._prey_extinction_time = 0.0 if self._prey <= self._epsilon else None
         self._predator_extinction_time = 0.0 if self._predator <= self._epsilon else None
-        self._outputs = {}
-
-    def set_inputs(self, inputs: dict[str, BioSignal]) -> None:
-        self._input_overrides = dict(inputs or {})
-        self._apply_input_overrides(reset_initial_state=self._time <= 0.0 and not self._history)
 
     def _input_number(self, name: str) -> float | None:
         signal = self._input_overrides.get(name)
         if signal is None:
             return None
-        value = _signal_value(signal)
-        if isinstance(value, dict):
-            for key in ("value", "count", "payload"):
-                if key in value:
-                    value = value[key]
-                    break
-        try:
-            return float(value)
-        except (TypeError, ValueError):
-            return None
+        return coerce_float(signal)
 
-    def _apply_input_overrides(self, *, reset_initial_state: bool) -> None:
+    def apply_overrides(self, *, reset_initial_state: bool) -> None:
         for input_name, attr_name in {
             "prey_growth_rate": "alpha",
             "predation_rate": "beta",
@@ -216,37 +129,6 @@ class LotkaVolterraSystem(BioModule):
             self.predator_initial = predator_initial
             if reset_initial_state:
                 self._predator = predator_initial
-
-    def advance_window(
-        self,
-        start: float | None = None,
-        end: float | None = None,
-        inputs: dict[str, BioSignal] | None = None,
-    ) -> dict[str, BioSignal]:
-        if inputs:
-            self.set_inputs(inputs)
-        else:
-            self._apply_input_overrides(reset_initial_state=False)
-
-        if end is None:
-            end = self._time + float(getattr(self, "communication_step", self.integration_step) or self.integration_step)
-        t = float(end)
-        if t <= self._time:
-            return dict(self._outputs)
-
-        current = self._time
-        while current < t - 1e-12:
-            h = min(self.integration_step, t - current)
-            self._prey, self._predator = self._rk4_step(self._prey, self._predator, h)
-            current += h
-            self._record_state(current)
-
-        self._time = current
-        self._publish_outputs(self._time)
-        return dict(self._outputs)
-
-    def get_outputs(self) -> Dict[str, BioSignal]:
-        return dict(self._outputs)
 
     def get_state(self) -> Dict[str, Any]:
         return {
@@ -276,7 +158,10 @@ class LotkaVolterraSystem(BioModule):
         next_predator = predator + (h / 6.0) * (k1y + 2.0 * k2y + 2.0 * k3y + k4y)
         return max(0.0, next_prey), max(0.0, next_predator)
 
-    def _record_state(self, t: float) -> None:
+    def step(self, h: float) -> None:
+        self._prey, self._predator = self._rk4_step(self._prey, self._predator, h)
+
+    def record_state(self, t: float) -> None:
         invariant = self._invariant(self._prey, self._predator)
         drift = invariant - self._initial_invariant
         self._history.append(
@@ -288,43 +173,27 @@ class LotkaVolterraSystem(BioModule):
                 "drift": float(drift),
             }
         )
-        if len(self._history) > self._max_history_points:
-            self._history = self._history[-self._max_history_points :]
 
         if self._prey_extinction_time is None and self._prey <= self._epsilon:
             self._prey_extinction_time = float(t)
         if self._predator_extinction_time is None and self._predator <= self._epsilon:
             self._predator_extinction_time = float(t)
 
-    def _publish_outputs(self, t: float) -> None:
-        source_name = getattr(self, "_world_name", self.__class__.__name__)
-        self._outputs = {
-            "prey_population_state": _make_signal(
-                source=source_name,
-                name="prey_population_state",
-                value={"role": "prey", "label": self.prey_name, "count": float(self._prey), "t": float(t)},
-                emitted_at=float(t),
-                spec=self.outputs()["prey_population_state"],
-            ),
-            "predator_population_state": _make_signal(
-                source=source_name,
-                name="predator_population_state",
-                value={
-                    "role": "predator",
-                    "label": self.predator_name,
-                    "count": float(self._predator),
-                    "t": float(t),
-                },
-                emitted_at=float(t),
-                spec=self.outputs()["predator_population_state"],
-            ),
-            "visualisation_payload": _make_signal(
-                source=source_name,
-                name="visualisation_payload",
-                value={"payload": self._visualisation_payload()},
-                emitted_at=float(t),
-                spec=self.outputs()["visualisation_payload"],
-            ),
+    def output_payload(self, t: float) -> dict[str, Any]:
+        return {
+            "prey_population_state": {
+                "role": "prey",
+                "label": self.prey_name,
+                "count": float(self._prey),
+                "t": float(t),
+            },
+            "predator_population_state": {
+                "role": "predator",
+                "label": self.predator_name,
+                "count": float(self._predator),
+                "t": float(t),
+            },
+            "visualisation_payload": {"payload": self._visualisation_payload()},
         }
 
     def _visualisation_payload(self) -> Dict[str, Any]:

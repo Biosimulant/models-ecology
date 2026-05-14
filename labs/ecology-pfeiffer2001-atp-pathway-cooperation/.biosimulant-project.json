@@ -1,0 +1,11 @@
+{
+  "schema_version": "1",
+  "local_id": "cda879b5-3479-48fd-8cbc-545bae4a9bd7",
+  "kind": "lab",
+  "source": "local",
+  "hub_id": "179ec6e0-8eb3-4803-b7bb-640374e4912f",
+  "created_at": "2026-05-04T16:27:05.084054718+00:00",
+  "last_synced_at": "2026-05-14T16:33:57.281921+00:00",
+  "hub_manifest_hash": "74fa1cfb9e7b0d219d6e8e2d89ac4ea442a1803a46bef307f517c014dba809a0",
+  "package_name": "pfeiffer2001-atp-pathway-cooperation-competition-model-lab"
+}

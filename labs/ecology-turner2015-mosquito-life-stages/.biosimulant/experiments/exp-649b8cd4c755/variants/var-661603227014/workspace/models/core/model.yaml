@@ -1,0 +1,54 @@
+schema_version: '2.0'
+title: Turner2015 Mosquito Life-Stage Ecology Model
+description: Curated SBML packaging of the Turner2015 mosquito life-stage model, exposing
+  egg, larval, and pupal trajectories together with stage-composition diagnostics
+  for ecology-facing interpretation.
+standard: other
+tags:
+- ecology
+- sbml
+- mosquito
+- life-history
+- faithful
+authors:
+- Biosimulant Team
+- Amy Turner
+- Chanok Jung
+- Pan Tan
+- Srinivas Gotika
+- Vijay Mago
+upstream:
+  id: biomodels_ebi:BIOMD0000000922
+  source_db: biomodels_ebi
+  source_id: BIOMD0000000922
+  standard: sbml
+  original_url: https://www.ebi.ac.uk/biomodels/BIOMD0000000922
+  download_url: https://www.ebi.ac.uk/biomodels/models/core/download/BIOMD0000000922?filename=Turner2015_ELP.xml
+  license: CC0
+biosim:
+  entrypoint: src.turner2015_mosquito_life_stages:Turner2015MosquitoLifeStagesModel
+  init_kwargs:
+    model_path: data/BIOMD0000000922.xml
+    integration_step: 0.1
+  communication_step: 0.1
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - tellurium==2.2.11.2
+io:
+  inputs:
+  - name: integration_step
+    accepted_units:
+    - day
+    description: ODE solver integration step size.
+  outputs:
+  - name: life_stage_state
+    emitted_unit: individuals
+    description: Immature mosquito life-stage abundances from the Turner2015 model.
+  - name: population_metrics
+    emitted_unit: fraction
+    description: Stage fractions and total immature abundance for the Turner2015 mosquito
+      life-stage model.
+  - name: visualisation_payload
+    description: Internal history payload for the sibling visualisation model.

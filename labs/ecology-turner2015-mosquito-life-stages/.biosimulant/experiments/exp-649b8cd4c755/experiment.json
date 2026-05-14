@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "exp-649b8cd4c755",
+  "lab_id": "a164d05e-790a-4f9d-b764-1ca6fabc56e3",
+  "lab_title": "Turner2015 Mosquito Life-Stage Ecology Model Lab",
+  "workspace_root": "/Volumes/dem-ssd/imp/projects/Nitoons/Biosimulant/bsim-active/models-done/models-ecology/labs/ecology-turner2015-mosquito-life-stages",
+  "objective": "Run a relevant multiple-run experiment for the Turner2015 mosquito life-stage ecology model by comparing the baseline against a small parameter sweep on the visualisation integration step, to see whether output stability or summary metrics change across runs.",
+  "hypothesis": null,
+  "description": null,
+  "rationale": null,
+  "status": "stopped",
+  "base_revision": "labrev-4a22a6fbd795fb99",
+  "budget": {
+    "max_trials": 3
+  },
+  "allowed_actions": {
+    "local_runs": true,
+    "parameter_variants": true,
+    "remote_runs": false,
+    "workspace_variants": false
+  },
+  "workflow": {
+    "steps": [
+      "Create a baseline variant from the current lab.",
+      "Create 2 parameter variants that adjust the visualisation integration_step around the current value.",
+      "Run all variants locally.",
+      "Compare trial metrics and summarize which setting looks most stable or informative."
+    ]
+  },
+  "created_at": "2026-05-14T05:33:50.542407+00:00",
+  "updated_at": "2026-05-14T10:02:35.140869+00:00"
+}

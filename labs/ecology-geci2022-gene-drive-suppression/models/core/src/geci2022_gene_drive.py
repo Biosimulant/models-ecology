@@ -26,6 +26,7 @@ import biosim
 import numpy as np
 from biosim.signals import (AcceptedSignalProfile, ArraySignal, BioSignal,
                             EventSignal, RecordSignal, ScalarSignal, SignalSpec)
+from biosim.signals import make_signal as _make_signal
 
 if TYPE_CHECKING:  # pragma: no cover - typing only
     from biosim.visuals import VisualSpec
@@ -46,25 +47,6 @@ def _schema_type(value):
         return "str"
     return "json"
 
-
-def _make_signal(*, source, name, value, emitted_at, spec=None):
-    if spec is None:
-        if isinstance(value, dict):
-            spec = SignalSpec.record(schema={str(k): _schema_type(v) for k, v in value.items()})
-        elif isinstance(value, (list, tuple)):
-            spec = SignalSpec.record(schema={"payload": "json"})
-        else:
-            spec = SignalSpec.scalar(dtype=_schema_type(value))
-
-    if spec.signal_type == "scalar":
-        return ScalarSignal(source=source, name=name, value=value, emitted_at=emitted_at, spec=spec)
-    if spec.signal_type == "array":
-        return ArraySignal(source=source, name=name, value=value, emitted_at=emitted_at, spec=spec)
-    if spec.signal_type == "event":
-        ev = value if isinstance(value, dict) and set(value.keys()) == set((spec.schema or {}).keys()) else {"payload": value}
-        return EventSignal(source=source, name=name, value=ev, emitted_at=emitted_at, spec=spec)
-    rv = value if isinstance(value, dict) and set(value.keys()) == set((spec.schema or {}).keys()) else {"payload": value}
-    return RecordSignal(source=source, name=name, value=rv, emitted_at=emitted_at, spec=spec)
 
 
 # ---------------------------------------------------------------------------

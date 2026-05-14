@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "var-af1e3a356b61",
+  "experiment_id": "exp-649b8cd4c755",
+  "kind": "baseline",
+  "name": null,
+  "status": "ready",
+  "source_revision": "98952ef2a6369a816d65699ded54fbf1265376f1e54f7f8582eb9d120c490159",
+  "parameter_overlay": {},
+  "workspace_path": null,
+  "lab_id": null,
+  "changed_files": [],
+  "created_at": "2026-05-14T05:36:34.375703+00:00",
+  "updated_at": "2026-05-14T05:36:34.375703+00:00"
+}
