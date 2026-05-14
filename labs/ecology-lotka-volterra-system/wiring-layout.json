@@ -4,8 +4,15 @@
     {
       "id": "ecology_lotka_volterra_system",
       "position": {
-        "x": 360,
+        "x": 0,
         "y": 0
+      }
+    },
+    {
+      "id": "visualisation",
+      "position": {
+        "x": 110.58935361216736,
+        "y": -286.88593155893534
       }
     }
   ]

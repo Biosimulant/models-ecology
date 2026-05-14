@@ -1,0 +1,11 @@
+{
+  "schema_version": "1",
+  "local_id": "725ae391-de51-4dfb-90d0-30b46cb1f743",
+  "kind": "lab",
+  "source": "local",
+  "hub_id": "52e99dd4-17c7-47a5-b8bc-e59319d71b25",
+  "created_at": "2026-05-04T16:27:05.084776432+00:00",
+  "last_synced_at": "2026-05-14T19:34:40.163703+00:00",
+  "hub_manifest_hash": "c37af5a8e338c0ddd166c68ef4917197cd43481ede16721caca7460fa0654d35",
+  "package_name": "lotka-volterra-system-lab"
+}
