@@ -61,4 +61,4 @@ def test_visualisation_payload_after_advance():
     module, _outputs = _make_instance_and_advance()
     assert module.visualize() is None
     payload = module.get_outputs()["visualisation_payload"].value["payload"]
-    assert isinstance(payload["history"], list)
+    assert isinstance(payload["point"], dict)

@@ -193,10 +193,10 @@ class LotkaVolterraSystem(StatefulBioModule):
                 "count": float(self._predator),
                 "t": float(t),
             },
-            "visualisation_payload": {"payload": self._visualisation_payload()},
+            "visualisation_payload": {"payload": self._visualisation_sample()},
         }
 
-    def _visualisation_payload(self) -> Dict[str, Any]:
+    def _visualisation_metadata(self) -> Dict[str, Any]:
         return {
             "parameters": {
                 "alpha": self.alpha,
@@ -210,8 +210,17 @@ class LotkaVolterraSystem(StatefulBioModule):
             },
             "prey_extinction_time": self._prey_extinction_time,
             "predator_extinction_time": self._predator_extinction_time,
-            "history": list(self._history),
         }
+
+    def _visualisation_sample(self) -> Dict[str, Any]:
+        payload = self._visualisation_metadata()
+        payload["point"] = dict(self._history[-1]) if self._history else None
+        return payload
+
+    def _visualisation_payload(self) -> Dict[str, Any]:
+        payload = self._visualisation_metadata()
+        payload["history"] = list(self._history)
+        return payload
 
     def _population_timeseries_visual(self) -> "VisualSpec":
         return {

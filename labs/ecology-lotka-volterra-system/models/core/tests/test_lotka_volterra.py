@@ -90,7 +90,8 @@ def test_visualisation_payload_contains_expected_lv_fields(biosim):
     module.advance_window(0.0, 20.0)
     payload = module.get_outputs()["visualisation_payload"].value["payload"]
 
-    assert len(payload["history"]) > 1
+    assert set(payload) == {"parameters", "prey_extinction_time", "predator_extinction_time", "point"}
+    assert payload["point"]["t"] == pytest.approx(20.0)
     assert payload["parameters"]["alpha"] == 1.1
     assert payload["parameters"]["prey_name"] == "Prey"
 
@@ -100,7 +101,7 @@ def test_audit_drift_stays_bounded(biosim):
 
     module = LotkaVolterraSystem(integration_step=0.05)
     module.advance_window(0.0, 20.0)
-    payload = module.get_outputs()["visualisation_payload"].value["payload"]
+    payload = module._visualisation_payload()
     max_abs_drift = max(abs(point["drift"]) for point in payload["history"])
     assert max_abs_drift < 1e-5
 

@@ -69,3 +69,32 @@ def test_visualisation_model_stays_internal_and_renders_visuals():
     renders = {visual["render"] for visual in visuals}
     assert "timeseries" in renders
     assert "table" in renders
+
+
+def test_lotka_visualisation_accumulates_incremental_samples():
+    module, step = _load_model()
+    if module.mode != "lotka_volterra":
+        return
+    alias = module.source_alias
+    spec = module.inputs()[f"{alias}_visualisation_payload"]
+    payload = _sample_payload(module.mode)
+    base = {key: value for key, value in payload.items() if key != "history"}
+
+    for index, point in enumerate(payload["history"], start=1):
+        module.set_inputs(
+            {
+                f"{alias}_visualisation_payload": RecordSignal(
+                    source="test",
+                    name=f"{alias}_visualisation_payload",
+                    value={"payload": {**base, "point": point}},
+                    emitted_at=step * index,
+                    spec=spec,
+                )
+            }
+        )
+        module.advance_window(step * (index - 1), step * index)
+
+    visuals = module.visualize()
+    assert isinstance(visuals, list) and visuals
+    population = next(visual for visual in visuals if visual["data"]["title"] == "Population Trajectories")
+    assert len(population["data"]["series"][0]["points"]) == len(payload["history"])

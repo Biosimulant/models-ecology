@@ -30,6 +30,8 @@ class EcologyVisualisationModel(BioModule):
         self.mode = mode
         self.lab_title = lab_title
         self._inputs: Dict[str, BioSignal] = {}
+        self._payload: Dict[str, Any] | None = None
+        self._history: list[dict[str, Any]] = []
 
     def inputs(self) -> dict[str, SignalSpec]:
         return {f"{self.source_alias}_visualisation_payload": _record_input_spec("Internal payload from the sibling core model.")}
@@ -39,9 +41,16 @@ class EcologyVisualisationModel(BioModule):
 
     def reset(self) -> None:
         self._inputs = {}
+        self._payload = None
+        self._history = []
 
     def set_inputs(self, signals: dict[str, BioSignal]) -> None:
         self._inputs.update(signals or {})
+        payload = _signal_value(self._inputs.get(f"{self.source_alias}_visualisation_payload"))
+        if isinstance(payload, dict) and set(payload.keys()) == {"payload"}:
+            payload = payload["payload"]
+        if isinstance(payload, Mapping):
+            self._merge_payload(payload)
 
     def advance_window(self, start: float | None = None, end: float | None = None, inputs: dict[str, BioSignal] | None = None) -> dict[str, BioSignal]:
         if inputs:
@@ -52,13 +61,11 @@ class EcologyVisualisationModel(BioModule):
         return {}
 
     def visualize(self) -> Optional[list[dict[str, Any]]]:
-        payload = _signal_value(self._inputs.get(f"{self.source_alias}_visualisation_payload"))
-        if isinstance(payload, dict) and set(payload.keys()) == {"payload"}:
-            payload = payload["payload"]
+        payload = self._payload
         if not isinstance(payload, Mapping):
             return None
-        history = payload.get("history")
-        if not isinstance(history, list) or not history:
+        history = self._history
+        if not history:
             return None
         if self.mode == "lotka_volterra":
             return self._lotka_visuals(payload, history)
@@ -71,6 +78,23 @@ class EcologyVisualisationModel(BioModule):
         if self.mode == "gene_drive":
             return self._gene_drive_visuals(payload, history)
         return self._rosenzweig_visuals(payload, history)
+
+    def _merge_payload(self, payload: Mapping[str, Any]) -> None:
+        self._payload = {key: value for key, value in payload.items() if key not in {"history", "point"}}
+
+        history = payload.get("history")
+        if isinstance(history, list):
+            self._history = [dict(point) for point in history if isinstance(point, Mapping)]
+            return
+
+        point = payload.get("point")
+        if isinstance(point, Mapping):
+            next_point = dict(point)
+            next_t = next_point.get("t")
+            if self._history and self._history[-1].get("t") == next_t:
+                self._history[-1] = next_point
+            else:
+                self._history.append(next_point)
 
     def _lotka_visuals(self, payload: Mapping[str, Any], history: list[dict[str, Any]]) -> list[dict[str, Any]]:
         params = payload.get("parameters", {}) if isinstance(payload.get("parameters"), Mapping) else {}
