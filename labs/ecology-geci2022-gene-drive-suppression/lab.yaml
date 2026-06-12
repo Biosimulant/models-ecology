@@ -66,6 +66,8 @@ runtime:
   duration: 100
   initial_inputs: {}
 schema_version: '2.0'
+package: ecology-geci2022-gene-drive-suppression-lab
+version: 1.0.1
 title: Geci2022 Gene-Drive Suppression Lab
 wiring:
 - from: ecology_geci2022_gene_drive_suppression.visualisation_payload

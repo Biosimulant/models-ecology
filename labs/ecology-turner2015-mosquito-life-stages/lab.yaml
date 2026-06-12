@@ -20,6 +20,8 @@ runtime:
   duration: 120
   initial_inputs: {}
 schema_version: '2.0'
+package: ecology-turner2015-mosquito-life-stages-lab
+version: 1.0.1
 title: Turner2015 Mosquito Life-Stage Ecology Model Lab
 wiring:
 - from: ecology_turner2015_mosquito_life_stages.visualisation_payload

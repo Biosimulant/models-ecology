@@ -64,6 +64,8 @@ runtime:
   duration: 365
   initial_inputs: {}
 schema_version: '2.0'
+package: ecology-rosenzweig-macarthur-predator-prey-system-lab
+version: 1.0.1
 title: Rosenzweig-MacArthur Predator-Prey System Lab
 wiring:
 - from: ecology_rosenzweig_macarthur_predator_prey_system.visualisation_payload

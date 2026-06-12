@@ -22,6 +22,8 @@ runtime:
   duration: 75
   initial_inputs: {}
 schema_version: '2.0'
+package: ecology-pfeiffer2001-atp-pathway-cooperation-lab
+version: 1.0.1
 title: Pfeiffer2001 ATP-Pathway Cooperation-Competition Model Lab
 wiring:
 - from: ecology_pfeiffer2001_atp_pathway_cooperation.visualisation_payload

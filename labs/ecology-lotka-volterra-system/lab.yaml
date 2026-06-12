@@ -30,6 +30,8 @@ runtime:
   duration: 250
   initial_inputs: {}
 schema_version: '2.0'
+package: ecology-lotka-volterra-system-lab
+version: 1.0.1
 title: Lotka-Volterra System Lab
 wiring:
 - from: ecology_lotka_volterra_system.visualisation_payload

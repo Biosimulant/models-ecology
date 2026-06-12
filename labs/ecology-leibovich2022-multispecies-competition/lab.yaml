@@ -30,6 +30,8 @@ runtime:
   duration: 500
   initial_inputs: {}
 schema_version: '2.0'
+package: ecology-leibovich2022-multispecies-competition-lab
+version: 1.0.1
 title: Leibovich2022 Multispecies Competition Lab
 wiring:
 - from: ecology_leibovich2022_multispecies_competition.visualisation_payload

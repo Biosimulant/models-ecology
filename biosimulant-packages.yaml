@@ -1,66 +1,40 @@
 schema_version: "1"
-namespace: biosimulant
+namespace: demi
 default_visibility: public
-repository:
-  description: Ecology labs and models packaged for Biosimulant.
 packages:
-  - id: ecology-geci2022-gene-drive-suppression-lab
-    package: biosimulant/ecology-geci2022-gene-drive-suppression-lab
-    version: 1.0.0
+  - id: ecology-geci2022-gene-drive-suppression-lab-lab
+    package: ecology-geci2022-gene-drive-suppression-lab
+    version: 1.0.1
     type: lab
     path: labs/ecology-geci2022-gene-drive-suppression
-  - id: ecology-geci2022-gene-drive-suppression-model
-    package: biosimulant/ecology-geci2022-gene-drive-suppression-model
-    version: 1.0.0
-    type: model
-    path: labs/ecology-geci2022-gene-drive-suppression/models/core
-  - id: ecology-leibovich2022-multispecies-competition-lab
-    package: biosimulant/ecology-leibovich2022-multispecies-competition-lab
-    version: 1.0.0
+    visibility: public
+  - id: ecology-leibovich2022-multispecies-competition-lab-lab
+    package: ecology-leibovich2022-multispecies-competition-lab
+    version: 1.0.1
     type: lab
     path: labs/ecology-leibovich2022-multispecies-competition
-  - id: ecology-leibovich2022-multispecies-competition-model
-    package: biosimulant/ecology-leibovich2022-multispecies-competition-model
-    version: 1.0.0
-    type: model
-    path: labs/ecology-leibovich2022-multispecies-competition/models/core
-  - id: ecology-lotka-volterra-system-lab
-    package: biosimulant/ecology-lotka-volterra-system-lab
-    version: 1.0.0
+    visibility: public
+  - id: ecology-lotka-volterra-system-lab-lab
+    package: ecology-lotka-volterra-system-lab
+    version: 1.0.1
     type: lab
     path: labs/ecology-lotka-volterra-system
-  - id: ecology-lotka-volterra-system-model
-    package: biosimulant/ecology-lotka-volterra-system-model
-    version: 1.0.0
-    type: model
-    path: labs/ecology-lotka-volterra-system/models/core
-  - id: ecology-pfeiffer2001-atp-pathway-cooperation-lab
-    package: biosimulant/ecology-pfeiffer2001-atp-pathway-cooperation-lab
-    version: 1.0.0
+    visibility: public
+  - id: ecology-pfeiffer2001-atp-pathway-cooperation-lab-lab
+    package: ecology-pfeiffer2001-atp-pathway-cooperation-lab
+    version: 1.0.1
     type: lab
     path: labs/ecology-pfeiffer2001-atp-pathway-cooperation
-  - id: ecology-pfeiffer2001-atp-pathway-cooperation-model
-    package: biosimulant/ecology-pfeiffer2001-atp-pathway-cooperation-model
-    version: 1.0.0
-    type: model
-    path: labs/ecology-pfeiffer2001-atp-pathway-cooperation/models/core
-  - id: ecology-rosenzweig-macarthur-predator-prey-system-lab
-    package: biosimulant/ecology-rosenzweig-macarthur-predator-prey-system-lab
-    version: 1.0.0
+    visibility: public
+  - id: ecology-rosenzweig-macarthur-predator-prey-system-lab-lab
+    package: ecology-rosenzweig-macarthur-predator-prey-system-lab
+    version: 1.0.1
     type: lab
     path: labs/ecology-rosenzweig-macarthur-predator-prey-system
-  - id: ecology-rosenzweig-macarthur-predator-prey-system-model
-    package: biosimulant/ecology-rosenzweig-macarthur-predator-prey-system-model
-    version: 1.0.0
-    type: model
-    path: labs/ecology-rosenzweig-macarthur-predator-prey-system/models/core
-  - id: ecology-turner2015-mosquito-life-stages-lab
-    package: biosimulant/ecology-turner2015-mosquito-life-stages-lab
-    version: 1.0.0
+    visibility: public
+  - id: ecology-turner2015-mosquito-life-stages-lab-lab
+    package: ecology-turner2015-mosquito-life-stages-lab
+    version: 1.0.1
     type: lab
     path: labs/ecology-turner2015-mosquito-life-stages
-  - id: ecology-turner2015-mosquito-life-stages-model
-    package: biosimulant/ecology-turner2015-mosquito-life-stages-model
-    version: 1.0.0
-    type: model
-    path: labs/ecology-turner2015-mosquito-life-stages/models/core
+    visibility: public
