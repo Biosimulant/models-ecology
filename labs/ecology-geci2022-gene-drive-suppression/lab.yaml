@@ -248,3 +248,4 @@ wiring:
 - from: ecology_geci2022_gene_drive_suppression.visualisation_payload
   to:
   - visualisation.ecology_geci2022_gene_drive_suppression_visualisation_payload
+intended_use: Explore source-faithful discrete-generation gene-drive dynamics and resistance assumptions. No field-release recommendation, ecological safety prediction or experimental efficacy claim.
