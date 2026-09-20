@@ -8,15 +8,17 @@ import base64
 import math
 from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
-from biosim import StatefulBioModule
-from biosim.signals import BioSignal, SignalSpec, coerce_float, scalar_or_record_input
+from biosim import BioModule, ExecutionPolicy
+from biosim.signals import BioSignal, SignalSpec, coerce_float, scalar_or_record_input, unwrap_payload
 
 if TYPE_CHECKING:  # pragma: no cover - typing only
     from biosim.visuals import VisualSpec
 
 
-class LotkaVolterraSystem(StatefulBioModule):
+class LotkaVolterraSystem(BioModule):
     """Deterministic Lotka-Volterra predator-prey system with RK4 integration."""
+
+    execution_policy = ExecutionPolicy.EACH_WINDOW
 
     def __init__(
         self,
@@ -30,7 +32,7 @@ class LotkaVolterraSystem(StatefulBioModule):
         predator_name: str = "Predator",
         integration_step: float = 0.1,
     ) -> None:
-        if integration_step <= 0:
+        if isinstance(integration_step, bool) or not math.isfinite(integration_step) or integration_step <= 0:
             raise ValueError("integration_step must be positive")
         for name, value in {
             "alpha": alpha,
@@ -40,14 +42,14 @@ class LotkaVolterraSystem(StatefulBioModule):
             "prey_initial": prey_initial,
             "predator_initial": predator_initial,
         }.items():
-            if value < 0:
+            if isinstance(value, bool) or not math.isfinite(value) or value < 0:
                 raise ValueError(f"{name} must be non-negative")
 
-        super().__init__(
-            integration_step=integration_step,
-            max_history_points=10000,
-            publish_on_zero_window=False,
-        )
+        self._time = 0.0
+        self._history = []
+        self._input_overrides = {}
+        self._complete = False
+        self._constant_rates = True
         self.integration_step = float(integration_step)
         self.alpha = float(alpha)
         self.beta = float(beta)
@@ -102,33 +104,63 @@ class LotkaVolterraSystem(StatefulBioModule):
         self._prey_extinction_time = 0.0 if self._prey <= self._epsilon else None
         self._predator_extinction_time = 0.0 if self._predator <= self._epsilon else None
 
-    def _input_number(self, name: str) -> float | None:
-        signal = self._input_overrides.get(name)
-        if signal is None:
-            return None
-        return coerce_float(signal)
+    def setup(self, config=None) -> None:
+        self.reset()
 
-    def apply_overrides(self, *, reset_initial_state: bool) -> None:
-        for input_name, attr_name in {
-            "prey_growth_rate": "alpha",
-            "predation_rate": "beta",
-            "predator_mortality_rate": "gamma",
-            "predator_reproduction_rate": "delta",
-        }.items():
-            value = self._input_number(input_name)
-            if value is not None and value >= 0.0:
-                setattr(self, attr_name, value)
+    def reset(self) -> None:
+        super().reset()
+        self._time = 0.0
+        self._history = []
+        self._input_overrides = {}
+        self._complete = False
+        self._constant_rates = True
+        self.reset_state()
 
-        prey_initial = self._input_number("prey_initial_population")
-        predator_initial = self._input_number("predator_initial_population")
-        if prey_initial is not None and prey_initial >= 0.0:
-            self.prey_initial = prey_initial
-            if reset_initial_state:
-                self._prey = prey_initial
-        if predator_initial is not None and predator_initial >= 0.0:
-            self.predator_initial = predator_initial
-            if reset_initial_state:
-                self._predator = predator_initial
+    def set_inputs(self, signals) -> None:
+        mapping = {
+            'prey_growth_rate': 'alpha', 'predation_rate': 'beta',
+            'predator_mortality_rate': 'gamma', 'predator_reproduction_rate': 'delta',
+            'prey_initial_population': 'prey_initial',
+            'predator_initial_population': 'predator_initial',
+        }
+        updates = {}
+        for name, signal in (signals or {}).items():
+            if name not in mapping:
+                raise ValueError(f'Unknown input: {name}')
+            raw = unwrap_payload(signal)
+            if isinstance(raw, dict) and 'value' in raw:
+                raw = raw['value']
+            value = coerce_float(signal)
+            if isinstance(raw, bool) or value is None or not math.isfinite(value) or value < 0:
+                raise ValueError(f'{name} must be finite and nonnegative')
+            attr = mapping[name]
+            if self._time > 0 and attr.endswith('_initial') and value != getattr(self, attr):
+                raise ValueError('Initial populations cannot change after the run starts')
+            updates[attr] = value
+        # Validate the complete update before mutating model state.
+        if self._time > 0 and any(k in {'alpha','beta','gamma','delta'} and v != getattr(self,k) for k,v in updates.items()):
+            self._constant_rates = False
+        for attr, value in updates.items():
+            setattr(self, attr, value)
+        if not self._history:
+            self.reset_state()
+
+    def execute(self, inputs, *, context):
+        self.set_inputs(inputs)
+        target = context.window_end
+        if target is None:
+            raise ValueError('Lotka-Volterra requires a temporal window')
+        if not self._history:
+            self.record_state(self._time)
+        while self._time < target - 1e-12:
+            h = min(self.integration_step, target - self._time)
+            self.step(h)
+            self._time += h
+            self.record_state(self._time)
+            if len(self._history) > 100000:
+                raise ValueError('Trajectory exceeds 100000 points; shorten the run or use coarser sampling')
+        self._complete = math.isclose(target, context.run_end, rel_tol=0, abs_tol=1e-10)
+        return self.output_payload(self._time)
 
     def get_state(self) -> Dict[str, Any]:
         return {
@@ -156,21 +188,23 @@ class LotkaVolterraSystem(StatefulBioModule):
 
         next_prey = prey + (h / 6.0) * (k1x + 2.0 * k2x + 2.0 * k3x + k4x)
         next_predator = predator + (h / 6.0) * (k1y + 2.0 * k2y + 2.0 * k3y + k4y)
-        return max(0.0, next_prey), max(0.0, next_predator)
+        if any(not math.isfinite(value) or value < 0 for value in (next_prey, next_predator)):
+            raise FloatingPointError('RK4 produced an invalid population; reduce the integration step')
+        return next_prey, next_predator
 
     def step(self, h: float) -> None:
         self._prey, self._predator = self._rk4_step(self._prey, self._predator, h)
 
     def record_state(self, t: float) -> None:
         invariant = self._invariant(self._prey, self._predator)
-        drift = invariant - self._initial_invariant
+        drift = invariant - self._initial_invariant if invariant is not None and self._initial_invariant is not None and self._constant_rates else None
         self._history.append(
             {
                 "t": float(t),
                 "prey": float(self._prey),
                 "predator": float(self._predator),
-                "invariant": float(invariant),
-                "drift": float(drift),
+                "invariant": invariant,
+                "drift": drift,
             }
         )
 
@@ -193,7 +227,7 @@ class LotkaVolterraSystem(StatefulBioModule):
                 "count": float(self._predator),
                 "t": float(t),
             },
-            "visualisation_payload": {"payload": self._visualisation_sample()},
+            "visualisation_payload": {"payload": self._visualisation_payload() if self._complete else {"status": "pending"}},
         }
 
     def _visualisation_metadata(self) -> Dict[str, Any]:
@@ -220,6 +254,9 @@ class LotkaVolterraSystem(StatefulBioModule):
     def _visualisation_payload(self) -> Dict[str, Any]:
         payload = self._visualisation_metadata()
         payload["history"] = list(self._history)
+        payload["status"] = "completed"
+        payload["time_unit"] = "day"
+        payload["invariant_applicable"] = self._constant_rates and self._initial_invariant is not None and all(p["invariant"] is not None for p in self._history)
         return payload
 
     def _population_timeseries_visual(self) -> "VisualSpec":
@@ -364,15 +401,10 @@ class LotkaVolterraSystem(StatefulBioModule):
             ]
         )
 
-    def _invariant(self, prey: float, predator: float) -> float:
-        prey_clip = max(prey, self._epsilon)
-        predator_clip = max(predator, self._epsilon)
-        return (
-            self.delta * prey_clip
-            - self.gamma * math.log(prey_clip)
-            + self.beta * predator_clip
-            - self.alpha * math.log(predator_clip)
-        )
+    def _invariant(self, prey: float, predator: float) -> float | None:
+        if prey <= 0 or predator <= 0:
+            return None
+        return self.delta * prey - self.gamma * math.log(prey) + self.beta * predator - self.alpha * math.log(predator)
 
     def _estimate_period(self) -> Optional[float]:
         maxima: List[float] = []

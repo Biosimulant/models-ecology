@@ -5,8 +5,9 @@
 from __future__ import annotations
 
 from typing import Any, Dict, Mapping, Optional
+import math
 
-from biosim import BioModule
+from biosim import BioModule, ExecutionPolicy
 from biosim.signals import AcceptedSignalProfile, BioSignal, SignalSpec
 from biosim.signals import unwrap_payload as _signal_value
 
@@ -24,6 +25,7 @@ def _record_input_spec(description: str) -> SignalSpec:
 
 
 class EcologyVisualisationModel(BioModule):
+    execution_policy = ExecutionPolicy.ONCE_AFTER_RUN
     def __init__(self, integration_step: float = 0.1, source_alias: str = "core", mode: str = "lotka_volterra", lab_title: str = "Ecology Lab") -> None:
         self.integration_step = float(integration_step)
         self.source_alias = source_alias
@@ -40,6 +42,7 @@ class EcologyVisualisationModel(BioModule):
         return {}
 
     def reset(self) -> None:
+        super().reset()
         self._inputs = {}
         self._payload = None
         self._history = []
@@ -52,9 +55,18 @@ class EcologyVisualisationModel(BioModule):
         if isinstance(payload, Mapping):
             self._merge_payload(payload)
 
-    def advance_window(self, start: float | None = None, end: float | None = None, inputs: dict[str, BioSignal] | None = None) -> dict[str, BioSignal]:
-        if inputs:
-            self.set_inputs(inputs)
+    def execute(self, inputs, *, context):
+        self.set_inputs(dict(inputs))
+        if not self._payload or self._payload.get('status') != 'completed' or not self._history:
+            raise ValueError('A complete final trajectory is required')
+        times = [float(p['t']) for p in self._history]
+        if not math.isclose(times[0], context.run_start, abs_tol=1e-10) or not math.isclose(times[-1], context.run_end, abs_tol=1e-10):
+            raise ValueError('Trajectory must cover the whole requested run')
+        if any(not math.isfinite(t) for t in times) or any(b <= a for a,b in zip(times,times[1:])):
+            raise ValueError('Trajectory times must increase strictly')
+        for point in self._history:
+            if any(not math.isfinite(float(point[k])) or float(point[k]) < 0 for k in ('prey','predator')):
+                raise ValueError('Trajectory populations must be finite and nonnegative')
         return {}
 
     def get_outputs(self) -> dict[str, BioSignal]:
@@ -107,21 +119,29 @@ class EcologyVisualisationModel(BioModule):
         gamma = float(params.get("gamma", 0.0))
         delta = float(params.get("delta", 0.0))
         rows = [
+            ["final prey", f"{prey_values[-1]:.6g}", "count"],
+            ["final predator", f"{predator_values[-1]:.6g}", "count"],
+            ["recorded end time", str(history[-1]["t"]), "day"],
+            ["scope", "Idealized continuous populations; no carrying capacity, seasons, migration or fitted species data", ""],
             ["prey growth rate alpha", f"{alpha:.6g}", "1/day"],
             ["predation rate beta", f"{beta:.6g}", "1/(count*day)"],
             ["predator mortality gamma", f"{gamma:.6g}", "1/day"],
             ["predator reproduction delta", f"{delta:.6g}", "1/(count*day)"],
             ["peak prey", f"{max(prey_values):.6g}", "count"],
             ["peak predator", f"{max(predator_values):.6g}", "count"],
-            ["prey extinction time", str(payload.get("prey_extinction_time")), "day"],
-            ["predator extinction time", str(payload.get("predator_extinction_time")), "day"],
+            ["prey numerical threshold time (≤1e-9)", str(payload.get("prey_extinction_time")), "day"],
+            ["predator numerical threshold time (≤1e-9)", str(payload.get("predator_extinction_time")), "day"],
         ]
-        return [
+        visuals = [
             {"render": "timeseries", "description": "Predator-prey population trajectories.", "data": {"title": "Population Trajectories", "x_unit": "day", "y_unit": "count", "series": [{"name": prey_name, "points": [[float(p.get('t', 0.0)), float(p.get('prey', 0.0))] for p in history]}, {"name": predator_name, "points": [[float(p.get('t', 0.0)), float(p.get('predator', 0.0))] for p in history]}]}},
             {"render": "timeseries", "description": "Phase trajectory expressed as predator count against prey count.", "data": {"title": "Phase Trajectory", "x_unit": "count", "y_unit": "count", "series": [{"name": f"{prey_name} vs {predator_name}", "points": [[float(p.get('prey', 0.0)), float(p.get('predator', 0.0))] for p in history]}]}},
             {"render": "table", "description": "Lotka-Volterra summary diagnostics.", "data": {"title": "Lotka-Volterra Summary", "columns": ["Metric", "Value", "Unit"], "rows": rows}},
-            {"render": "timeseries", "description": "Invariant and drift diagnostics across the run.", "data": {"title": "Invariant Audit", "x_unit": "day", "series": [{"name": "Invariant", "points": [[float(p.get('t', 0.0)), float(p.get('invariant', 0.0))] for p in history]}, {"name": "Drift from initial", "points": [[float(p.get('t', 0.0)), float(p.get('drift', 0.0))] for p in history]}]}},
+            {"render": "timeseries", "description": "Invariant and drift diagnostics across the run.", "data": {"title": "Invariant Audit", "x_unit": "day", "series": [{"name": "Invariant", "points": [[float(p.get('t', 0.0)), float(p.get('invariant') or 0.0)] for p in history]}, {"name": "Drift from initial", "points": [[float(p.get('t', 0.0)), float(p.get('drift') or 0.0)] for p in history]}]}},
         ]
+
+        if not payload.get('invariant_applicable', False):
+            visuals[-1] = {'render': 'table', 'description': 'Invariant audit is unavailable on zero-population boundaries or after rate changes.', 'data': {'title': 'Invariant Audit', 'columns': ['Status', 'Reason'], 'rows': [['Not applicable', 'Requires positive populations and constant rates']]}}
+        return visuals
 
     def _pfeiffer_visuals(self, payload: Mapping[str, Any], history: list[dict[str, Any]]) -> list[dict[str, Any]]:
         latest = history[-1]

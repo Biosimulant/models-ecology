@@ -1,0 +1,30 @@
+{
+  "source": "Actual default CLI run, compared independently against SciPy DOP853",
+  "duration_days": 250,
+  "points": 25002,
+  "final_populations": {
+    "prey": 1.087224252251116,
+    "predator": 5.020474966016094
+  },
+  "max_absolute_error": 5.801302975783074e-07,
+  "acceptance": {
+    "rtol": 1e-05,
+    "atol": 1e-06,
+    "max_invariant_drift": 1e-06
+  },
+  "max_invariant_drift": 2.1348238732343816e-09,
+  "reference_tolerances": {
+    "rtol": 1e-12,
+    "atol": 1e-13
+  },
+  "visuals_match_full_history": true,
+  "versions": {
+    "biosimulant": "0.0.34",
+    "numpy": "2.5.3",
+    "scipy": "1.17.1",
+    "pytest": "9.1.1",
+    "pyyaml": "6.0.3"
+  },
+  "results_sha256": "3e5c2eaa9e50cb82e096dc5e88157cd585a802c248e1498535c7102815f456be",
+  "scientific_limit": "Equation verification only; no empirical ecological validation, managed Passport or publication."
+}

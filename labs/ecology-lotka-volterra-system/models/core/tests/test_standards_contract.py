@@ -1,64 +1,15 @@
-from __future__ import annotations
+from biosim import BioWorld
+from src.lotka_volterra import LotkaVolterraSystem
 
-import importlib
-import sys
-from pathlib import Path
-
-import yaml
-
-
-def _find_bsim_src(start: Path) -> Path | None:
-    for parent in [start, *start.parents]:
-        for candidate in (parent / "biosim" / "src", parent / "bsim-active" / "biosim" / "src"):
-            if (candidate / "biosim").is_dir():
-                return candidate
-    return None
-
-
-def _ensure_paths() -> None:
-    pack_root = Path(__file__).resolve().parents[1]
-    if str(pack_root) not in sys.path:
-        sys.path.insert(0, str(pack_root))
-
-    bsim_src = _find_bsim_src(pack_root)
-    if bsim_src is not None and str(bsim_src) not in sys.path:
-        sys.path.insert(0, str(bsim_src))
-
-
-def _load_module_class():
-    _ensure_paths()
-    manifest = Path(__file__).resolve().parents[1] / "model.yaml"
-    data = yaml.safe_load(manifest.read_text(encoding="utf-8"))
-    module_name, class_name = data["biosim"]["entrypoint"].split(":", 1)
-    module = importlib.import_module(module_name)
-    return getattr(module, class_name)
-
-
-def _make_instance_and_advance():
-    cls = _load_module_class()
-    module = cls()
-    t = float(getattr(module, "integration_step", 1.0) or 1.0)
-    module.advance_window(0.0, t)
-    return module, module.get_outputs()
-
-
-def test_instantiation():
-    cls = _load_module_class()
-    module = cls()
-    assert getattr(module, "integration_step", 0) > 0
-    assert isinstance(module.inputs(), dict)
-    assert isinstance(module.outputs(), dict)
-    assert len(module.outputs()) > 0
-
-
-def test_advance_produces_outputs():
-    module, outputs = _make_instance_and_advance()
-    assert isinstance(outputs, dict)
-    assert set(outputs.keys()) == set(module.outputs())
-
-
-def test_visualisation_payload_after_advance():
-    module, _outputs = _make_instance_and_advance()
-    assert module.visualize() is None
-    payload = module.get_outputs()["visualisation_payload"].value["payload"]
-    assert isinstance(payload["point"], dict)
+def test_world_emits_typed_terminal_signals():
+    world=BioWorld(communication_step=.01)
+    m=LotkaVolterraSystem()
+    world.add_biomodule("core",m)
+    world.setup()
+    world.run(.03)
+    out=world.get_outputs("core")
+    assert set(out)==set(m.outputs())
+    assert out["prey_population_state"].spec.emitted_unit=="count"
+    assert out["prey_population_state"].value["t"]==.03
+    assert len(out["visualisation_payload"].value["payload"]["history"])==4
+    assert m.visualize() is None

@@ -1,18 +1,19 @@
 schema_version: '2.0'
 title: Lotka-Volterra System
-description: Canonical deterministic Lotka-Volterra predator-prey system with built-in
-  diagnostics and visualizations.
+description: "Explore idealized predator\u2013prey cycles with six controls, a complete\
+  \ trajectory and numerical diagnostics. No species-specific calibration or population\
+  \ forecast is claimed."
 standard: other
 tags:
 - ecology
 - predator-prey
 - lotka-volterra
-- faithful
 authors:
 - Biosimulant Team
 biosim:
   entrypoint: src.lotka_volterra:LotkaVolterraSystem
   communication_step: 0.1
+  execution_policy: each_window
 parameters:
 - name: alpha
   value: 1.1
@@ -52,35 +53,69 @@ parameters:
 io:
   inputs:
   - name: prey_initial_population
-    accepted_units:
-    - count
+    signal_type: scalar
+    dtype: float64
     description: Initial prey population count.
-  - name: predator_initial_population
     accepted_units:
     - count
+  - name: predator_initial_population
+    signal_type: scalar
+    dtype: float64
     description: Initial predator population count.
+    accepted_units:
+    - count
   - name: prey_growth_rate
-    accepted_units:
-    - 1/day
+    signal_type: scalar
+    dtype: float64
     description: Intrinsic prey growth rate alpha.
-  - name: predation_rate
-    accepted_units:
-    - 1/(count*day)
-    description: Mass-action predation coefficient beta.
-  - name: predator_mortality_rate
     accepted_units:
     - 1/day
-    description: Predator mortality rate gamma.
-  - name: predator_reproduction_rate
+  - name: predation_rate
+    signal_type: scalar
+    dtype: float64
+    description: Mass-action predation coefficient beta.
     accepted_units:
     - 1/(count*day)
+  - name: predator_mortality_rate
+    signal_type: scalar
+    dtype: float64
+    description: Predator mortality rate gamma.
+    accepted_units:
+    - 1/day
+  - name: predator_reproduction_rate
+    signal_type: scalar
+    dtype: float64
     description: Predator reproduction coefficient delta.
+    accepted_units:
+    - 1/(count*day)
   outputs:
   - name: prey_population_state
+    signal_type: record
+    schema:
+      role: str
+      label: str
+      count: float
+      t: float
+    description: Current prey population count.
     emitted_unit: count
-    description: Current prey population state.
   - name: predator_population_state
+    signal_type: record
+    schema:
+      role: str
+      label: str
+      count: float
+      t: float
+    description: Current predator population count.
     emitted_unit: count
-    description: Current predator population state.
   - name: visualisation_payload
+    signal_type: record
+    schema:
+      payload: json
     description: Internal history payload for the sibling visualisation model.
+package: lotka-volterra-core
+version: 1.1.0
+runtime:
+  python_version: '3.12'
+  dependencies:
+    packages:
+    - biosimulant==0.0.34
