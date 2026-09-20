@@ -2,6 +2,7 @@ from pathlib import Path
 import hashlib,json,tomllib
 import numpy as np
 import pytest
+from native_fixtures import native_fixture
 from src.geci2022_gene_drive import Geci2022GeneDriveModel,GENOTYPES,GAMETES
 ROOT=Path(__file__).resolve().parents[3]
 FIXTURES=ROOT/'verification'
@@ -12,9 +13,9 @@ def test_native_fixture_checksums_and_enumeration():
     native=tomllib.loads((FIXTURES/"native-provenance.toml").read_text())
     assert hashlib.sha256((ROOT/"models/core/upstream/MODEL2301120001.jl").read_bytes()).hexdigest()==native["source_sha256"]
     for filename,digest in json.loads((FIXTURES/'fixture-sha256.json').read_text()).items():
-        assert hashlib.sha256((FIXTURES/filename).read_bytes()).hexdigest()==digest
-    assert np.array_equal(np.loadtxt(FIXTURES/'genotypes.tsv.gz',dtype=str),np.array(GENOTYPES))
-    assert np.array_equal(np.loadtxt(FIXTURES/'gametes.tsv.gz',dtype=str),np.array(GAMETES))
+        assert hashlib.sha256(native_fixture(filename).read_bytes()).hexdigest()==digest
+    assert np.array_equal(np.loadtxt(native_fixture('genotypes.tsv.gz'),dtype=str),np.array(GENOTYPES))
+    assert np.array_equal(np.loadtxt(native_fixture('gametes.tsv.gz'),dtype=str),np.array(GAMETES))
 
 
 @pytest.mark.parametrize('case',CASES,ids=lambda c:c['name'])
@@ -25,11 +26,11 @@ def test_every_genotype_and_matrix_against_native_julia(case):
         m.advance_window(generation,generation+1)
         states.append(m._genotype_vector.copy())
     actual=np.stack(states,axis=1)
-    expected=np.loadtxt(FIXTURES/(case['name']+'-genotypes.tsv.gz'))
+    expected=np.loadtxt(native_fixture(case['name']+'-genotypes.tsv.gz'))
     np.testing.assert_allclose(actual,expected,rtol=1e-9,atol=1e-11)
     assert len(m._history)==101
     for key,matrix in m._matrices.items():
-        rows=np.loadtxt(FIXTURES/f"{case['name']}-{key}_matrix.tsv.gz",ndmin=2)
+        rows=np.loadtxt(native_fixture(f"{case['name']}-{key}_matrix.tsv.gz"),ndmin=2)
         native=np.zeros_like(matrix)
         if matrix.ndim==1:
             assert np.all(rows[:,1]==1)
