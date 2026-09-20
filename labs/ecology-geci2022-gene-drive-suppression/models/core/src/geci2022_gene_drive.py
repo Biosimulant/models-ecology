@@ -23,6 +23,8 @@ import math
 from typing import Any, Dict, List, Optional, Tuple, TYPE_CHECKING
 
 import biosim
+from biosim import ExecutionPolicy
+from biosim.signals import unwrap_payload
 import numpy as np
 from biosim.signals import (AcceptedSignalProfile, ArraySignal, BioSignal,
                             EventSignal, RecordSignal, ScalarSignal, SignalSpec)
@@ -599,7 +601,9 @@ def create_zygote_vector(sperm_freqs, egg_counts):
 # ---------------------------------------------------------------------------
 
 class Geci2022GeneDriveModel(biosim.BioModule):
-    """Faithful genotype-tracking gene-drive suppression model."""
+    """Source-verified deterministic genotype-tracking model."""
+
+    execution_policy = ExecutionPolicy.EACH_WINDOW
 
     def __init__(
         self,
@@ -628,6 +632,10 @@ class Geci2022GeneDriveModel(biosim.BioModule):
         recombination_rate: float = 0.0,
         release_size: float = 0.1,
     ) -> None:
+        supplied = dict(locals())
+        supplied.pop("self")
+        for name, value in supplied.items():
+            self._validate_parameter(name, value)
         self.net_reproduction_rate = float(net_reproduction_rate)
         self.juvenile_survival = float(juvenile_survival)
         self.initial_population = float(initial_population)
@@ -745,56 +753,67 @@ class Geci2022GeneDriveModel(biosim.BioModule):
             "recombination_rate": self._scalar_input_spec("fraction", "X-linked recombination rate."),
         }
 
-    def set_inputs(self, inputs: dict[str, BioSignal]) -> None:
-        self._input_overrides = dict(inputs or {})
-        self._apply_input_overrides(reset_initial_state=self._time <= 0.0 and not self._history)
-
-    def _input_number(self, name: str) -> float | None:
-        signal = self._input_overrides.get(name)
-        if signal is None:
-            return None
-        value = signal.value
-        if isinstance(value, dict):
-            if "payload" in value:
-                value = value["payload"]
-            elif "value" in value:
-                value = value["value"]
+    @staticmethod
+    def _validate_parameter(name, value):
+        if isinstance(value, (bool, np.bool_)):
+            raise ValueError(f'{name} must be numeric, not boolean')
         try:
-            return float(value)
+            number = float(value)
         except (TypeError, ValueError):
-            return None
+            raise ValueError(f'{name} must be a finite number') from None
+        if not math.isfinite(number):
+            raise ValueError(f'{name} must be finite')
+        if name == 'net_reproduction_rate':
+            valid = number > 1
+            domain = 'greater than 1 for the source density-dependence formula'
+        elif name == 'initial_population':
+            valid = number > 0
+            domain = 'positive'
+        elif name == 'release_size':
+            valid = number >= 0
+            domain = 'nonnegative'
+        elif name == 'juvenile_survival':
+            valid = 0 < number <= 1
+            domain = 'in (0, 1]'
+        elif name == 'recombination_rate':
+            valid = 0 <= number <= .5
+            domain = 'in [0, 0.5]'
+        else:
+            valid = 0 <= number <= 1
+            domain = 'in [0, 1]'
+        if not valid:
+            raise ValueError(f'{name} must be {domain}')
+        return number
 
-    def _apply_input_overrides(self, *, reset_initial_state: bool) -> None:
-        rebuild_matrices = False
-
-        # Genetic parameters (stored in self._params)
-        for param_name in list(self._params.keys()):
-            value = self._input_number(param_name)
-            if value is not None:
-                self._params[param_name] = value
-                rebuild_matrices = True
-
-        if rebuild_matrices:
+    def set_inputs(self, inputs: dict[str, BioSignal]) -> None:
+        updates = {}
+        for name, signal in (inputs or {}).items():
+            if name not in self.inputs():
+                raise ValueError(f'Unknown input: {name}')
+            raw = unwrap_payload(signal)
+            if isinstance(raw, dict):
+                raw = raw.get('payload', raw.get('value', raw))
+            value = self._validate_parameter(name, raw)
+            current = self._params[name] if name in self._params else getattr(self, name)
+            if self._time > 0 and value != current:
+                raise ValueError('Scenario parameters are fixed after the run starts')
+            updates[name] = value
+        # Validate the entire update before changing any scientific parameters.
+        changed_genetics = any(name in self._params and value != self._params[name] for name,value in updates.items())
+        changed_initial = any(name in {'initial_population','release_size'} and value != getattr(self,name) for name,value in updates.items())
+        for name,value in updates.items():
+            if name in self._params:
+                self._params[name] = value
+            else:
+                setattr(self, name, value)
+        if changed_genetics:
             self._rebuild_matrices()
-
-        # Ecology parameters
-        for attr in ("net_reproduction_rate", "juvenile_survival"):
-            value = self._input_number(attr)
-            if value is not None and value > 0:
-                setattr(self, attr, value)
-                self._f = (self.net_reproduction_rate * 2.0) / self.juvenile_survival
-                self._alpha = self.initial_population * self._f / (self.net_reproduction_rate - 1.0)
-
-        # Initial-condition parameters (only apply before simulation starts)
-        for attr in ("initial_population", "release_size"):
-            value = self._input_number(attr)
-            if value is not None and value >= 0:
-                setattr(self, attr, value)
-                if reset_initial_state:
-                    self._f = (self.net_reproduction_rate * 2.0) / self.juvenile_survival
-                    self._alpha = self.initial_population * self._f / (self.net_reproduction_rate - 1.0)
-                    self._genotype_vector = self._initial_state()
-                    self._initial_total = float(np.sum(self._genotype_vector))
+        self._f = (self.net_reproduction_rate * 2.0) / self.juvenile_survival
+        self._alpha = self.initial_population * self._f / (self.net_reproduction_rate - 1.0)
+        if changed_initial and self._time == 0:
+            self._genotype_vector = self._initial_state()
+            self._initial_total = float(np.sum(self._genotype_vector))
+            self._history = []
 
     def _rebuild_matrices(self) -> None:
         """Rebuild all process matrices from current self._params."""
@@ -813,14 +832,14 @@ class Geci2022GeneDriveModel(biosim.BioModule):
         return {
             'population_state': SignalSpec.record(
                 schema={'total_adults': 'json', 'adult_females': 'json', 'adult_males': 'json'},
-                emitted_unit='individuals',
-                description='Adult mosquito population partitioned into females and males.',
+                emitted_unit='1',
+                description='Normalized adult population, partitioned into females and males; not individual animal counts.',
             ),
             'gene_drive_metrics': SignalSpec.record(
                 schema={'drive_frequency': 'json', 'resistance_frequency': 'json',
                         'male_fraction': 'json', 'suppression_ratio': 'json'},
                 emitted_unit='fraction',
-                description='Eco-genetic metrics for drive spread, resistance, and suppression.',
+                description='Transgenic-Y fraction among males, autosomal r3 resistance fraction, male fraction and 1 minus total population relative to the initial total including release. The last metric can be negative and is not a no-release comparison.',
             ),
             'visualisation_payload': SignalSpec.record(schema={'payload': 'json'}, description='Internal history payload for the sibling visualisation model.'),
         }
@@ -829,6 +848,7 @@ class Geci2022GeneDriveModel(biosim.BioModule):
         self.reset()
 
     def reset(self) -> None:
+        super().reset()
         self._time = 0.0
         self._genotype_vector = self._initial_state()
         self._initial_total = float(np.sum(self._genotype_vector))
@@ -836,22 +856,18 @@ class Geci2022GeneDriveModel(biosim.BioModule):
         self._outputs = {}
 
     def advance_window(self, start: float, end: float, inputs: dict[str, BioSignal] | None = None) -> None:
-        if inputs:
-            self.set_inputs(inputs)
-        else:
-            self._apply_input_overrides(reset_initial_state=False)
-
-        t = float(end)
-        if t <= self._time:
-            return
-
-        # Each time unit = one generation
-        n_generations = max(1, int(round(t - self._time)))
-        for gen in range(n_generations):
+        for label, value in [('start', start), ('end', end)]:
+            if value is None or not math.isfinite(value) or value < 0 or not math.isclose(value, round(value), rel_tol=0, abs_tol=1e-9):
+                raise ValueError(f'{label} must be a nonnegative whole generation')
+        if end < start or not math.isclose(start, self._time, rel_tol=0, abs_tol=1e-9):
+            raise ValueError('Generation windows must be contiguous and ordered')
+        self.set_inputs(inputs or {})
+        if not self._history:
+            self._record_state(0.0)
+        for generation in range(int(round(end-self._time))):
             self._step_generation()
             self._time += 1.0
             self._record_state(self._time)
-
         self._publish_outputs(self._time)
 
     def get_outputs(self) -> Dict[str, BioSignal]:
@@ -897,6 +913,8 @@ class Geci2022GeneDriveModel(biosim.BioModule):
         # 8. Selection
         gv = M["selection"] * gv
 
+        if not np.all(np.isfinite(gv)) or np.any(gv < 0):
+            raise FloatingPointError("Generation produced invalid genotype abundances")
         self._genotype_vector = gv
 
     def _compute_ecology(self) -> Dict[str, float]:
@@ -984,7 +1002,14 @@ class Geci2022GeneDriveModel(biosim.BioModule):
         }
 
     def _visualisation_payload(self) -> Dict[str, Any]:
-        return {"initial_total": self._initial_total, "history": list(self._history)}
+        return {
+            "initial_total": self._initial_total, "history": list(self._history),
+            "time_unit": "generation", "population_unit": "normalized population",
+            "parameters": {**self._params, "initial_population": self.initial_population,
+                           "release_size": self.release_size, "net_reproduction_rate": self.net_reproduction_rate,
+                           "juvenile_survival": self.juvenile_survival},
+            "interpretation": "Initial wild-type total is I with I/2 of each sex; the source density scale implies a no-release equilibrium total of 2I. Release is additional to I. The legacy suppression_ratio is 1-N(t)/N(0), including release, and can be negative; it is not a matched no-release treatment effect.",
+        }
 
     def _population_visual(self) -> "VisualSpec":
         return {

@@ -1,116 +1,22 @@
-# Geci2022 Gene-Drive Suppression Lab
+# Geci2022 Gene-Drive Suppression Lab 1.1.0
 
-This lab runs a genotype-tracking gene-drive model for mosquito population suppression. It asks: if you release transgenic males carrying a Y-linked editor, an X-shredder, and an autosomal homing construct, what happens to the wild population over many generations?
+Explore deterministic genotype and population dynamics with 24 controls for reproduction, survival, initial population, release ratio, molecular efficiencies, fitness costs and resistance. The model tracks 1,071 genotypes and 66 gametes. Outputs describe the specified mathematical scenario; they are not a field prediction or deployment recommendation.
 
-The model tracks 1071 genotypes across three genetic components. Each generation, it applies mutation, homing, editing, recombination, gamete production with X-shredding, zygote formation, Beverton-Holt density-dependent survival, and genotype-specific fitness selection. The result is a population that can be suppressed through sex-ratio distortion and genetic load.
+The source is the Julia implementation distributed as [BioModels MODEL2301120001](https://www.ebi.ac.uk/biomodels/MODEL2301120001), associated with Geci, Willis and Burt, [PLOS Genetics (2022)](https://doi.org/10.1371/journal.pgen.1010550). BioModels identifies the record as non-curated. The exact bundled source and native verification artifacts are pinned by checksums in `verification/`.
 
-This is a faithful Python port of the upstream Julia model from Geci et al. (2022), published as [BioModels MODEL2301120001](https://www.ebi.ac.uk/biomodels/MODEL2301120001). The upstream asset is Julia source code, not SBML.
+## Read the outputs correctly
 
-## What You'll See
+Population values are normalized continuous quantities, not counts of individual animals. The existing wrapper initializes a wild-type total I, split equally between sexes, and adds a transgenic male release of I × release_size. Its retained density-dependence scale implies a wild-type equilibrium total of 2I. Thus the no-release example starts below equilibrium and grows toward 2I. This initialization differs from the upstream convenience function, which starts with I of each sex. Both the equations and the wrapper's existing initialization are preserved in this repair.
 
-The lab opens as a canvas with one gene-drive model node and a run-results panel. After running, you will see three visualizations: an adult population time series showing suppression, a gene-drive metrics plot showing drive spread and resistance, and a summary table. The first screenshot shows the canvas and results panel with both time-series plots. The second shows the full parameter list and summary statistics.
+`drive_frequency` is the fraction of males carrying a non-wild-type Y chromosome, including dysfunctional transgenic variants. `resistance_frequency` counts autosomal r3 homing-resistance alleles; it does not summarize all resistance mechanisms. `suppression_ratio` retains the legacy formula 1 − N(t)/N(0), with the initial total including release. It can be negative. It is not an effect relative to a matched no-release control. The plots and summary state these definitions.
 
-![Geci2022 lab canvas with adult population suppression and gene-drive metrics](assets/geci2022-canvas-results.png)
+The example runs for 100 whole generations in 10-generation communication windows. It includes generation zero and every generation through the final state. The final presenter consumes that same full history. Rate and initial-condition controls are fixed after the run starts; use separate runs for separate scenarios.
 
-![Geci2022 parameter panel and summary table](assets/geci2022-parameters-summary.png)
+## Verification and limitations
 
-## How to Read the Visualizations
+44 tests pass with biosimulant==0.0.34 and numpy==1.26.4. Four 100-generation scenarios match native Julia across all genotype abundances and seven process matrices. The largest absolute trajectory difference was 1.23e-15. Native scenarios use exactly matched parameters and initial vectors; one adopts upstream baseline parameters, but this is not a claim to reproduce a published figure. See MTS.md and verification/comparison.json.
 
-The adult population plot shows total adults, females, and males over generations. In the default scenario, the transgenic release causes X-shredding that biases sex ratio toward males. Fewer females means fewer eggs, which pushes the population down. If the drive spreads efficiently, the population collapses within tens of generations. In the screenshot above, the population peaks briefly around generation 5 before collapsing to near zero by generation 50.
+Invalid probabilities and fractional-generation windows fail explicitly. A successful calculation does not establish empirical ecological accuracy, stochastic extinction, spatial spread or release efficacy. The Lab implements a single deterministic population, not every spatial or multiple-release workflow in the Julia file. Handwritten scientific logic requires manual review before promotion. The repaired version has not been publicly released or assigned a new managed Experiment Passport.
 
-The gene-drive metrics plot tracks four quantities:
-
-- **Drive frequency**: fraction of males carrying transgenic Y chromosomes. This rises as the drive spreads through the population, reaching near 1.0 in the default scenario.
-- **Resistance frequency**: fraction of autosomal alleles that are homing-resistant (r3). If resistance emerges, it can rescue the population. In the default scenario with zero resistance rates, this stays at 0.
-- **Male fraction**: should increase above 0.5 when X-shredding is active. The screenshot shows it rising to about 0.95, indicating strong sex-ratio distortion.
-- **Suppression ratio**: how much the population has declined relative to its starting size. A value near 1.0 means near-complete suppression.
-
-The summary table gives initial and final population sizes, peak drive and resistance frequencies, and the final suppression ratio. In the default run, the final suppression ratio reaches 1.0 (complete suppression) with peak drive frequency near 0.99.
-
-## What This Lab Contains
-
-- `lab.yaml` describes the lab and exposes its outputs.
-- `wiring-layout.json` places the model on the canvas.
-- `model/model.yaml` describes the model package, parameters, and ports.
-- `model/src/geci2022_gene_drive.py` contains the genotype enumeration, matrix builders, and simulation loop.
-- `model/tests/` checks genotype counts, matrix conservation, ecology behavior, and visualization format.
-- `model/upstream/MODEL2301120001.jl` is the original Julia source from BioModels.
-
-## Inputs
-
-All parameters are set through `model/model.yaml` init_kwargs and are also exposed as input ports for workflow wiring. In a multi-model workflow, another model can feed values into any of these ports at runtime. If genetic parameters change at runtime, the model rebuilds its process matrices automatically.
-
-- `net_reproduction_rate` (`dimensionless`): net reproduction rate (default 6.0).
-- `juvenile_survival` (`fraction`): juvenile survival probability (default 0.1).
-- `initial_population` (`population`): normalized initial population size (default 1.0).
-- `release_size` (`fraction`): transgenic release as a fraction of the initial population (default 0.1).
-- `homing_efficiency` (`fraction`): homing efficiency (default 0.95).
-- `editing_efficiency` (`fraction`): editing efficiency (default 0.95).
-- `shredding_efficiency` (`fraction`): X-shredding efficiency (default 0.95).
-- `copy_mutation_rate` (`fraction`): copying-error mutation rate (default 0.0).
-- `background_mutation_rate` (`fraction`): background mutation rate (default 0.0).
-- `editing_resistance_rate` (`fraction`): editing resistance rate (default 0.0).
-- `shredding_resistance_rate` (`fraction`): shredding resistance rate (default 0.0).
-- `homing_resistance_rate` (`fraction`): homing resistance rate (default 0.0).
-- `fitness_cost_cas9` (`fraction`): Cas9 expression fitness cost (default 0.0).
-- `fitness_cost_grna` (`fraction`): gRNA expression fitness cost (default 0.0).
-- `fitness_cost_shredder` (`fraction`): shredder expression fitness cost (default 0.0).
-- `fitness_cost_nuclease` (`fraction`): nuclease activity fitness cost (default 0.0).
-- `fitness_cost_shredder_activity` (`fraction`): shredder activity fitness cost (default 0.0).
-- `fitness_cost_edited_female` (`fraction`): female edited-target fitness cost (default 0.0).
-- `fitness_cost_edited_male` (`fraction`): male edited-target fitness cost (default 0.0).
-- `dominance_editing` (`dimensionless`): dominance coefficient for female editing (default 0.5).
-- `dominance_shredder` (`dimensionless`): dominance coefficient for shredder activity (default 0.5).
-- `dominance_shredder_gamete` (`dimensionless`): dominance coefficient for shredder in gametes (default 0.5).
-- `cas9_cofactor` (`dimensionless`): Cas9 cofactor for shredding (default 1.0).
-- `recombination_rate` (`fraction`): X-linked recombination rate (default 0.0).
-
-## Outputs
-
-- `population_state` (`individuals`): total adults, adult females, and adult males.
-- `gene_drive_metrics` (`fraction`): drive frequency, resistance frequency, male fraction, and suppression ratio.
-
-## Recreate and Run with the Biosim CLI
-
-From this lab folder:
-
-```bash
-cd /path/to/models-ecology/labs/ecology-geci2022-gene-drive-suppression
-mkdir -p dist
-python -m biosim pack build . --out dist/geci2022-gene-drive.bsilab
-python -m biosim pack run dist/geci2022-gene-drive.bsilab
-```
-
-If you are working from this monorepo without installing `biosim`, use the local package environment instead:
-
-```bash
-mkdir -p dist
-/path/to/bsim-active/biosim/.venv/bin/python -m biosim pack build . --out dist/geci2022-gene-drive.bsilab
-/path/to/bsim-active/biosim/.venv/bin/python -m biosim pack run dist/geci2022-gene-drive.bsilab
-```
-
-You can also validate the package before running:
-
-```bash
-python -m biosim pack validate dist/geci2022-gene-drive.bsilab
-```
-
-## Run in the Desktop App
-
-1. Open Biosimulant Desktop.
-2. Go to Projects or Labs.
-3. Choose the option to open or import an existing lab.
-4. Select this folder's `lab.yaml`.
-5. Open the lab and press Run.
-
-The right side of the app should show the run result and the visualizations.
-
-## How to Edit It
-
-For scenario changes, start with `model/model.yaml` and `lab.yaml`.
-
-- Change `runtime.duration` in `lab.yaml` for more or fewer generations.
-- Change `runtime.communication_step` if you want more or fewer reported points.
-- Change defaults in `model/model.yaml` for release size, efficiencies, mutation rates, resistance rates, or fitness costs.
-
-Edit `model/src/geci2022_gene_drive.py` only if you are changing the model mechanics. Good code-level edits include adding a new output metric, changing the density-dependence formula, or adding a new visualization. If you only want a different scenario, prefer changing parameters rather than changing the Python code.
+Run locally: `biosimulant labs run . --results-file results.json --report-file report.html`.
+Tests: install requirements-test.txt and run `OPENBLAS_NUM_THREADS=1 python -m pytest . -q`.

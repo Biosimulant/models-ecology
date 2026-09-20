@@ -1,0 +1,392 @@
+{
+  "tolerances": {
+    "trajectory_rtol": 1e-09,
+    "trajectory_atol": 1e-11,
+    "matrix_rtol": 1e-10,
+    "matrix_atol": 1e-12
+  },
+  "cases": [
+    {
+      "name": "published_defaults",
+      "full_genotype_trajectory_pass": true,
+      "max_absolute_error": 2.7755575615628914e-16,
+      "entries_outside_tolerance": 0,
+      "worst_genotype": [
+        "AB",
+        "ef",
+        "cd",
+        "CD"
+      ],
+      "worst_generation": 8,
+      "final_python_total": 1.6607759263370785e-22,
+      "final_native_total": 1.6607759263370547e-22,
+      "initial_total": 1.1,
+      "matrices": [
+        {
+          "matrix": "selection",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "homing",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "editing",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "recombination",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "mutation",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "sperm",
+          "max_absolute_error": 5.551115123125783e-17,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            1,
+            0
+          ],
+          "python": 0.3278688524590164,
+          "julia": 0.32786885245901637
+        },
+        {
+          "matrix": "egg",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 0.0,
+          "julia": 0.0
+        }
+      ]
+    },
+    {
+      "name": "upstream_parameters",
+      "full_genotype_trajectory_pass": true,
+      "max_absolute_error": 3.3306690738754696e-16,
+      "entries_outside_tolerance": 0,
+      "worst_genotype": [
+        "AB",
+        "ef",
+        "cd",
+        "CD"
+      ],
+      "worst_generation": 5,
+      "final_python_total": 9.51935434507984e-136,
+      "final_native_total": 9.519354345079722e-136,
+      "initial_total": 1.1,
+      "matrices": [
+        {
+          "matrix": "selection",
+          "max_absolute_error": 3.5755558345213674e-248,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            672
+          ],
+          "python": 0.0,
+          "julia": 3.5755558345213674e-248
+        },
+        {
+          "matrix": "homing",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "editing",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "recombination",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "mutation",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "sperm",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 0.5,
+          "julia": 0.5
+        },
+        {
+          "matrix": "egg",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 0.0,
+          "julia": 0.0
+        }
+      ]
+    },
+    {
+      "name": "nonzero_costs_and_resistance",
+      "full_genotype_trajectory_pass": true,
+      "max_absolute_error": 1.2212453270876722e-15,
+      "entries_outside_tolerance": 0,
+      "worst_genotype": [
+        "ab",
+        "ef",
+        "cd",
+        "cd"
+      ],
+      "worst_generation": 23,
+      "final_python_total": 1.9946507357577405,
+      "final_native_total": 1.99465073575774,
+      "initial_total": 1.1,
+      "matrices": [
+        {
+          "matrix": "selection",
+          "max_absolute_error": 2.220446049250313e-16,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            379
+          ],
+          "python": 0.7847693399999998,
+          "julia": 0.78476934
+        },
+        {
+          "matrix": "homing",
+          "max_absolute_error": 1.1102230246251565e-16,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            127,
+            132
+          ],
+          "python": 0.8938511999999998,
+          "julia": 0.8938512
+        },
+        {
+          "matrix": "editing",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "recombination",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "mutation",
+          "max_absolute_error": 4.235164736271502e-22,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            7,
+            13
+          ],
+          "python": 1.9979999999999998e-06,
+          "julia": 1.998e-06
+        },
+        {
+          "matrix": "sperm",
+          "max_absolute_error": 6.938893903907228e-18,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            6,
+            31
+          ],
+          "python": 0.04636068613815489,
+          "julia": 0.04636068613815488
+        },
+        {
+          "matrix": "egg",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 0.0,
+          "julia": 0.0
+        }
+      ]
+    },
+    {
+      "name": "no_release",
+      "full_genotype_trajectory_pass": true,
+      "max_absolute_error": 2.220446049250313e-16,
+      "entries_outside_tolerance": 0,
+      "worst_genotype": [
+        "ab",
+        "ef",
+        "cd",
+        "cd"
+      ],
+      "worst_generation": 7,
+      "final_python_total": 2.0000000000000004,
+      "final_native_total": 2.0,
+      "initial_total": 1.0,
+      "matrices": [
+        {
+          "matrix": "selection",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "homing",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "editing",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "recombination",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "mutation",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 1.0,
+          "julia": 1.0
+        },
+        {
+          "matrix": "sperm",
+          "max_absolute_error": 5.551115123125783e-17,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            1,
+            0
+          ],
+          "python": 0.3278688524590164,
+          "julia": 0.32786885245901637
+        },
+        {
+          "matrix": "egg",
+          "max_absolute_error": 0.0,
+          "entries_outside_tolerance": 0,
+          "worst_index": [
+            0,
+            0
+          ],
+          "python": 0.0,
+          "julia": 0.0
+        }
+      ]
+    }
+  ],
+  "versions": {
+    "numpy": "1.26.4",
+    "biosimulant": "0.0.34"
+  },
+  "bundled_julia_source_sha256": "27ccb5637322e70715e0ac40f50438fcc4a2b3167ae62c882a671c35473e55b5",
+  "all_pass": true
+}

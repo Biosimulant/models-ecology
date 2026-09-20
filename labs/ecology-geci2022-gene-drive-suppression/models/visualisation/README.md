@@ -1,3 +1,3 @@
-# Geci2022 Visualisation
+# Geci2022 final presenter
 
-This embedded model owns the internal charts for the lab and keeps presentation logic out of the sibling core wrapper.
+Runs once after integration. Validates complete generation coverage and displays normalized abundance, explicitly defined genetic metrics and interpretation limits. See the Lab README and MTS.
