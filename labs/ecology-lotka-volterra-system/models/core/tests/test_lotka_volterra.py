@@ -1,150 +1,118 @@
-from __future__ import annotations
-
-import math
+from types import SimpleNamespace
 from pathlib import Path
-
+import math
+import json
+import numpy as np
 import pytest
 import yaml
+from scipy.integrate import solve_ivp
+from biosim import BioWorld, ExecutionPolicy
+from src.lotka_volterra import LotkaVolterraSystem
 
 
-def _reference_rk4(alpha: float, beta: float, gamma: float, delta: float, prey: float, predator: float, dt: float, steps: int) -> tuple[float, float]:
-    def rhs(x: float, y: float) -> tuple[float, float]:
-        return alpha * x - beta * x * y, delta * x * y - gamma * y
-
-    for _ in range(steps):
-        k1x, k1y = rhs(prey, predator)
-        k2x, k2y = rhs(prey + 0.5 * dt * k1x, predator + 0.5 * dt * k1y)
-        k3x, k3y = rhs(prey + 0.5 * dt * k2x, predator + 0.5 * dt * k2y)
-        k4x, k4y = rhs(prey + dt * k3x, predator + dt * k3y)
-        prey += (dt / 6.0) * (k1x + 2.0 * k2x + 2.0 * k3x + k4x)
-        predator += (dt / 6.0) * (k1y + 2.0 * k2y + 2.0 * k3y + k4y)
-    return prey, predator
+def run(module, end=20.0, step=0.01):
+    world = BioWorld(communication_step=step)
+    world.add_biomodule("core", module)
+    world.setup()
+    world.run(end)
+    return world.get_outputs("core")["visualisation_payload"].value["payload"]
 
 
-def test_instantiation(biosim):
-    from src.lotka_volterra import LotkaVolterraSystem
-
-    module = LotkaVolterraSystem()
-    assert module.integration_step > 0
-    assert set(module.inputs()) == {
-        "prey_initial_population",
-        "predator_initial_population",
-        "prey_growth_rate",
-        "predation_rate",
-        "predator_mortality_rate",
-        "predator_reproduction_rate",
-    }
-    outputs = module.outputs()
-    assert set(outputs) == {"prey_population_state", "predator_population_state", "visualisation_payload"}
-    assert outputs["prey_population_state"].emitted_unit == "count"
-    assert outputs["predator_population_state"].emitted_unit == "count"
-
-
-def test_prey_grows_without_predators(biosim):
-    from src.lotka_volterra import LotkaVolterraSystem
-
-    module = LotkaVolterraSystem(predator_initial=0.0, prey_initial=10.0, integration_step=0.1)
-    module.advance_window(0.0, 2.0)
-    outputs = module.get_outputs()
-    assert outputs["prey_population_state"].value["count"] > 10.0
-    assert outputs["predator_population_state"].value["count"] == 0.0
+def test_default_full_trajectory_against_independent_dop853():
+    payload = run(LotkaVolterraSystem(), end=250)
+    history = payload["history"]
+    t = np.array([p["t"] for p in history])
+    actual = np.array([[p["prey"],p["predator"]] for p in history])
+    ref = solve_ivp(lambda t,y: [1.1*y[0]-.4*y[0]*y[1],.1*y[0]*y[1]-.4*y[1]], (0,250), [10,5], method="DOP853", rtol=1e-12, atol=1e-13, dense_output=True)
+    assert ref.success
+    expected = ref.sol(t).T
+    np.testing.assert_allclose(actual,expected,rtol=1e-5,atol=1e-6)
+    assert t[0] == 0 and t[-1] == pytest.approx(250)
+    assert len(t) >= 25001
+    assert np.all(np.diff(t) > 0)
+    drift = max(abs(p["drift"]) for p in history)
+    assert drift < 1e-6
+    assert payload["invariant_applicable"] is True
+    assert payload["status"] == "completed"
+    print(json.dumps({"protocol":"250-day default","points":len(t),"max_absolute_error":float(np.max(np.abs(actual-expected))),"max_invariant_drift":drift}))
 
 
-def test_predators_decay_without_prey(biosim):
-    from src.lotka_volterra import LotkaVolterraSystem
-
-    module = LotkaVolterraSystem(prey_initial=0.0, predator_initial=5.0, integration_step=0.1)
-    module.advance_window(0.0, 2.0)
-    outputs = module.get_outputs()
-    assert outputs["prey_population_state"].value["count"] == 0.0
-    assert outputs["predator_population_state"].value["count"] < 5.0
+def test_equilibrium_is_stationary():
+    h = run(LotkaVolterraSystem(prey_initial=4,predator_initial=2.75))["history"]
+    assert all(p["prey"] == 4 and p["predator"] == 2.75 for p in h)
 
 
-def test_reference_trajectory_matches_small_step_reference(biosim):
-    from src.lotka_volterra import LotkaVolterraSystem
-
-    alpha, beta, gamma, delta = 1.1, 0.4, 0.4, 0.1
-    prey_initial, predator_initial = 10.0, 5.0
-    module = LotkaVolterraSystem(
-        alpha=alpha,
-        beta=beta,
-        gamma=gamma,
-        delta=delta,
-        prey_initial=prey_initial,
-        predator_initial=predator_initial,
-        integration_step=0.1,
-    )
-    module.advance_window(0.0, 1.0)
-    outputs = module.get_outputs()
-    prey = outputs["prey_population_state"].value["count"]
-    predator = outputs["predator_population_state"].value["count"]
-    ref_prey, ref_predator = _reference_rk4(alpha, beta, gamma, delta, prey_initial, predator_initial, 0.001, 1000)
-    assert prey == pytest.approx(ref_prey, rel=0.0, abs=2e-4)
-    assert predator == pytest.approx(ref_predator, rel=0.0, abs=2e-4)
+@pytest.mark.parametrize("prey,predator", [(10,0),(0,5),(0,0)])
+def test_boundary_cases_against_analytic_solution(prey,predator):
+    payload = run(LotkaVolterraSystem(prey_initial=prey,predator_initial=predator),end=2)
+    for p in payload["history"]:
+        assert p["prey"] == pytest.approx(prey*math.exp(1.1*p["t"]), rel=1e-8)
+        assert p["predator"] == pytest.approx(predator*math.exp(-.4*p["t"]), rel=1e-8)
+        assert p["invariant"] is None and p["drift"] is None
+    assert not payload["invariant_applicable"]
 
 
-def test_visualisation_payload_contains_expected_lv_fields(biosim):
-    from src.lotka_volterra import LotkaVolterraSystem
-
-    module = LotkaVolterraSystem(integration_step=0.05)
-    module.advance_window(0.0, 20.0)
-    payload = module.get_outputs()["visualisation_payload"].value["payload"]
-
-    assert set(payload) == {"parameters", "prey_extinction_time", "predator_extinction_time", "point"}
-    assert payload["point"]["t"] == pytest.approx(20.0)
-    assert payload["parameters"]["alpha"] == 1.1
-    assert payload["parameters"]["prey_name"] == "Prey"
-
-
-def test_audit_drift_stays_bounded(biosim):
-    from src.lotka_volterra import LotkaVolterraSystem
-
-    module = LotkaVolterraSystem(integration_step=0.05)
-    module.advance_window(0.0, 20.0)
-    payload = module._visualisation_payload()
-    max_abs_drift = max(abs(point["drift"]) for point in payload["history"])
-    assert max_abs_drift < 1e-5
+def test_step_halving_converges_against_dop853():
+    ref=solve_ivp(lambda t,y:[1.1*y[0]-.4*y[0]*y[1],.1*y[0]*y[1]-.4*y[1]],(0,20),[10,5],method="DOP853",rtol=1e-12,atol=1e-13,dense_output=True)
+    errors=[]
+    for step in [.1,.05,.025]:
+        history=run(LotkaVolterraSystem(integration_step=step),step=step)["history"]
+        expected=ref.sol([p["t"] for p in history]).T
+        actual=np.array([[p["prey"],p["predator"]] for p in history])
+        errors.append(float(np.max(np.abs(actual-expected))))
+    assert errors[0]/errors[1] > 12
+    assert errors[1]/errors[2] > 12
+    print(json.dumps({"protocol":"RK4 step halving","steps":[.1,.05,.025],"errors":errors}))
 
 
-def test_populations_remain_finite_and_nonnegative(biosim):
-    from src.lotka_volterra import LotkaVolterraSystem
-
-    module = LotkaVolterraSystem(integration_step=0.05)
-    module.advance_window(0.0, 30.0)
-    outputs = module.get_outputs()
-    prey_state = outputs["prey_population_state"].value
-    predator_state = outputs["predator_population_state"].value
-    assert prey_state["role"] == "prey"
-    assert prey_state["label"] == "Prey"
-    assert predator_state["role"] == "predator"
-    assert predator_state["label"] == "Predator"
-    assert outputs["prey_population_state"].spec.emitted_unit == "count"
-    assert outputs["predator_population_state"].spec.emitted_unit == "count"
-    assert math.isfinite(prey_state["count"]) and prey_state["count"] >= 0.0
-    assert math.isfinite(predator_state["count"]) and predator_state["count"] >= 0.0
+@pytest.mark.parametrize("bad", [-1,float("nan"),float("inf"),True,None,"invalid"])
+def test_invalid_port_update_is_atomic(bad):
+    m=LotkaVolterraSystem()
+    with pytest.raises(ValueError):
+        m.set_inputs({"prey_growth_rate":2,"predation_rate":bad})
+    assert m.alpha == 1.1 and m.beta == .4
 
 
-def test_lotka_volterra_equations_remain_unchanged(biosim):
-    from src.lotka_volterra import LotkaVolterraSystem
-
-    module = LotkaVolterraSystem(alpha=1.1, beta=0.4, gamma=0.4, delta=0.1)
-    dprey, dpredator = module._rhs(prey=10.0, predator=5.0)
-    assert dprey == pytest.approx(1.1 * 10.0 - 0.4 * 10.0 * 5.0)
-    assert dpredator == pytest.approx(0.1 * 10.0 * 5.0 - 0.4 * 5.0)
+@pytest.mark.parametrize("bad", [-1,float("nan"),float("inf"),True])
+@pytest.mark.parametrize("arg", ["alpha","beta","gamma","delta","prey_initial","predator_initial","integration_step"])
+def test_constructor_rejects_invalid_values(arg,bad):
+    with pytest.raises(ValueError): LotkaVolterraSystem(**{arg:bad})
 
 
-def test_lab_level_io_maps_to_internal_model_outputs():
-    lab_manifest = Path(__file__).resolve().parents[3] / "lab.yaml"
-    data = yaml.safe_load(lab_manifest.read_text(encoding="utf-8"))
-    output_maps = {entry["name"]: entry["maps_to"] for entry in data["io"]["outputs"]}
-    assert output_maps["prey_population_state"] == "ecology_lotka_volterra_system.prey_population_state"
-    assert output_maps["predator_population_state"] == "ecology_lotka_volterra_system.predator_population_state"
+def test_initial_overrides_reset_invariant_baseline():
+    m=LotkaVolterraSystem()
+    m.set_inputs({"prey_initial_population":12,"prey_growth_rate":.8})
+    p=run(m,end=2)
+    assert p["history"][0]["prey"] == 12
+    assert p["history"][0]["drift"] == 0
+    assert max(abs(x["drift"]) for x in p["history"]) < 1e-6
 
 
-def test_rabbit_fox_labels_do_not_leak_into_wire_ports(biosim):
-    from src.lotka_volterra import LotkaVolterraSystem
+def test_changing_initial_population_after_start_is_rejected():
+    m=LotkaVolterraSystem()
+    m.execute({},context=SimpleNamespace(window_end=1,run_end=2))
+    with pytest.raises(ValueError):m.set_inputs({"prey_initial_population":11})
+    m.set_inputs({"prey_growth_rate":.8})
+    p=m.execute({},context=SimpleNamespace(window_end=2,run_end=2))["visualisation_payload"]["payload"]
+    assert not p["invariant_applicable"]
 
-    module = LotkaVolterraSystem()
-    port_names = set(module.inputs()) | set(module.outputs())
-    assert all("rabbit" not in name.lower() for name in port_names)
-    assert all("fox" not in name.lower() for name in port_names)
+
+def test_unstable_step_raises_instead_of_clipping():
+    m=LotkaVolterraSystem(integration_step=10)
+    with pytest.raises(FloatingPointError):m.execute({},context=SimpleNamespace(window_end=10,run_end=10))
+
+
+def test_reset_repeats_exact_results():
+    m=LotkaVolterraSystem()
+    a=run(m,end=2)
+    b=run(m,end=2)
+    assert a==b
+
+
+def test_manifest_contract():
+    root=Path(__file__).resolve().parents[3]
+    lab=yaml.safe_load((root/"lab.yaml").read_text())
+    m=LotkaVolterraSystem()
+    assert m.execution_policy is ExecutionPolicy.EACH_WINDOW
+    assert {p["maps_to"].split(".")[1] for p in lab["io"]["inputs"]} == set(m.inputs())
+    assert {p["name"] for p in lab["io"]["outputs"]} == {"prey_population_state","predator_population_state","trajectory"}

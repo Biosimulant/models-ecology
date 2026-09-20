@@ -1,0 +1,7 @@
+{
+  "original_release": "demi/ecology-lotka-volterra-system-lab@1.0.1",
+  "archive_sha256": "9c380e9c85651a8a555d7fdb264e32aa4ea1966ef16701d01584753a013ca9de",
+  "equations": "dN/dt=alpha*N-beta*N*P; dP/dt=delta*N*P-gamma*P",
+  "biology_changed": false,
+  "numerical_changes": "Reject unstable negative/nonfinite RK4 results rather than clipping; preserve complete trajectory; recompute invariant baseline after initial input overrides."
+}

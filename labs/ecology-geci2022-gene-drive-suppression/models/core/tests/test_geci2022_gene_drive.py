@@ -76,14 +76,14 @@ def test_gamete_matrix_row_sums() -> None:
 # Ecology behavior tests
 # ---------------------------------------------------------------------------
 
-def test_wildtype_equilibrium() -> None:
-    """Without transgenic release, population should remain stable."""
+def test_wildtype_approaches_source_equilibrium() -> None:
+    """The published wrapper starts below its source density-scale equilibrium."""
     module = Geci2022GeneDriveModel(release_size=0.0)
     module.advance_window(0.0, 10.0)
 
     eco = module._compute_ecology()
-    # All wild-type females, no males (no Y chromosomes without release)
-    assert eco["total_adults"] > 0
+    assert eco["total_adults"] == pytest.approx(2.0, rel=1e-7)
+    assert eco["adult_males"] == pytest.approx(eco["adult_females"])
     # Drive frequency should be 0
     assert eco["drive_frequency"] == pytest.approx(0.0, abs=1e-12)
 
@@ -114,7 +114,8 @@ def test_outputs_and_history_accumulate() -> None:
 
     outputs = module.get_outputs()
     assert set(outputs) == {"population_state", "gene_drive_metrics", "visualisation_payload"}
-    assert len(module._history) == 5
+    assert len(module._history) == 6
+    assert module._history[0]["t"] == 0 and module._history[-1]["t"] == 5
 
 
 def test_drive_metrics_stay_in_physical_bounds() -> None:

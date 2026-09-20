@@ -1,0 +1,6 @@
+julia_version = "1.10.12"
+source_ranges = ["45:1176", "2549:2688", "3679:3730", "4580:4603", "4607:4664", "5274:5335"]
+science_source_modified = false
+precision_bits = 120
+sympy_version = "1.14.0"
+source_sha256 = "27ccb5637322e70715e0ac40f50438fcc4a2b3167ae62c882a671c35473e55b5"

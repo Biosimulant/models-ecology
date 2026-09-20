@@ -6,7 +6,9 @@ from __future__ import annotations
 
 from typing import Any, Dict, Mapping, Optional
 
-from biosim import BioModule
+import math
+
+from biosim import BioModule, ExecutionPolicy
 from biosim.signals import AcceptedSignalProfile, BioSignal, SignalSpec
 from biosim.signals import unwrap_payload as _signal_value
 
@@ -24,6 +26,7 @@ def _record_input_spec(description: str) -> SignalSpec:
 
 
 class EcologyVisualisationModel(BioModule):
+    execution_policy = ExecutionPolicy.ONCE_AFTER_RUN
     def __init__(self, integration_step: float = 0.1, source_alias: str = "core", mode: str = "lotka_volterra", lab_title: str = "Ecology Lab") -> None:
         self.integration_step = float(integration_step)
         self.source_alias = source_alias
@@ -38,14 +41,28 @@ class EcologyVisualisationModel(BioModule):
         return {}
 
     def reset(self) -> None:
+        super().reset()
         self._inputs = {}
 
     def set_inputs(self, signals: dict[str, BioSignal]) -> None:
         self._inputs.update(signals or {})
 
-    def advance_window(self, start: float | None = None, end: float | None = None, inputs: dict[str, BioSignal] | None = None) -> dict[str, BioSignal]:
-        if inputs:
-            self.set_inputs(inputs)
+    def execute(self, inputs, *, context):
+        self.set_inputs(dict(inputs))
+        payload = _signal_value(self._inputs.get(f"{self.source_alias}_visualisation_payload"))
+        if isinstance(payload, dict) and 'payload' in payload:
+            payload = payload['payload']
+        history = payload.get('history') if isinstance(payload, dict) else None
+        if not history:
+            raise ValueError('Final generation trajectory is required')
+        times = [float(p['t']) for p in history]
+        if not math.isclose(times[0], context.run_start, rel_tol=0, abs_tol=1e-9) or not math.isclose(times[-1], context.run_end, rel_tol=0, abs_tol=1e-9):
+            raise ValueError('Trajectory must include the initial and final generation')
+        if any(not math.isfinite(t) or not t.is_integer() for t in times) or any(b-a != 1 for a,b in zip(times,times[1:])):
+            raise ValueError('Trajectory must include each whole generation')
+        for point in history:
+            if any(not math.isfinite(float(point[k])) or float(point[k]) < 0 for k in ['total_adults','adult_females','adult_males']):
+                raise ValueError('Normalized populations must be finite and nonnegative')
         return {}
 
     def get_outputs(self) -> dict[str, BioSignal]:
@@ -126,12 +143,26 @@ class EcologyVisualisationModel(BioModule):
             {"render": "table", "description": "Competition and diversity summary.", "data": {"title": "Leibovich2022 Summary", "columns": ["Metric", "Value"], "rows": [["Species count", str(species_count)], ["Final total abundance", f"{float(latest.get('total_abundance', 0.0)):.6g}"], ["Peak richness", f"{max(float(p.get('richness', 0.0)) for p in history):.6g}"], ["Dominant species", f"species_{int(float(latest.get('dominant_species_index', 1.0)))}"]]}},
         ]
 
-    def _gene_drive_visuals(self, payload: Mapping[str, Any], history: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    def _gene_drive_visuals(self, payload, history):
         latest = history[-1]
+        populations = [('Total adults','total_adults'),('Adult females','adult_females'),('Adult males','adult_males')]
+        metrics = [('Transgenic Y among males','drive_frequency'),('Autosomal r3 resistance','resistance_frequency'),('Male fraction','male_fraction'),('1 − N(t)/N(0)','suppression_ratio')]
+        def series(fields):
+            return [{'name':label,'points':[[float(p['t']),float(p[key])] for p in history]} for label,key in fields]
         return [
-            {"render": "timeseries", "description": "Adult mosquito abundance and sex split.", "data": {"title": "Adult Population Suppression", "series": [{"name": "Total adults", "points": [[float(p.get('t', 0.0)), float(p.get('total_adults', 0.0))] for p in history]}, {"name": "Adult females", "points": [[float(p.get('t', 0.0)), float(p.get('adult_females', 0.0))] for p in history]}, {"name": "Adult males", "points": [[float(p.get('t', 0.0)), float(p.get('adult_males', 0.0))] for p in history]}]}},
-            {"render": "timeseries", "description": "Drive spread and resistance metrics.", "data": {"title": "Gene-Drive Metrics", "series": [{"name": "Drive frequency", "points": [[float(p.get('t', 0.0)), float(p.get('drive_frequency', 0.0))] for p in history]}, {"name": "Resistance frequency", "points": [[float(p.get('t', 0.0)), float(p.get('resistance_frequency', 0.0))] for p in history]}, {"name": "Male fraction", "points": [[float(p.get('t', 0.0)), float(p.get('male_fraction', 0.0))] for p in history]}, {"name": "Suppression ratio", "points": [[float(p.get('t', 0.0)), float(p.get('suppression_ratio', 0.0))] for p in history]}]}},
-            {"render": "table", "description": "Eco-genetic summary metrics.", "data": {"title": "Geci2022 Summary", "columns": ["Metric", "Value"], "rows": [["Initial total", f"{float(payload.get('initial_total', 0.0)):.6g}"], ["Final total adults", f"{float(latest.get('total_adults', 0.0)):.6g}"], ["Peak drive frequency", f"{max(float(p.get('drive_frequency', 0.0)) for p in history):.6g}"], ["Final suppression ratio", f"{float(latest.get('suppression_ratio', 0.0)):.6g}"]] }},
+            {'render':'timeseries','description':'Normalized deterministic population, not counts of individual animals.',
+             'data':{'title':'Normalized Adult Population','x_unit':'generation','y_unit':'normalized population','series':series(populations)}},
+            {'render':'timeseries','description':'The change relative to the initial total can be negative. It is not a matched no-release treatment effect.',
+             'data':{'title':'Gene-Drive Metrics','x_unit':'generation','y_unit':'dimensionless','series':series(metrics)}},
+            {'render':'table','description':'Definitions and terminal state of the exploratory model.',
+             'data':{'title':'Geci2022 Summary','columns':['Metric','Value'],'rows':[
+                 ['Final generation',str(latest['t'])],
+                 ['Initial total (including release)',f"{payload['initial_total']:.6g}"],
+                 ['Final normalized total',f"{latest['total_adults']:.6g}"],
+                 ['Final 1 − N(t)/N(0)',f"{latest['suppression_ratio']:.6g}"],
+                 ['Population scale',payload['interpretation']],
+                 ['Scope','Deterministic genotype model; no empirical field validation or deployment advice.'],
+             ]}},
         ]
 
     def _rosenzweig_visuals(self, payload: Mapping[str, Any], history: list[dict[str, Any]]) -> list[dict[str, Any]]:

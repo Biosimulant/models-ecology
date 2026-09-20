@@ -1,0 +1,8 @@
+{
+  "original_release": "demi/ecology-geci2022-gene-drive-suppression-lab@1.0.1",
+  "archive_sha256": "e8840abb73b65bad2b969ad550897b4eb8093555256a19486cf6ccd7b74f6c8c",
+  "julia_source_sha256": "27ccb5637322e70715e0ac40f50438fcc4a2b3167ae62c882a671c35473e55b5",
+  "equations_changed": false,
+  "initialization_changed": false,
+  "upstream_url": "https://www.ebi.ac.uk/biomodels/MODEL2301120001"
+}

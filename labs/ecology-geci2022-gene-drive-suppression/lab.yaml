@@ -1,59 +1,209 @@
-description: Multi-model lab with an embedded visualisation sibling for the Geci2022 mosquito gene-drive suppression model. Tracks 1071 genotypes across Y-linked editor, X-shredder, and autosomal homing components with discrete-generation dynamics.
+description: Explore deterministic genotype and normalized population dynamics from
+  Geci2022, with explicit parameter domains, whole-generation timing and source-verified
+  mechanics. No field prediction is claimed.
 io:
   inputs:
   - maps_to: ecology_geci2022_gene_drive_suppression.net_reproduction_rate
     name: net_reproduction_rate
+    default: 6.0
+    value_type: number
+    label: Net reproduction rate
+    description: Net reproduction rate.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.juvenile_survival
     name: juvenile_survival
+    default: 0.1
+    value_type: number
+    label: Juvenile survival
+    description: Juvenile survival probability.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.initial_population
     name: initial_population
+    default: 1.0
+    value_type: number
+    label: Initial population
+    description: Normalized initial population size.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.release_size
     name: release_size
+    default: 0.1
+    value_type: number
+    label: Release size
+    description: Transgenic release as fraction of initial population.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.homing_efficiency
     name: homing_efficiency
+    default: 0.95
+    value_type: number
+    label: Homing efficiency
+    description: Homing efficiency.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.editing_efficiency
     name: editing_efficiency
+    default: 0.95
+    value_type: number
+    label: Editing efficiency
+    description: Editing efficiency.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.shredding_efficiency
     name: shredding_efficiency
+    default: 0.95
+    value_type: number
+    label: Shredding efficiency
+    description: X-shredding efficiency.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.copy_mutation_rate
     name: copy_mutation_rate
+    default: 0.0
+    value_type: number
+    label: Copy mutation rate
+    description: Copying-error mutation rate.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.background_mutation_rate
     name: background_mutation_rate
+    default: 0.0
+    value_type: number
+    label: Background mutation rate
+    description: Background mutation rate.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.editing_resistance_rate
     name: editing_resistance_rate
+    default: 0.0
+    value_type: number
+    label: Editing resistance rate
+    description: Editing resistance rate.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.shredding_resistance_rate
     name: shredding_resistance_rate
+    default: 0.0
+    value_type: number
+    label: Shredding resistance rate
+    description: Shredding resistance rate.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.homing_resistance_rate
     name: homing_resistance_rate
+    default: 0.0
+    value_type: number
+    label: Homing resistance rate
+    description: Homing resistance rate.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_cas9
     name: fitness_cost_cas9
+    default: 0.0
+    value_type: number
+    label: Fitness cost cas9
+    description: Cas9 expression fitness cost.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_grna
     name: fitness_cost_grna
+    default: 0.0
+    value_type: number
+    label: Fitness cost grna
+    description: gRNA expression fitness cost.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_shredder
     name: fitness_cost_shredder
+    default: 0.0
+    value_type: number
+    label: Fitness cost shredder
+    description: Shredder expression fitness cost.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_nuclease
     name: fitness_cost_nuclease
+    default: 0.0
+    value_type: number
+    label: Fitness cost nuclease
+    description: Nuclease activity fitness cost.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_shredder_activity
     name: fitness_cost_shredder_activity
+    default: 0.0
+    value_type: number
+    label: Fitness cost shredder activity
+    description: Shredder activity fitness cost.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_edited_female
     name: fitness_cost_edited_female
+    default: 0.0
+    value_type: number
+    label: Fitness cost edited female
+    description: Female edited-target fitness cost.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.fitness_cost_edited_male
     name: fitness_cost_edited_male
+    default: 0.0
+    value_type: number
+    label: Fitness cost edited male
+    description: Male edited-target fitness cost.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.dominance_editing
     name: dominance_editing
+    default: 0.5
+    value_type: number
+    label: Dominance editing
+    description: Dominance coefficient for female editing.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.dominance_shredder
     name: dominance_shredder
+    default: 0.5
+    value_type: number
+    label: Dominance shredder
+    description: Dominance coefficient for shredder activity.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.dominance_shredder_gamete
     name: dominance_shredder_gamete
+    default: 0.5
+    value_type: number
+    label: Dominance shredder gamete
+    description: Dominance coefficient for shredder in gametes.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.cas9_cofactor
     name: cas9_cofactor
+    default: 1.0
+    value_type: number
+    label: Cas9 cofactor
+    description: Cas9 cofactor for shredding.
+    ui:
+      control: number
   - maps_to: ecology_geci2022_gene_drive_suppression.recombination_rate
     name: recombination_rate
+    default: 0.0
+    value_type: number
+    label: Recombination rate
+    description: X-linked recombination rate.
+    ui:
+      control: number
   outputs:
   - maps_to: ecology_geci2022_gene_drive_suppression.population_state
     name: population_state
   - maps_to: ecology_geci2022_gene_drive_suppression.gene_drive_metrics
     name: gene_drive_metrics
+  - name: trajectory
+    maps_to: ecology_geci2022_gene_drive_suppression.visualisation_payload
+    description: Full generation history, input parameters, population normalization
+      and metric definitions.
 models:
 - alias: ecology_geci2022_gene_drive_suppression
   path: models/core
@@ -64,12 +214,38 @@ models:
 runtime:
   communication_step: 10
   duration: 100
-  initial_inputs: {}
+  initial_inputs:
+    ecology_geci2022_gene_drive_suppression:
+      net_reproduction_rate: 6.0
+      juvenile_survival: 0.1
+      initial_population: 1.0
+      homing_efficiency: 0.95
+      editing_efficiency: 0.95
+      shredding_efficiency: 0.95
+      copy_mutation_rate: 0.0
+      background_mutation_rate: 0.0
+      editing_resistance_rate: 0.0
+      shredding_resistance_rate: 0.0
+      homing_resistance_rate: 0.0
+      fitness_cost_cas9: 0.0
+      fitness_cost_grna: 0.0
+      fitness_cost_shredder: 0.0
+      fitness_cost_nuclease: 0.0
+      fitness_cost_shredder_activity: 0.0
+      fitness_cost_edited_female: 0.0
+      fitness_cost_edited_male: 0.0
+      dominance_editing: 0.5
+      dominance_shredder: 0.5
+      dominance_shredder_gamete: 0.5
+      cas9_cofactor: 1.0
+      recombination_rate: 0.0
+      release_size: 0.1
 schema_version: '2.0'
 package: ecology-geci2022-gene-drive-suppression-lab
-version: 1.0.1
+version: 1.1.0
 title: Geci2022 Gene-Drive Suppression Lab
 wiring:
 - from: ecology_geci2022_gene_drive_suppression.visualisation_payload
   to:
   - visualisation.ecology_geci2022_gene_drive_suppression_visualisation_payload
+intended_use: Explore source-faithful discrete-generation gene-drive dynamics and resistance assumptions. No field-release recommendation, ecological safety prediction or experimental efficacy claim.
