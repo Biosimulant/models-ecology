@@ -249,3 +249,16 @@ wiring:
   to:
   - visualisation.ecology_geci2022_gene_drive_suppression_visualisation_payload
 intended_use: Explore source-faithful discrete-generation gene-drive dynamics and resistance assumptions. No field-release recommendation, ecological safety prediction or experimental efficacy claim.
+licenses:
+- identifier: MIT
+  scope: models/core/src/geci2022_gene_drive.py
+  notice: LICENSE-MIT.txt
+- identifier: Apache-2.0
+  scope: Other code, subject to existing file-specific notices
+  notice: LICENSE-CODE.txt
+- identifier: CC-BY-4.0
+  scope: Manifests, wiring, documentation and curated metadata
+  notice: LICENSE-CONTENT.txt
+- identifier: CC0-1.0
+  scope: models/core/upstream/MODEL2301120001.jl
+  notice: NOTICE.md; BioModels hosted-model license policy

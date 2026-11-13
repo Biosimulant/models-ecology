@@ -87,3 +87,13 @@ wiring:
   to:
   - visualisation.ecology_lotka_volterra_system_visualisation_payload
 intended_use: Explore the unchanged deterministic predator–prey equations and controls. No species-specific calibration, empirical population forecasts or ecosystem management claims.
+licenses:
+- identifier: MIT
+  scope: models/core/src/lotka_volterra.py
+  notice: LICENSE-MIT.txt
+- identifier: Apache-2.0
+  scope: Other code, subject to existing file-specific notices
+  notice: LICENSE-CODE.txt
+- identifier: CC-BY-4.0
+  scope: Manifests, wiring, documentation and curated metadata
+  notice: LICENSE-CONTENT.txt
